@@ -1,0 +1,25 @@
+<div class="span-18 last">
+	{% if content.title %}
+		<h2 class="bio_title">{{ content.title }}</h2>
+	{% endif %}
+
+
+	<div class="span-6">	
+		{% if content.photo %}
+			<img src="/media/{{content.photo}}" alt="Photo of {{content.name}}"/>
+		{% else %}
+			<img src="/static/img/unknown-bio-photo.png" alt="Generic photo placeholder" />
+		{% endif %}
+	</div>
+
+	<div class="span-12 last">
+		<h3 class="name">{{ content.first_name }} {{ content.last_name }}</h3>
+		{% if content.biography %}
+			<p>{{ content.biography }}</p>
+		{% endif %}
+	
+		{% if content.email %}
+			<p class="contact"><a href="mailto:{{ content.email }}">Contact {{ content.first_name }}</a> ({{ content.email }})</p>
+		{% endif %}
+	</div>
+</div>
