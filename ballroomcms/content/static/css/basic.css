@@ -46,3 +46,8 @@ div#content h3.name {
 	font-style: italic;
 	color: #000066;
 }
+
+/* Enhancing FeinCMS types */
+div .image-content-left {
+	display: inline-block;
+}
