@@ -1,0 +1,48 @@
+a {
+	text-decoration: none;
+	color: blue;
+}
+
+div#banner img {
+	width: 100%;
+}
+
+div#content, div#sidebar {
+	font-family: Helvetica;
+}
+
+div#content h2 {
+	text-align: right;
+	font-size: 24px;
+	margin: 15px 0 0 0;
+	border-bottom: 2px solid #000066;
+	color: #000066;
+}
+
+div#content p {
+	margin: 5px 0 20px 0;
+}
+
+div#sidebar div.callout {
+	background-color: #eee;
+	padding: 1px;
+	width: 70%;
+	margin: 0;
+}
+
+div#sidebar div.callout p {
+	margin: 5px;
+}
+
+div#content h2.bio_title {
+	text-align: left;
+	border: none;
+	font-weight: 550;
+	font-style: italic;
+}
+
+div#content h3.name {
+	margin-top: 0;
+	font-style: italic;
+	color: #000066;
+}

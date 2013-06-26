@@ -1,0 +1,41 @@
+ul#top_nav {
+	padding: 10px 0;
+	text-align: center;
+	margin-top: auto;
+	margin-bottom: auto;
+	font-family: Georgia, Helvetica, Arial, sans-serif;
+	font-size: 19px;
+}
+
+ul#top_nav li {
+	display: inline;
+	margin: 5px;
+	padding: 5px 8px;
+}
+
+ul#top_nav a {
+	text-decoration: none;
+	color: #666;
+}
+
+ul#top_nav li a:hover, ul#top_nav li.selected a{
+	color: #000066;
+}
+
+ul#second_nav {
+	font-size: 16px;
+	list-style-type: none;
+}
+
+ul#second_nav li {
+	margin-bottom: 12px;
+}
+
+ul#second_nav a{
+	text-decoration: none;
+	color: #666;
+}
+
+ul#second_nav li a:hover, ul#second_nav li.selected a{
+	color: #000066;
+}
