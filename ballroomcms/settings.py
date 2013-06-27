@@ -167,7 +167,7 @@ THUMBNAIL_ALIASES = {
     '': {
         'galleryThumb': {'size': (200, 200), 'crop': True},
         'galleryLarge': {'size': (800, 800), 'crop': False},
-		'adminThumb': {'size': (50, 50), 'crop': True}
+		'adminThumb': {'size': (100, 100), 'crop': True}
     },
 }
 
