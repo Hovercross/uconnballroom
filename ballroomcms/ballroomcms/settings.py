@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'feincms.module.page',
     'content',
 	'adminsortable',
+	'south',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -142,6 +143,12 @@ FEINCMS_RICHTEXT_INIT_CONTEXT  = {
     'TINYMCE_CONTENT_CSS_URL': None,
     'TINYMCE_LINK_LIST_URL': None
 }
+
+SOUTH_MIGRATION_MODULES = {
+	'page': 'migrate.page',
+	'content': 'migrate.content',
+	
+    }
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
