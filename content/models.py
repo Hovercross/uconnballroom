@@ -54,10 +54,20 @@ class BiographyContent(models.Model):
 		return render_to_string("partial/bio.html", {
 			'content': self
 		})
+		
+class CalendarContent(models.Model):
+	calendar_src = models.CharField(max_length=200)
+	
+	class Meta:
+		abstract = True
+		
+	def render(self, **kwargs):
+		return render_to_string("partial/calendar.html", {'content': self})
 
 #Add content types
 Page.create_content_type(RichTextContent)
 Page.create_content_type(BiographyContent)
+Page.create_content_type(CalendarContent)
 Page.create_content_type(ImageContent, POSITION_CHOICES=(
     ('left', 'Float to left'),
     ('right', 'Float to right'),
