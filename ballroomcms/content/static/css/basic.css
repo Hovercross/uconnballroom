@@ -14,7 +14,7 @@ div#content, div#sidebar {
 div#content h2 {
 	text-align: right;
 	font-size: 24px;
-	margin: 15px 0 0 0;
+	margin: 15px 0;
 	border-bottom: 2px solid #000066;
 	color: #000066;
 }
@@ -49,6 +49,37 @@ div#content h3.name {
 
 div.bio {
 	/* margin-top: 10px; */
+}
+
+img.bio-photo {
+	width: 200px;
+}
+table {
+    border-color: Black;
+    border-width: 1px;
+    border-style: solid;
+	width: auto;
+}
+
+table td {
+    border-color: Black;
+    border-width: 1px;
+    border-style: solid;
+    margin: 0;
+    padding: 4px;
+}
+
+table th {
+	background-color: #000066;
+	margin: 0;
+	padding: 4px;
+	color: White;
+	text-align: center;
+	font-weight: bold;
+}
+
+table tr.alternate {
+	background-color: #ffffe1;
 }
 
 /* Enhancing FeinCMS types */

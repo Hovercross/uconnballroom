@@ -7,9 +7,9 @@
 
 	<div class="span-6">	
 		{% if bio.photo %}
-			<img src="/media/{{bio.photo}}" alt="Photo of {{bio.name}}"/>
+			<img src="/media/{{bio.photo}}" alt="Photo of {{bio.name}}" class="bio-photo" />
 		{% else %}
-			<img src="/static/img/unknown-bio-photo.png" alt="Generic photo placeholder" />
+			<img src="/static/img/unknown-bio-photo.png" alt="Generic photo placeholder" class="bio-photo" />
 		{% endif %}
 	</div>
 
