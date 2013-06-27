@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 from django.template.loader import render_to_string
 
@@ -10,7 +11,9 @@ from feincms.content.image.models import ImageContent
 from adminsortable.models import Sortable
 from adminsortable.fields import SortableForeignKey
 
-from feincms.content.medialibrary.v2 import MediaFileContent
+from photologue.models import Gallery
+
+from easy_thumbnails.files import get_thumbnailer
 
 Page.register_extensions('feincms.module.page.extensions.navigation', 'feincms.module.extensions.datepublisher', 'feincms.module.page.extensions.titles')
 
@@ -56,6 +59,28 @@ class BiographyContent(models.Model):
 		return render_to_string("partial/bio.html", {
 			'content': self
 		})
+
+class Gallery(models.Model):
+	name = models.CharField(max_length=50)
+	
+	def __unicode__(self):
+		return self.name
+
+class GalleryImage(Sortable):
+	image = models.ImageField(upload_to = 'gallery_images')
+	title = models.CharField(max_length=50, blank=True, null=True)
+	caption = models.TextField(blank=True, null=True)
+	gallery = models.ForeignKey(Gallery)
+	
+	def admin_thumb(self):
+		return '<img src="%s" alt=""/>' % (get_thumbnailer(self.image)['adminThumb'].url)
+		
+	admin_thumb.allow_tags = True
+	
+	def __unicode__(self):
+		if self.title:
+			return "%s (%s)" % (self.title, self.image)
+		return "%s" % self.id
 		
 class CalendarContent(models.Model):
 	calendar_src = models.CharField(max_length=200)
@@ -66,46 +91,18 @@ class CalendarContent(models.Model):
 	def render(self, **kwargs):
 		return render_to_string("partial/calendar.html", {'content': self})
 
-class PositionableImageContent(models.Model):
-	CHOICES = (('block', 'Block'), ('left', 'Left'), ('right', 'Right'))
+class GalleryContent(models.Model):
+	gallery = models.ForeignKey(Gallery)
 	
 	class Meta:
 		abstract = True
-	
-	image = models.ImageField(upload_to='positionable_images')
-	relative_to = models.CharField(max_length=10, choices=CHOICES, default='block')
-	description = models.CharField(max_length=200)
-	horizontal_adjust = models.CharField(max_length=10, blank=True, null=True);
-	vertical_adjust = models.CharField(max_length=10, blank=True, null=True);
-
-	@property
-	def inlineStyle(self):
-		attrs = []
-
-		if self.vertical_adjust:
-			attrs.append("margin-top: %s; " % self.vertical_adjust)
-			
-		if self.relative_to == 'left' and self.horizontal_adjust:
-			attrs.append("margin-left: %s;" % self.horizontal_adjust)
-		elif self.relatiave_to == 'right' and self.horizontal_adjust:
-			attrs.append("margin-right: %s" % self.horizontal_adjust)
-			
-		print attrs
-		if attrs:
-			return 'style="%s"' % "; ".join(attrs)
 		
-			
 	def render(self, **kwargs):
-		return render_to_string("partial/image.html", {'content': self})
+		return render_to_string("partial/gallery.html", {'gallery': self.gallery})
 
 #Add content types
 Page.create_content_type(RichTextContent)
 Page.create_content_type(BiographyContent)
 Page.create_content_type(CalendarContent)
-Page.create_content_type(PositionableImageContent)
 Page.create_content_type(ImageContent)
-
-Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
-        ('default', _('default')),
-        ('lightbox', _('lightbox')),
-        ))
+Page.create_content_type(GalleryContent)
