@@ -10,6 +10,8 @@ from feincms.content.image.models import ImageContent
 from adminsortable.models import Sortable
 from adminsortable.fields import SortableForeignKey
 
+from feincms.content.medialibrary.v2 import MediaFileContent
+
 Page.register_extensions('feincms.module.page.extensions.navigation', 'feincms.module.extensions.datepublisher', 'feincms.module.page.extensions.titles')
 
 Page.register_templates({
@@ -64,12 +66,46 @@ class CalendarContent(models.Model):
 	def render(self, **kwargs):
 		return render_to_string("partial/calendar.html", {'content': self})
 
+class PositionableImageContent(models.Model):
+	CHOICES = (('block', 'Block'), ('left', 'Left'), ('right', 'Right'))
+	
+	class Meta:
+		abstract = True
+	
+	image = models.ImageField(upload_to='positionable_images')
+	relative_to = models.CharField(max_length=10, choices=CHOICES, default='block')
+	description = models.CharField(max_length=200)
+	horizontal_adjust = models.CharField(max_length=10, blank=True, null=True);
+	vertical_adjust = models.CharField(max_length=10, blank=True, null=True);
+
+	@property
+	def inlineStyle(self):
+		attrs = []
+
+		if self.vertical_adjust:
+			attrs.append("margin-top: %s; " % self.vertical_adjust)
+			
+		if self.relative_to == 'left' and self.horizontal_adjust:
+			attrs.append("margin-left: %s;" % self.horizontal_adjust)
+		elif self.relatiave_to == 'right' and self.horizontal_adjust:
+			attrs.append("margin-right: %s" % self.horizontal_adjust)
+			
+		print attrs
+		if attrs:
+			return 'style="%s"' % "; ".join(attrs)
+		
+			
+	def render(self, **kwargs):
+		return render_to_string("partial/image.html", {'content': self})
+
 #Add content types
 Page.create_content_type(RichTextContent)
 Page.create_content_type(BiographyContent)
 Page.create_content_type(CalendarContent)
-Page.create_content_type(ImageContent, POSITION_CHOICES=(
-    ('left', 'Float to left'),
-    ('right', 'Float to right'),
-    ('block', 'Block'),
-))
+Page.create_content_type(PositionableImageContent)
+Page.create_content_type(ImageContent)
+
+Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
+        ('default', _('default')),
+        ('lightbox', _('lightbox')),
+        ))
