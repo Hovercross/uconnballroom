@@ -127,13 +127,15 @@ INSTALLED_APPS = (
     'feincms',
     'mptt',
     'feincms.module.page',
-    'feincms.module.medialibrary',
     'content',
+	'adminsortable',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth')
 
 FEINCMS_RICHTEXT_INIT_CONTEXT  = {
     'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tiny_mce/tiny_mce.js',

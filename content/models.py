@@ -1,15 +1,16 @@
 from django.db import models
 from django.template.loader import render_to_string
 
-#This is crap from FeinCMS that has nowhere better go to
 from django.utils.translation import ugettext_lazy as _
 
 from feincms.module.page.models import Page
 from feincms.content.richtext.models import RichTextContent
-from feincms.content.medialibrary.models import MediaFileContent
 from feincms.content.image.models import ImageContent
 
-Page.register_extensions('feincms.module.page.extensions.navigation', 'feincms.module.extensions.datepublisher', 'feincms.module.extensions.translations') # Example set of extensions
+from adminsortable.models import Sortable
+from adminsortable.fields import SortableForeignKey
+
+Page.register_extensions('feincms.module.page.extensions.navigation', 'feincms.module.extensions.datepublisher', 'feincms.module.page.extensions.titles')
 
 Page.register_templates({
     'title': _('Standard template'),
@@ -19,14 +20,32 @@ Page.register_templates({
         ),
     })
 
+class BiographySection(models.Model):
+	title = models.CharField(max_length = 50)
 
-class BiographyContent(models.Model):
+	def __str__(self):
+		return self.title
+
+class Biography(Sortable):
+	class Meta(Sortable.Meta):
+	    pass
+
+	section = SortableForeignKey(BiographySection)
 	first_name = models.CharField(max_length=50)
 	last_name = models.CharField(max_length=50)
 	title = models.CharField(max_length=50, blank=True, null=True)
 	email = models.EmailField(blank=True, null=True)
 	biography = models.TextField(blank=True, null=True)
 	photo = models.ImageField(upload_to='bio_photos', blank=True, null=True)
+	
+	def __unicode__(self):
+		if self.title:
+			return "%s (%s %s)" % (self.title, self.first_name, self.last_name)
+		else:
+			return "%s %s" % (self.first_name, self.last_name)
+			
+class BiographyContent(models.Model):
+	section = models.ForeignKey(BiographySection)
 	
 	class Meta:
 		abstract = True
@@ -44,8 +63,3 @@ Page.create_content_type(ImageContent, POSITION_CHOICES=(
     ('right', 'Float to right'),
     ('block', 'Block'),
 ))
-
-Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
-    ('default', _('default')),
-    ('lightbox', _('lightbox')),
-    ))
