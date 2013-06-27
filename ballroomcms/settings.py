@@ -154,7 +154,7 @@ INSTALLED_APPS = (
     'content',
 	'adminsortable',
 	'south',
-    'feincms.module.medialibrary',
+    'easy_thumbnails',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -162,6 +162,14 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth')
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'galleryThumb': {'size': (200, 200), 'crop': True},
+        'galleryLarge': {'size': (800, 800), 'crop': False},
+		'adminThumb': {'size': (50, 50), 'crop': True}
+    },
+}
 
 FEINCMS_RICHTEXT_INIT_CONTEXT  = {
     'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tiny_mce/tiny_mce.js',
