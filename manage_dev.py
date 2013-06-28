@@ -1,9 +1,10 @@
-#!/var/www/uconnballroom.com/virtualenvs/ballroom-production/bin/python
+#!/opt/local/bin/python2.7
+
 import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ballroomcms.settings_production")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ballroomcms.settings_development")
 
     from django.core.management import execute_from_command_line
 
