@@ -84,6 +84,8 @@ INSTALLED_APPS = (
 	'adminsortable',
 	'south',
     'easy_thumbnails',
+    'biographies',
+    'galleries',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -109,6 +111,8 @@ FEINCMS_RICHTEXT_INIT_CONTEXT  = {
 SOUTH_MIGRATION_MODULES = {
 	'page': 'migrate.page',
 	'content': 'migrate.content',
+	'biographies': 'migrate.biographies',
+	'galleries': 'migrate.galleries',
 }
 
 LOGGING = {
