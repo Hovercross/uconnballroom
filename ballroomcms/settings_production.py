@@ -15,5 +15,5 @@ DATABASES = {
     }
 }
 
-MEDIA_ROOT = '/var/www/ballroom/data/cms_user_media/'
-STATIC_ROOT = '/var/www/ballroom/cms_static/'
+MEDIA_ROOT = '/var/www/uconnballroom.com/data/cms_user_media/'
+STATIC_ROOT = '/var/www/uconnballroom.com/data/cms_static/'
