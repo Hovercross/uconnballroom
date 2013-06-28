@@ -21,7 +21,7 @@ class GalleryImage(Sortable):
 	def admin_thumb(self):
 		try:
 			return '<img src="%s" alt=""/>' % (get_thumbnailer(self.image)['adminThumb'].url)
-		except Exception, 2:
+		except Exception, e:
 			return 'ERROR'
 		
 	admin_thumb.allow_tags = True
