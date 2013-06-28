@@ -11,8 +11,6 @@ from feincms.content.image.models import ImageContent
 from adminsortable.models import Sortable
 from adminsortable.fields import SortableForeignKey
 
-from photologue.models import Gallery
-
 from easy_thumbnails.files import get_thumbnailer
 
 Page.register_extensions('feincms.module.page.extensions.navigation', 'feincms.module.extensions.datepublisher', 'feincms.module.page.extensions.titles')

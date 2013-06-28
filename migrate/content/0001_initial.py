@@ -29,6 +29,24 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'content', ['Biography'])
 
+        # Adding model 'Gallery'
+        db.create_table(u'content_gallery', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal(u'content', ['Gallery'])
+
+        # Adding model 'GalleryImage'
+        db.create_table(u'content_galleryimage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('order', self.gf('django.db.models.fields.PositiveIntegerField')(default=1, db_index=True)),
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
+            ('caption', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('gallery', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['content.Gallery'])),
+        ))
+        db.send_create_signal(u'content', ['GalleryImage'])
+
 
     def backwards(self, orm):
         # Deleting model 'BiographySection'
@@ -36,6 +54,12 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Biography'
         db.delete_table(u'content_biography')
+
+        # Deleting model 'Gallery'
+        db.delete_table(u'content_gallery')
+
+        # Deleting model 'GalleryImage'
+        db.delete_table(u'content_galleryimage')
 
 
     models = {
@@ -55,6 +79,20 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'BiographySection'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'content.gallery': {
+            'Meta': {'object_name': 'Gallery'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'content.galleryimage': {
+            'Meta': {'ordering': "['order']", 'object_name': 'GalleryImage'},
+            'caption': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'gallery': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['content.Gallery']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
+            'order': ('django.db.models.fields.PositiveIntegerField', [], {'default': '1', 'db_index': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'})
         }
     }
 
