@@ -94,3 +94,17 @@ div img.right {
 	position: relative;
 	margin-left: 10px;
 }
+
+div#content h2.headingSubtitle {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+div#content p.headingSubtitle {
+	text-align: right;
+	color: #666;
+	font-size: 14px;
+	margin-top: 0;
+	padding-top: 0;
+	margin-bottom: 15px;
+}

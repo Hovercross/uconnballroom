@@ -50,9 +50,20 @@ class GalleryContent(models.Model):
 	def render(self, **kwargs):
 		return render_to_string("partial/gallery.html", {'gallery': self.gallery})
 
+class SubtitledHeader(models.Model):
+	heading = models.CharField(max_length=100)
+	subtitle = models.CharField(max_length=200)
+	
+	class Meta:
+		abstract = True
+		
+	def render(self, **kwargs):
+		return render_to_string("partial/subtitledHeader.html", {'content': self})
+
 #Add content types
 Page.create_content_type(RichTextContent)
 Page.create_content_type(BiographyContent)
 Page.create_content_type(CalendarContent)
 Page.create_content_type(ImageContent)
 Page.create_content_type(GalleryContent)
+Page.create_content_type(SubtitledHeader)
