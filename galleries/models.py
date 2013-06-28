@@ -19,7 +19,10 @@ class GalleryImage(Sortable):
 	gallery = SortableForeignKey(Gallery)
 	
 	def admin_thumb(self):
-		return '<img src="%s" alt=""/>' % (get_thumbnailer(self.image)['adminThumb'].url)
+		try:
+			return '<img src="%s" alt=""/>' % (get_thumbnailer(self.image)['adminThumb'].url)
+		except Exception, 2:
+			return 'ERROR'
 		
 	admin_thumb.allow_tags = True
 	
