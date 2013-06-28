@@ -1,6 +1,6 @@
 from settings_shared import *
 
-DEGUG = False
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
