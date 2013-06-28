@@ -82,16 +82,17 @@ table tr.alternate {
 	background-color: #ffffe1;
 }
 
-div img.left {
+div#content img.left {
 	float: left;
 	position: relative;
 	margin-top: 5px;
 	margin-right: 10px;
 }
 
-div img.right {
+div#content img.right {
 	float: right;
 	position: relative;
+	margin-top: 5px;
 	margin-left: 10px;
 }
 
