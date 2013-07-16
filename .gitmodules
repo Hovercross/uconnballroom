@@ -1,0 +1,3 @@
+[submodule "ballroomlib"]
+	path = ballroomlib
+	url = git@bitbucket.org:Hovercross/ballroomlib.git
