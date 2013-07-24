@@ -21,6 +21,7 @@ div#content h2 {
 
 div#content p {
 	margin: 5px 0 20px 0;
+	font-size: 12px;
 }
 
 div#sidebar div.callout {
@@ -108,4 +109,24 @@ div#content p.headingSubtitle {
 	margin-top: 0;
 	padding-top: 0;
 	margin-bottom: 15px;
+}
+
+div.image-content-left, div.image-content-right {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+div.image-content-left img, div.image-content-right img {
+	margin-top: 5px;
+}
+
+div.image-content-left {
+	float: left;
+	margin-right: 10px;
+}
+
+div.image-content-right {
+	float: right;
+	margin-left: 10px;
 }

@@ -64,6 +64,10 @@ class SubtitledHeader(models.Model):
 Page.create_content_type(RichTextContent)
 Page.create_content_type(BiographyContent)
 Page.create_content_type(CalendarContent)
-Page.create_content_type(ImageContent)
+Page.create_content_type(ImageContent, POSITION_CHOICES=(
+        ('left', 'Float to left'),
+        ('right', 'Float to right'),
+        ('block', 'Block'),
+    ),)
 Page.create_content_type(GalleryContent)
 Page.create_content_type(SubtitledHeader)
