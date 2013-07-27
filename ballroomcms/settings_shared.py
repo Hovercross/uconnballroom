@@ -85,7 +85,6 @@ INSTALLED_APPS = (
 	'south',
     'easy_thumbnails',
     'biographies',
-    'galleries',
     # Uncomment the next line to enable the admin:
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -112,7 +111,7 @@ SOUTH_MIGRATION_MODULES = {
 	'page': 'migrate.page',
 	'content': 'migrate.content',
 	'biographies': 'migrate.biographies',
-	'galleries': 'migrate.galleries',
+	'gallery': 'migrate.gallery',
 }
 
 LOGGING = {

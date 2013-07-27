@@ -1,5 +1,0 @@
-{% load thumbnail %}
-
-{% for photo in gallery.galleryimage_set.all %}
-	<img src="{{ photo.image | thumbnail_url:'galleryThumb' }}" style="width: 200px" alt="" />
-{% endfor %}
