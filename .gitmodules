@@ -3,4 +3,4 @@
 	url = git@bitbucket.org:Hovercross/ballroomlib.git
 [submodule "gallery"]
 	path = gallery
-	url = git@bitbucket.org:Hovercross/gallery.git
+	url = https://Hovercross@bitbucket.org/Hovercross/gallery.git
