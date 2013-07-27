@@ -1,3 +1,4 @@
+{% load thumbnail %}
 {% for bio in content.section.biography_set.all %}
 <div class="span-18 last bio">
 	{% if bio.title %}
@@ -7,7 +8,7 @@
 
 	<div class="span-6">	
 		{% if bio.photo %}
-			<img src="/media/{{bio.photo}}" alt="Photo of {{bio.name}}" class="bio-photo" />
+			<img src="{% thumbnail bio.photo 200x0 %}" alt="Photo of {{bio.name}}" class="bio-photo" />
 		{% else %}
 			<img src="/static/img/unknown-bio-photo.png" alt="Generic photo placeholder" class="bio-photo" />
 		{% endif %}

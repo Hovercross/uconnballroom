@@ -40,6 +40,7 @@ div#content h2.bio_title {
 	border: none;
 	font-weight: 550;
 	font-style: italic;
+	margin-bottom: 0;
 }
 
 div#content h3.name {
