@@ -1,4 +1,4 @@
-#!/var/www/uconnballroom.com/virtualenvs/ballroom-production/bin/python
+#!/usr/bin/env python
 
 import os
 import sys
