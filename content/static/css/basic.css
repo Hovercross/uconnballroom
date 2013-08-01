@@ -131,3 +131,7 @@ div.image-content-right {
 	float: right;
 	margin-left: 10px;
 }
+
+div.image-content-block {
+	text-align: center;
+}
