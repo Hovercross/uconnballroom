@@ -1,22 +1,46 @@
-{% load thumbnail %}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
-    "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
-<html>
-	<head>
-		<title>Bulk Uploader</title>
-		<script src="/static/js/dropzone.js"></script>
-	</head>
-	<body>
-		<h2>{{ gallery }}</h2>
-		<h3>Current images</h3>
-		{% for image in images %}
-			<img src="{% thumbnail image.image 100x100 crop="smart" %}" /> 
-		{% endfor %}
-		
-		<h3>Batch Image Upload</h3>
-		<form action="{% url 'galleries.views.manage_gallery' gallery.id %}" class="dropzone" id="my-awesome-dropzone">
-			{% csrf_token %}
-			<input type="file" name="uploadFile" />
+{% load thumbnail %}<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>Bulk Uploader</title>
+	
+	<link rel="stylesheet" href="/static/css/screen.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="/static/css/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="/static/css/navigation.css" type="text/css" />
+	<link rel="stylesheet" href="/static/css/basic.css" type="text/css" />
+	
+	<!--[if lt IE 8]>
+		<link rel="stylesheet" href="/static/css/ie.css" type="text/css" media="screen, projection" />
+	<![endif]-->
+	
+	<link rel="stylesheet" href="/static/dropzone/css/basic.css" type="text/css" />
+	<link rel="stylesheet" href="/static/dropzone/css/dropzone.css" type="text/css" />
+	
+	<script src="/static/dropzone/dropzone.min.js"></script>
+	
+	<script type="text/javascript">
+		Dropzone.options.bulkUploadForm = {
+          acceptedFiles: 'image/jpeg',
+          paramName: "file",
+		  maxFilesize: 10, // MB          
+		};
+	</script>
+</head>
+<body>
+	<div class="container" id="body">
+		<div class="span-24">
+			<h2>Gallery: {{ gallery }}</h2>
+			<h3 style="margin-bottom: 0">Current images</h3>
+			{% for image in images %}
+				<img src="{% thumbnail image.image 100x100 crop="smart" %}" /> 
+			{% endfor %}
 			
-		</form>
-	</body>
+			<h3 style="margin-top: 10px">Batch Image Upload</h3>
+			<form action="{% url 'galleries.views.manage_gallery' gallery.id %}" class="dropzone" id="bulkUploadForm">
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+	
+</body>
 </html>

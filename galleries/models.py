@@ -1,6 +1,7 @@
 from django.db import models
 from adminsortable.models import Sortable
 from adminsortable.fields import SortableForeignKey
+from django.core.urlresolvers import reverse
 
 from easy_thumbnails.files import get_thumbnailer
 
@@ -8,6 +9,12 @@ from easy_thumbnails.files import get_thumbnailer
 
 class Gallery(Sortable):
 	name = models.CharField(max_length=50)
+	
+	def bulk_admin_url(self):
+		url = reverse('galleries.views.manage_gallery', args=(self.id, ))
+		return '<a href="%s">%s</a>' % (url, url)
+	
+	bulk_admin_url.allow_tags = True
 	
 	def __unicode__(self):
 		return self.name

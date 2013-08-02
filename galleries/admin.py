@@ -35,6 +35,8 @@ class GalleryImageInline(SortableTabularInline):
     }
 		
 class GalleryAdmin(SortableAdmin):
+	fields = ['name', 'bulk_admin_url']
+	readonly_fields = ('bulk_admin_url', )
 	inlines = [GalleryImageInline]
 	
 class GalleryImageAdmin(SortableAdmin):
