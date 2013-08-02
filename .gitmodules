@@ -1,6 +1,3 @@
 [submodule "ballroomlib"]
 	path = ballroomlib
 	url = git@bitbucket.org:Hovercross/ballroomlib.git
-[submodule "gallery"]
-	path = gallery
-	url = https://Hovercross@bitbucket.org/Hovercross/gallery.git
