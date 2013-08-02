@@ -17,3 +17,5 @@ DATABASES = {
 
 MEDIA_ROOT = os.path.abspath(os.path.join(os.path.split(__file__)[0], '../', 'user_media'))
 STATIC_ROOT = ''
+
+SERVE_STATIC = True

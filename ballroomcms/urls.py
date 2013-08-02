@@ -18,4 +18,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^gallery-views/', include('galleries.urls')),
     url(r'', include('feincms.urls')),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) 
+
+if settings.SERVE_STATIC:
+	urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
