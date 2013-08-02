@@ -35,7 +35,6 @@
 				<img src="{% thumbnail image.image 100x100 crop="smart" %}" /> 
 			{% endfor %}
 			
-			<h3 style="margin-top: 10px">Batch Image Upload</h3>
 			<form action="{% url 'galleries.views.manage_gallery' gallery.id %}" class="dropzone" id="bulkUploadForm">
 				{% csrf_token %}
 			</form>

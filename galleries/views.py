@@ -21,7 +21,7 @@ def manage_gallery(request, id):
 		galleryImage = models.GalleryImage(image = request.FILES['file'], gallery=gallery)
 		galleryImage.save()
 		
-	return render(request, "galleries/gallery.html", {'gallery': gallery, 'images': images})
+	return render(request, "gallery.html", {'gallery': gallery, 'images': images})
 
 @permission_required('galleries.change_galleryimage')
 def take_upload(request):
