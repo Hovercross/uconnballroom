@@ -16,7 +16,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^gallery-views/', include('galleries.urls')),
+    url(r'', include('galleries.urls')),
     url(r'', include('feincms.urls')),
 ) 
 
