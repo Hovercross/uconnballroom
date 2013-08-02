@@ -135,3 +135,8 @@ div.image-content-right {
 div.image-content-block {
 	text-align: center;
 }
+
+div.photoLink {
+	text-align: center;
+	height: 120px;
+}
