@@ -131,3 +131,12 @@ div.image-content-right {
 	float: right;
 	margin-left: 10px;
 }
+
+div.image-content-block {
+	text-align: center;
+}
+
+div.photoLink {
+	text-align: center;
+	height: 120px;
+}

@@ -1,0 +1,4 @@
+{% load thumbnail %}
+<div class ="span-6 photoLink">
+	<a href="{{ content.href }}"><img src="{% thumbnail content.image 200x200 upscale crop="smart" %}" alt="{{ content.alt }}" />{{ content.caption }}</a>
+</div>

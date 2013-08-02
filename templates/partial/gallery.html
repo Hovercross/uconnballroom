@@ -1,0 +1,5 @@
+{% load thumbnail %}
+
+{% for photo in gallery.galleryimage_set.all %}
+	<a href="{% thumbnail photo.image 800x600 %}" data-lightbox="gt"><img src="{% thumbnail photo.image 100x100 crop="smart" %}" alt="" /></a>
+{% endfor %}
