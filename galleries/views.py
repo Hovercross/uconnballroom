@@ -3,8 +3,6 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.views.generic import CreateView, DeleteView
 
-from forms import UploadImageForm
-
 from . import models
 
 def response_mimetype(request):
