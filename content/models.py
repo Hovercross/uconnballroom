@@ -11,6 +11,10 @@ from feincms.content.image.models import ImageContent
 from biographies.models import BiographySection
 from galleries.models import Gallery
 
+from mptt.fields import TreeForeignKey
+
+from feincms.content.application.models import app_reverse
+
 Page.register_extensions('feincms.module.page.extensions.navigation', 'feincms.module.extensions.datepublisher', 'feincms.module.page.extensions.titles')
 
 Page.register_templates({
@@ -44,11 +48,34 @@ class CalendarContent(models.Model):
 class GalleryContent(models.Model):
 	gallery = models.ForeignKey(Gallery)
 	
+	@property
+	def media(self):
+		return forms.Media(
+			js=('/static/js/jquery.min.js','/static/lightbox/js/lightbox-2.6.min.js'),
+			css={'all': ('/static/lightbox/css/lightbox.css', )}
+		)
+	
 	class Meta:
 		abstract = True
 		
 	def render(self, **kwargs):
 		return render_to_string("partial/gallery.html", {'gallery': self.gallery})
+
+class PhotoLink(models.Model):
+	image = models.ImageField(upload_to='gallery_link_photos')
+	alt = models.CharField(max_length=200)
+	page = TreeForeignKey(Page, related_name='link_to')
+	caption = models.CharField(max_length=30, blank=True)
+	
+	@property
+	def href(self):
+		return self.page.get_absolute_url()
+	
+	class Meta:
+		abstract = True
+		
+	def render(self, **kwargs):
+		return render_to_string("partial/galleryLink.html", {'content': self})
 
 class SubtitledHeader(models.Model):
 	heading = models.CharField(max_length=100)
@@ -71,3 +98,4 @@ Page.create_content_type(ImageContent, POSITION_CHOICES=(
     ),)
 Page.create_content_type(GalleryContent)
 Page.create_content_type(SubtitledHeader)
+Page.create_content_type(PhotoLink)
