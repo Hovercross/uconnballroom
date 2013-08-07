@@ -20,4 +20,7 @@ ALLOWED_HOSTS = ['208.82.98.186', 'tigger.peacockhosting.net', 'tigger.peacockho
 MEDIA_ROOT = '/var/www/uconnballroom.com/data/cms_user_media/'
 STATIC_ROOT = '/var/www/uconnballroom.com/data/cms_static/'
 
+STATIC_URL = '//d1ettfrdwah9wo.cloudfront.net/static/'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+
 SERVE_STATIC = False
