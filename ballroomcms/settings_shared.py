@@ -98,7 +98,8 @@ THUMBNAIL_ALIASES = {
     '': {
         'galleryThumb': {'size': (100, 100), 'crop': 'Smart'},
         'galleryLightbox': {'size': (800, 800), 'crop': False},
-		'adminThumb': {'size': (100, 100), 'crop': 'Smart'}
+		'adminThumb': {'size': (100, 100), 'crop': 'Smart'},
+		'imageContent': {'size': (700, 0), 'crop': False}
     },
 }
 
