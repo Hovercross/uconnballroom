@@ -96,9 +96,10 @@ TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.
 
 THUMBNAIL_ALIASES = {
     '': {
-        'galleryThumb': {'size': (200, 200), 'crop': True},
-        'galleryLarge': {'size': (800, 800), 'crop': False},
-		'adminThumb': {'size': (100, 100), 'crop': 'Smart'}
+        'galleryThumb': {'size': (100, 100), 'crop': 'Smart'},
+        'galleryLightbox': {'size': (800, 800), 'crop': False},
+		'adminThumb': {'size': (100, 100), 'crop': 'Smart'},
+		'imageContent': {'size': (700, 0), 'crop': False}
     },
 }
 

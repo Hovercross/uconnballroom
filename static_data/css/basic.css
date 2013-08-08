@@ -112,28 +112,27 @@ div#content p.headingSubtitle {
 	margin-bottom: 15px;
 }
 
-div.image-content-left, div.image-content-right {
-	margin: 0;
+img.image-content-left, img.image-content-right {
+	margin-top: 0;
 	padding: 0;
 	border: 0;
+	padding-top: 5px;
 }
 
-div.image-content-left img, div.image-content-right img {
-	margin-top: 5px;
-}
-
-div.image-content-left {
-	float: left;
+img.image-content-left {
 	margin-right: 10px;
+	float: left;
 }
 
-div.image-content-right {
+img.image-content-right {
 	float: right;
 	margin-left: 10px;
 }
 
-div.image-content-block {
-	text-align: center;
+img.image-content-block {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
 }
 
 div.photoLink {
