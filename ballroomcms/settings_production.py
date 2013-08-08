@@ -24,3 +24,9 @@ STATIC_URL = '//d1ettfrdwah9wo.cloudfront.net/static/'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 SERVE_STATIC = False
+
+FEINCMS_RICHTEXT_INIT_CONTEXT  = {
+    'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tiny_mce/tiny_mce.js',
+    'TINYMCE_CONTENT_CSS_URL': None,
+    'TINYMCE_LINK_LIST_URL': None
+}
