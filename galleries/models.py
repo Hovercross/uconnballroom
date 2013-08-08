@@ -3,9 +3,24 @@ from adminsortable.models import Sortable
 from adminsortable.fields import SortableForeignKey
 from django.core.urlresolvers import reverse
 
+import os
+import uuid
+
 from easy_thumbnails.files import get_thumbnailer
 
 # Create your models here.
+
+def getGalleryImagePath(instance, fileName):
+	prefix, extension = os.path.splitext(fileName)
+
+	if extension:
+		uniqueName = "%s%s" % (uuid.uuid4().hex.lower(), extension.lower())
+	else:
+		uniqueName = uuid.uuid4().hex.lower()
+	
+	path = os.path.join('gallery_images', str(instance.gallery.id), uniqueName)
+	return path
+	
 
 class Gallery(Sortable):
 	name = models.CharField(max_length=50)
@@ -20,7 +35,7 @@ class Gallery(Sortable):
 		return self.name
 
 class GalleryImage(Sortable):
-	image = models.ImageField(upload_to = 'gallery_images')
+	image = models.ImageField(upload_to = getGalleryImagePath)
 	title = models.CharField(max_length=50, blank=True, null=True)
 	caption = models.TextField(blank=True, null=True)
 	gallery = SortableForeignKey(Gallery)
