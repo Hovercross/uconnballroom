@@ -1,0 +1,18 @@
+{% extends feincms_page.template.path|default:"base.html" %}
+{% load static %}
+{% block headextra %}
+	<link rel="stylesheet" href="{% static 'css/registration_form.css' %}" type="text/css" />
+	{{ super.headextra }}
+	
+	<script type="text/javascript">
+		var required_fields_url = "/registration/required_fields/";
+	</script>
+{% endblock %}
+
+{% block content %}
+	<form action="" method="POST" id="registration_form">{% csrf_token %}
+		{{ form.as_p }}
+	
+		<p><input id="id_submit" type="submit" value="Continue" /></p>
+	</form>
+{% endblock %}

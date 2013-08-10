@@ -1,0 +1,15 @@
+#registration_form p {
+	margin-bottom: 20px;
+}
+
+#registration_form label {
+	display: block;
+	width: 150px;
+	text-align: left;
+}
+
+#registration_form input, #registration_form select {
+	display: block;
+	width: 300px;
+	text-align: left;
+}

@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from feincms.module.page.models import Page
 from feincms.content.richtext.models import RichTextContent
+from feincms.content.application.models import ApplicationContent
 
 from biographies.models import BiographySection
 from galleries.models import Gallery
@@ -191,3 +192,6 @@ Page.create_content_type(ImageContent, POSITION_CHOICES=(
 Page.create_content_type(GalleryContent)
 Page.create_content_type(SubtitledHeader)
 Page.create_content_type(PhotoLink)
+Page.create_content_type(ApplicationContent, APPLICATIONS=(
+    ('registration.urls', 'Registration application'),
+    ))
