@@ -81,17 +81,21 @@ def index(request):
 		person_changed = False
 		registration_changed = False
 		
-		for a in ('first_name', 'last_name', 'gender', 'phone_number', 'hometown', 'netid', 'peoplesoft_number', 'major'):
-			if a in form.cleaned_data:
-				person_changed = True
-				setattr(person, a, form.cleaned_data[a])
+		with transaction.commit_on_success():
+			if 'uconn_email' in form.cleaned_data:
+				e = models.PersonEmail(person=person, email=form.cleaned_data["uconn_email"], send=False)
+				e.save()
+		
+			for a in ('first_name', 'last_name', 'gender', 'phone_number', 'hometown', 'netid', 'peoplesoft_number', 'major'):
+				if a in form.cleaned_data:
+					person_changed = True
+					setattr(person, a, form.cleaned_data[a])
 				
-		for a in ('person_type', 'team'):
-			if a in form.cleaned_data:
-				registration_changed = True
-				setattr(registration, a, form.cleaned_data[a])
+			for a in ('person_type', 'team'):
+				if a in form.cleaned_data:
+					registration_changed = True
+					setattr(registration, a, form.cleaned_data[a])
 
-		with transaction.commit_on_success():							
 			if person_changed:
 				person.save()
 			if registration_changed:

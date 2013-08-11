@@ -1,11 +1,16 @@
 from django import forms
 import logging
 
+import re
+
 from . import models
 
 from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger(__name__)
+
+netidRe = re.compile("^[a-z]{3}[0-9]{5}$")
+phoneRe = re.compile("^([0-9]{3})([0-9]{3})([0-9]{4})$")
 
 class StartForm(forms.Form):
 	email = forms.EmailField(label="E-Mail Address")
@@ -28,6 +33,9 @@ class ContinueForm(forms.Form):
 			registration = models.Registration.objects.get(person=person, registration_session=rs)
 		except models.Registration.DoesNotExist:
 			registration = None
+		
+		if registration and registration.person_type.uconn_student and not person.has_uconn_email:
+			self.fields["uconn_email"] = forms.EmailField(max_length=254)
 					
 		if not person.first_name:
 			self.fields['first_name'] = forms.CharField(max_length=200)
@@ -50,11 +58,9 @@ class ContinueForm(forms.Form):
 			
 			if registration.person_type.uconn_student:
 				if not person.peoplesoft_number:
-					#TODO: Validate
-					self.fields['peoplesoft_number'] = forms.CharField(max_length=10)
+					self.fields['peoplesoft_number'] = forms.IntegerField()
 					
 				if not person.netid:
-					#TODO: Validate
 					self.fields['netid'] = forms.CharField(max_length=8)
 				
 				if not person.hometown:
@@ -62,6 +68,36 @@ class ContinueForm(forms.Form):
 					
 				if not person.major:
 					self.fields['major'] = forms.CharField(max_length=200)
+	
+	def clean_netid(self):
+		netid = self.cleaned_data["netid"].lower()
+		
+		if not netidRe.match(netid):
+			raise forms.ValidationError("NetID must be in the format of \"abc12345\"")
+		
+		return netid
+	
+	def clean_phone_number(self):
+		phone = self.cleaned_data["phone_number"]
+		
+		for c in ("()- "):
+			phone = phone.replace(c, "")
+		
+		match = phoneRe.match(phone)
+		
+		if not match:
+			raise forms.ValidationError("Phone number must be in the form 000-000-0000")
+			
+		return "-".join(match.groups())
+	
+	def clean_uconn_email(self):
+		email = self.cleaned_data["uconn_email"].lower().replace("@huskymail.uconn.edu", "@uconn.edu")
+		
+		if not email.endswith("@uconn.edu"):
+			raise forms.ValidationError("E-mail address should end with @uconn.edu")
+			
+		return email
+	
 	@property
 	def useful(self):
 		for f in self.fields:

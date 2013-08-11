@@ -29,6 +29,14 @@ class Person(models.Model):
 			return "%s %s" % (self.first_name, self.last_name)
 			
 		return None
+		
+	@property
+	def has_uconn_email(self):
+		for e in self.emails.all():
+			if e.email.lower().endswith("@uconn.edu"):
+				return True
+				
+		return False
 	
 class PersonEmail(models.Model):
 	person = models.ForeignKey(Person, related_name="emails")
