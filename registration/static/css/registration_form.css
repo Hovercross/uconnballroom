@@ -10,7 +10,7 @@
 	text-align: left;
 }
 
-#registration_form input, #registration_form select {
+#registration_form input[type="text"], #registration_form select {
 	display: block;
 	width: 200px;
 	text-align: left;
@@ -19,6 +19,8 @@
 
 #registration_form input[type="submit"] {
 	box-sizing: border-box;
+	display: block;
+	margin: 0 auto;
 }
 
 #registration_form ul.errorlist {
@@ -31,14 +33,7 @@
 
 #registration_form table tbody tr th label {
 	text-align: right;
-	color: black;
 }
 
-#registration_form table tbody tr th, #registration_form table tbody tr td {
-	background-color: inherit;
-}
 
-#registration_form table, #registration_form table td {
-	
-}
 

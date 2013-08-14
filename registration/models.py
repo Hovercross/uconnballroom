@@ -3,6 +3,8 @@ from adminsortable.models import Sortable
 from django.utils.translation import ugettext_lazy as _
 # Create your models here.
 
+from datetime import date
+
 class Person(models.Model):
 	first_name = models.CharField(max_length=200, blank=True)
 	last_name = models.CharField(max_length=200, blank=True)
@@ -37,6 +39,7 @@ class Person(models.Model):
 				return True
 				
 		return False
+		
 	
 class PersonEmail(models.Model):
 	person = models.ForeignKey(Person, related_name="emails")
@@ -79,6 +82,9 @@ class RegistrationSession(models.Model):
 	early_discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 	early_deadline = models.DateField(null=True, blank=True)
 	
+	first_club_day = models.DateField(null=True, blank=True)
+	last_free_day = models.DateField(null=True, blank=True)
+	
 	available = models.BooleanField(default=False)
 	
 	club_paid_list = models.ForeignKey(List, related_name="+")
@@ -116,6 +122,22 @@ class Registration(models.Model):
 	
 	def registration_session_display(self):
 		return str(self.registration_session)
+	
+	@property
+	def amount_due(self):
+		amount = self.registration_session.base_price
+		if self.team:
+			amount += self.registration_session.team_surcharge
+		
+		if not self.person_type.student_rate:
+			amount += self.registration_session.nonstudent_surcharge
+			
+		if self.registration_session.early_deadline and self.registration_session.early_deadline > date.today():
+			amount -= self.registration_session.early_discount
+			
+		return amount
+			
+			
 		
 	def __str__(self):
 		return "Registration %s %s/%s" % (self.id, self.person, self.registration_session)

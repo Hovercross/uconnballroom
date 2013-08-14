@@ -5,6 +5,8 @@ from django.http import Http404
 from feincms.module.page.models import Page
 from feincms.module.page.extensions.navigation import NavigationExtension, PagePretender
 
+from . import lib
+
 from django.db import transaction
 
 import json
@@ -56,8 +58,16 @@ def index(request):
 			return 'registration_form.html', {'form': form}
 		else:
 			logger.debug('Form is not useful')
-			#TODO: Display the PDF or something
-			return "All set!"
+			
+			rs = models.RegistrationSession.objects.get(available=True)
+			registration = models.Registration.objects.get(person=email.person, registration_session=rs)
+			registrationForm = lib.getRegistrationForm(registration)
+			
+			response = HttpResponse(content_type='application/pdf')
+			response['Content-Disposition'] = 'filename="registration.pdf"'
+			
+			response.write(registrationForm)
+			return response
 	
 	#Handle the continuation form; all paths return			
 	if request.POST["form_type"] == "continue":
