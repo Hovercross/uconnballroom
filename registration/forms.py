@@ -35,7 +35,7 @@ class ContinueForm(forms.Form):
 			registration = None
 		
 		if registration and registration.person_type.uconn_student and not person.has_uconn_email:
-			self.fields["uconn_email"] = forms.EmailField(max_length=254)
+			self.fields["uconn_email"] = forms.EmailField(max_length=254, label="UConn e-mail address")
 					
 		if not person.first_name:
 			self.fields['first_name'] = forms.CharField(max_length=200)
@@ -61,7 +61,7 @@ class ContinueForm(forms.Form):
 					self.fields['peoplesoft_number'] = forms.IntegerField()
 					
 				if not person.netid:
-					self.fields['netid'] = forms.CharField(max_length=8)
+					self.fields['netid'] = forms.CharField(max_length=8, label="NetID")
 				
 				if not person.hometown:
 					self.fields['hometown'] = forms.CharField(max_length=100)
@@ -95,6 +95,14 @@ class ContinueForm(forms.Form):
 		
 		if not email.endswith("@uconn.edu"):
 			raise forms.ValidationError("E-mail address should end with @uconn.edu")
+		
+		#Try to grab the e-mail from the DB - if we can, raise a duplicate error. If not, just move on.
+		try:
+			dbemail = models.PersonEmail.objects.get(email=email)
+			raise forms.ValidationError("That e-mail address is already in use")
+		except models.PersonEmail.DoesNotExist:
+			pass
+		
 			
 		return email
 	
