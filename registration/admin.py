@@ -74,5 +74,3 @@ admin.site.register(RegistrationSession, RegistrationSessionAdmin)
 admin.site.register(PersonType, PersonTypeAdmin)
 admin.site.register(List, ListAdmin)
 admin.site.register(Person, PersonAdmin)
-
-admin.site.register_view('django-ses', dashboard, 'Django SES Stats')
