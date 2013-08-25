@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 from . import forms
 from . import models
 
+#Serves the registration form and optionally e-mails it to the user
+#TODO: Break the e-mail out elsewhere
 def serveRegistrationForm(request, person):
 	rs = models.RegistrationSession.objects.get(available=True)
 	registration = models.Registration.objects.get(person=person, registration_session=rs)
