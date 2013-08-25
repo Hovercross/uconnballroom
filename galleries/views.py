@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.views.generic import CreateView, DeleteView
+from easy_thumbnails.files import get_thumbnailer
 
 from . import models
 
@@ -20,6 +21,12 @@ def manage_gallery(request, id):
 		print request.FILES
 		galleryImage = models.GalleryImage(image = request.FILES['file'], gallery=gallery)
 		galleryImage.save()
+		
+		get_thumbnailer(galleryImage.image)['adminThumb']
+		get_thumbnailer(galleryImage.image)['galleryThumb']
+		get_thumbnailer(galleryImage.image)['galleryLightbox']
+		
+		return HttpResponse("OK")
 		
 	return render(request, "gallery.html", {'gallery': gallery, 'images': images})
 
