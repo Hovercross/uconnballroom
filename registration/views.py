@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.http import Http404
+from django.core.mail import send_mail, EmailMessage
+
 from feincms.module.page.models import Page
 from feincms.module.page.extensions.navigation import NavigationExtension, PagePretender
 
@@ -17,6 +19,39 @@ logger = logging.getLogger(__name__)
 
 from . import forms
 from . import models
+
+def serveRegistrationForm(request, person):
+	rs = models.RegistrationSession.objects.get(available=True)
+	registration = models.Registration.objects.get(person=person, registration_session=rs)
+	registrationForm = lib.getRegistrationForm(registration)
+	
+	if not registration.sent_registration_email:
+		logger.info("Sending registration email to %s" % registration.person)
+		with transaction.commit_on_success():
+			mailTo = [e.email for e in registration.person.emails.all() if e.send]
+			if not mailTo:
+				mailTo = ['webmaster@uconnballroom.com']
+			
+			subject = "Your UConn Ballroom Registration for %s" % rs
+			message = "Your UConn Ballroom registration has been complted. Please bring the attached registration form to a meeting of the UConn Ballroom Dance club to process your payment."
+			mailFrom = "treasurer@uconnballroom.com"
+	
+				
+			for addr in mailTo:
+				mailTo = [addr]
+			
+				email = EmailMessage(subject, message, mailFrom, mailTo, headers={'X-Person-ID': registration.person.id})
+				email.attach('Registration Form.pdf', registrationForm, 'application/pdf')
+				email.send()
+			
+			registration.sent_registration_email = True
+			registration.save()
+	
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'filename="registration.pdf"'
+	
+	response.write(registrationForm)
+	return response
 
 def index(request):
 	#Initial request
@@ -59,15 +94,7 @@ def index(request):
 		else:
 			logger.debug('Form is not useful')
 			
-			rs = models.RegistrationSession.objects.get(available=True)
-			registration = models.Registration.objects.get(person=email.person, registration_session=rs)
-			registrationForm = lib.getRegistrationForm(registration)
-			
-			response = HttpResponse(content_type='application/pdf')
-			response['Content-Disposition'] = 'filename="registration.pdf"'
-			
-			response.write(registrationForm)
-			return response
+			return serveRegistrationForm(request, email.person)
 	
 	#Handle the continuation form; all paths return			
 	if request.POST["form_type"] == "continue":
@@ -117,7 +144,7 @@ def index(request):
 		if form.useful:
 			return 'registration_form.html', {'form': form}
 		else:
-			return "All set!"
+			return serveRegistrationForm(request, person)
 	
 	
 	#Return nothing if the form wasn't a start or a continue

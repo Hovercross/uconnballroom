@@ -4,6 +4,10 @@ ADMINS = (
      ('Adam Peacock', 'adam@thepeacock.net'),
 )
 
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+SERVER_EMAIL = 'webmaster@uconnballroom.com'
+
 MANAGERS = ADMINS
 
 TIME_ZONE = 'America/New_York'
@@ -41,6 +45,9 @@ STATICFILES_FINDERS = (
 #	 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+AWS_ACCESS_KEY_ID = 'AKIAJZOPPO2KOEXOY3TQ'
+AWS_SECRET_ACCESS_KEY = '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'
+
 SECRET_KEY = 'e=5u$-o+p7mm4hmz5fwc3_npgkzt!%ex3@0(qf#6bhb8*qxd#v'
 
 TEMPLATE_LOADERS = (
@@ -77,6 +84,8 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'django_ses',
+	'adminplus',
 	'feincms',
 	'mptt',
 	'feincms.module.page',

@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from models import PersonType, RegistrationSession, List, PersonEmail, Person, Registration
 from django.template.defaultfilters import slugify
+from django_ses.views import dashboard
 
 class PersonTypeAdmin(SortableAdmin):
 	pass
@@ -29,7 +30,7 @@ class InlineEmailAdmin(admin.TabularInline):
 	
 class InlineRegistrationAdmin(admin.TabularInline):
 	model = Registration
-	fields = ['person_type', 'team', 'amount_due']
+	fields = ['person_type', 'team', 'amount_due', 'sent_registration_email']
 	
 	readonly_fields = ('amount_due', )
 	
@@ -43,6 +44,7 @@ class RegistrationSessionAdmin(admin.ModelAdmin):
 	list_display = ['year', 'semester', 'available']
 	
 	def save_model(self, request, obj, form, change):
+		#Take care of list creation
 		auto_names = (
 			('club_paid_list', 'club', '-paid'),
 			('club_unpaid_list', 'club', '-unpaid'),
@@ -72,3 +74,5 @@ admin.site.register(RegistrationSession, RegistrationSessionAdmin)
 admin.site.register(PersonType, PersonTypeAdmin)
 admin.site.register(List, ListAdmin)
 admin.site.register(Person, PersonAdmin)
+
+admin.site.register_view('django-ses', dashboard, 'Django SES Stats')

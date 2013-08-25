@@ -14,7 +14,7 @@ try:
 except ImportError:
 	from StringIO import StringIO
 
-def getRegistrationEmail(registration):
+def sendRegistrationEmail(registration):
 	pass
 
 def getRegistrationForm(registration):
