@@ -119,6 +119,8 @@ class Registration(models.Model):
 	paid_date = models.DateTimeField(null=True)
 	sent_registration_email = models.BooleanField(default=False)
 	notes = models.TextField(blank=True)
+	fee_waived = models.BooleanField(default=False)
+	
 	
 	def registration_session_display(self):
 		return str(self.registration_session)
