@@ -31,12 +31,14 @@ class InlineEmailAdmin(admin.TabularInline):
 class InlineRegistrationAdmin(admin.TabularInline):
 	model = Registration
 	fields = ['person_type', 'team', 'amount_due', 'sent_registration_email']
+	ordering = ('registration_session__year', '-registration_session__semester')
 	
 	readonly_fields = ('amount_due', )
 	
 
 class PersonAdmin(admin.ModelAdmin):
 	inlines = [InlineEmailAdmin, InlineRegistrationAdmin]
+	search_fields = ['first_name', 'last_name']
 	
 class RegistrationSessionAdmin(admin.ModelAdmin):
 	fields = ['year', 'semester', 'card_code', 'base_price', 'team_surcharge', 'nonstudent_surcharge', 'returning_discount', 'early_discount', 'early_deadline', 'first_club_day', 'last_free_day', 'available']
