@@ -119,8 +119,6 @@ class Registration(models.Model):
 	paid_date = models.DateTimeField(null=True)
 	sent_registration_email = models.BooleanField(default=False)
 	notes = models.TextField(blank=True)
-	fee_waived = models.BooleanField(default=False)
-	
 	
 	def registration_session_display(self):
 		return str(self.registration_session)
@@ -138,8 +136,44 @@ class Registration(models.Model):
 			amount -= self.registration_session.early_discount
 			
 		return amount
+	
+	
+	@property
+	def paid(self):
+		if self.paid_amount == None:
+			return False
+		
+		return True
+	
+	def getAppropriateList(self):
+		if self.team and self.paid:
+			return self.registration_session.team_paid_list
 			
+		if self.team and not self.paid:
+			return self.registration_session.team_unpaid_list
 			
+		if not self.team and self.paid:
+			return self.registration_session.club_paid_list
+		
+		if not self.team and not self.paid:
+			return self.registration_session.club_unpaid_list
+			
+	def updateLists(self):
+		allLists = [self.registration_session.team_paid_list, self.registration_session.team_unpaid_list, self.registration_session.club_paid_list, self.registration_session.club_unpaid_list]
+		
+		addLists = set([self.getAppropriateList()])
+		removeLists = set(allLists) - addLists
+		
+		for l in removeLists:
+			if self in l.included_people.all():
+				l.included_people.remove(self.person)
+				l.save()
+				
+		for l in addLists:
+			if self not in l.included_people.all():
+				l.included_people.add(self.person)
+				l.save()
+		
 		
 	def __str__(self):
 		return "Registration %s %s/%s" % (self.id, self.person, self.registration_session)
