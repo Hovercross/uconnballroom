@@ -78,7 +78,7 @@ class RegistrationSession(models.Model):
 	base_price = models.DecimalField(max_digits=5, decimal_places=2)
 	team_surcharge = models.DecimalField(max_digits=5, decimal_places=2)
 	nonstudent_surcharge = models.DecimalField(max_digits=5, decimal_places=2)
-	returning_discount = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+	returning_discount = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
 	early_discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 	early_deadline = models.DateField(null=True, blank=True)
 	
