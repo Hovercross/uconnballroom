@@ -1,6 +1,9 @@
 from django.db import models
 from adminsortable.models import Sortable
 from django.utils.translation import ugettext_lazy as _
+
+import unicodedata
+
 # Create your models here.
 
 from datetime import date
@@ -19,7 +22,7 @@ class Person(models.Model):
 	
 	def __str__(self):
 		if self.name:
-			return str(self.name)
+			return unicodedata.normalize('NFKD', self.name).encode('ascii','ignore')
 		elif self.id:
 			return "Person %d" % self.id
 		else:
