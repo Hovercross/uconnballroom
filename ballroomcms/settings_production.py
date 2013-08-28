@@ -15,7 +15,7 @@ DATABASES = {
     }
 }
 
-SERVER_EMAIL='django-ballroomcms@tigger.peacockhosting.net'
+#SERVER_EMAIL='django-ballroomcms@tigger.peacockhosting.net'
 ALLOWED_HOSTS = ['208.82.98.186', 'tigger.peacockhosting.net', 'tigger.peacockhosting.net:', 'uconnballroom.com', 'www.uconnballroom.com', 'new.uconnballroom.com']
 MEDIA_ROOT = '/var/www/uconnballroom.com/data/cms_user_media/'
 STATIC_ROOT = '/var/www/uconnballroom.com/data/cms_static/'

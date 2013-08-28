@@ -6,7 +6,7 @@ ADMINS = (
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
-SERVER_EMAIL = 'webmaster@uconnballroom.com'
+SERVER_EMAIL = 'ballroom-web-app@tigger.peacockhosting.net'
 
 MANAGERS = ADMINS
 
