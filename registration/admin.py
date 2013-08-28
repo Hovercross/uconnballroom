@@ -30,10 +30,10 @@ class InlineEmailAdmin(admin.TabularInline):
 	
 class InlineRegistrationAdmin(admin.TabularInline):
 	model = Registration
-	fields = ['person_type', 'team', 'amount_due', 'sent_registration_email']
+	fields = ['person_type', 'team', 'registered_at', 'amount_due', 'sent_registration_email']
 	ordering = ('registration_session__year', '-registration_session__semester')
 	
-	readonly_fields = ('amount_due', )
+	readonly_fields = ('amount_due', 'registered_at')
 	
 
 class PersonAdmin(admin.ModelAdmin):
@@ -44,6 +44,8 @@ class RegistrationSessionAdmin(admin.ModelAdmin):
 	fields = ['year', 'semester', 'card_code', 'base_price', 'team_surcharge', 'nonstudent_surcharge', 'returning_discount', 'early_discount', 'early_deadline', 'first_club_day', 'last_free_day', 'available']
 	
 	list_display = ['year', 'semester', 'available']
+
+	inlines = [InlineRegistrationAdmin]
 	
 	def save_model(self, request, obj, form, change):
 		#Take care of list creation
