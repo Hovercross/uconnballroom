@@ -151,12 +151,3 @@ def index(request):
 	
 	#Return nothing if the form wasn't a start or a continue
 	return
-				
-	
-
-def required_fields(request):
-	email = request.GET.get("email", None)
-	
-	out = list(forms.registrationRequiredFields(email))
-	
-	return HttpResponse(json.dumps(out), content_type="application/json")
