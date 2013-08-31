@@ -146,7 +146,7 @@ class Registration(models.Model):
 	registered_at = models.DateTimeField(auto_now_add=True)
 	team = models.BooleanField()
 	paid_amount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-	paid_date = models.DateTimeField(null=True)
+	paid_date = models.DateTimeField(null=True, blank=True)
 	sent_registration_email = models.BooleanField(default=False)
 	notes = models.TextField(blank=True)
 	
@@ -154,18 +154,31 @@ class Registration(models.Model):
 		return str(self.registration_session)
 	
 	@property
-	def amount_due(self):
+	def amount_charged(self):
 		amount = self.registration_session.base_price
+			
 		if self.team:
 			amount += self.registration_session.team_surcharge
 		
 		if not self.person_type.student_rate:
 			amount += self.registration_session.nonstudent_surcharge
 			
-		if self.registration_session.early_deadline and self.registration_session.early_deadline > date.today():
+		if self.registration_session.early_deadline and self.registration_session.early_deadline > self.effectiveDateCharged:
 			amount -= self.registration_session.early_discount
 			
 		return amount
+	
+	@property
+	def effectiveDateCharged(self):
+		if self.paid_date:
+			return self.paid_date
+		return date.today()
+	
+	@property
+	def amount_due(self):
+		if self.paid_amount:
+			return self.amount_charged - self.paid_amount
+		return self.amount_charged
 	
 	
 	@property
