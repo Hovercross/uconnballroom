@@ -15,8 +15,7 @@ class PersonTypeAdmin(SortableAdmin):
 	pass
 
 class ListAdmin(admin.ModelAdmin):
-	filter_horizontal = ('included_people', 'included_lists')
-	prepopulated_fields = {"slug": ("name",)}
+	pass
 
 class EmailAdminForm(forms.ModelForm):
 	class Meta:
@@ -31,23 +30,53 @@ class InlineEmailAdmin(admin.TabularInline):
 	
 class InlineRegistrationAdmin(admin.TabularInline):
 	model = Registration
-	fields = ['person_type', 'team', 'registered_at', 'amount_due', 'sent_registration_email']
+	fields = ['person_type', 'team', 'registered_at', 'amount_due', 'paid_amount', 'sent_registration_email']
 	ordering = ('registration_session__year', '-registration_session__semester')
 	
-	readonly_fields = ('amount_due', 'registered_at')
-	
+	readonly_fields = ('amount_due', 'registered_at', 'paid_amount')
+
+	def has_add_permission(self, request):
+		return False
+
+	def has_delete_permission(self, request, obj=None):
+		return False
 
 class PersonAdmin(admin.ModelAdmin):
 	inlines = [InlineEmailAdmin, InlineRegistrationAdmin]
 	search_fields = ['first_name', 'last_name']
 	
+	def has_delete_permission(self, request, obj=None):
+		if not request.user.has_perm('registration.delete_person'):
+			return False
+
+		if not obj:
+			return request.user.has_perm('registration.delete_person')
+
+		for r in obj.registration_set.all():
+			if r.paid_amount > 0:
+				return False
+
+		return request.user.has_perm('registration.delete_person')
+
 class RegistrationSessionAdmin(admin.ModelAdmin):
 	fields = ['year', 'semester', 'card_code', 'base_price', 'team_surcharge', 'nonstudent_surcharge', 'returning_discount', 'early_discount', 'early_deadline', 'first_club_day', 'last_free_day', 'available']
 	
 	list_display = ['year', 'semester', 'available']
 
 	inlines = [InlineRegistrationAdmin]
+
+	def has_delete_permission(self, request, obj=None):
+		if not request.user.has_perm('registration.delete_registrationsession'):
+			return False
+
+		if not obj:
+			return request.user.has_perm('registration.delete_registrationsession')
 	
+		if obj.registration_set.count() > 0:
+			return False
+
+		return request.user.has_perm('registration.delete_registrationsession')
+
 	def save_model(self, request, obj, form, change):
 		#Take care of list creation
 		auto_names = (
