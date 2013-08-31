@@ -57,8 +57,35 @@ class List(models.Model):
 	name = models.CharField(max_length=50, unique=True)
 	slug = models.SlugField(max_length=50, unique=True)
 	
-	included_lists = models.ManyToManyField('self', blank=True)
+	included_lists = models.ManyToManyField('self', blank=True, symmetrical=False)
 	included_people = models.ManyToManyField(Person, blank=True)
+	
+	def allPeople(self):
+		people = set()
+		
+		for l in self.allLists():
+			people.update(set(l.included_people.all()))
+			
+		return people
+		
+	def allLists(self):
+		out = set()
+		
+		self._recursiveLists(out)
+		
+		return out
+		
+	def _recursiveLists(self, seenLists):
+		if self in seenLists:
+			return
+			
+		seenLists.add(self)
+			
+		included_lists = set(self.included_lists.all())
+		for l in included_lists:
+			l._recursiveLists(seenLists)
+		
+		return
 	
 	def __str__(self):
 		return self.name

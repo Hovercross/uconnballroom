@@ -138,7 +138,9 @@ def index(request):
 			if person_changed:
 				person.save()
 			if registration_changed:
-				registration.save()
+				with transaction.commit_on_success():
+					registration.updateLists()
+					registration.save()
 						
 		#Create the next iteration of the continuation form
 		#Check if it's use and display it if it is. Otherwise finish
