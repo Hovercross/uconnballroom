@@ -22,11 +22,44 @@ personTypeMap = {}
 
 def main():
 	with transaction.commit_on_success():
-		registrationSessions()
-		people()
-		emails()
-		personTypes()
-		registrations()
+		#registrationSessions()
+		#people()
+		#emails()
+		#personTypes()
+		#registrations()
+		
+		registrationUpdate()
+		updateLists()
+		
+def updateLists():
+	for r in models.Registration.objects.all():
+		print r
+		r.updateLists()
+		r.save()
+
+def registrationUpdate():
+	people = {}
+	registations = {}
+	
+	cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+	cur.execute("SELECT DISTINCT ON (registrations.id) paid_amount, email_address, (SUBSTRING(CAST( year AS text ) FROM 3) || UPPER(semester)) AS card_prefix FROM registration.registrations INNER JOIN registration.people ON registrations.person_id = people.id INNER JOIN registration.registration_sessions ON registrations.session_id = registration_sessions.id INNER JOIN registration.email_addresses ON email_addresses.person_id = people.id;")
+	
+	count = 0
+	for row in cur:
+		r = models.Registration.objects.filter(person__emails__email=row["email_address"]).filter(registration_session__card_code=row["card_prefix"]).get()
+		
+		if r.paid_amount != row["paid_amount"]:
+			print str(r)
+			print row
+			
+			print row["paid_amount"]
+			print r.paid_amount
+			
+			r.paid_amount = row["paid_amount"]
+			r.save()
+		count += 1
+		
+	print count
 		
 def registrations():
 	for o in [models.Registration.objects.all()]:
