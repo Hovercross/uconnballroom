@@ -17,7 +17,7 @@
 	<div class="span-12 last">
 		<h3 class="name">{{ bio.first_name }} {{ bio.last_name }}</h3>
 		{% if bio.biography %}
-			<p>{{ bio.biography }}</p>
+			<p>{{ bio.biography|linebreaks }}</p>
 		{% endif %}
 	
 		{% if bio.email %}
