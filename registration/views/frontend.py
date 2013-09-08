@@ -7,7 +7,7 @@ from django.core.mail import send_mail, EmailMessage
 from feincms.module.page.models import Page
 from feincms.module.page.extensions.navigation import NavigationExtension, PagePretender
 
-from . import lib
+from registration import lib
 
 from django.db import transaction
 
@@ -17,8 +17,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from . import forms
-from . import models
+from registration import forms
+from registration import models
 
 #Serves the registration form and optionally e-mails it to the user
 #TODO: Break the e-mail out elsewhere
@@ -138,9 +138,8 @@ def index(request):
 			if person_changed:
 				person.save()
 			if registration_changed:
-				with transaction.commit_on_success():
-					registration.updateLists()
-					registration.save()
+				registration.updateLists()
+				registration.save()
 						
 		#Create the next iteration of the continuation form
 		#Check if it's use and display it if it is. Otherwise finish

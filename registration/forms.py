@@ -69,6 +69,15 @@ class ContinueForm(forms.Form):
 				if not person.major:
 					self.fields['major'] = forms.CharField(max_length=200)
 	
+	def clean_team(self):
+		if self.cleaned_data["team"] == "False":
+			return False
+			
+		if self.cleaned_data["team"] == "True":
+			return True
+			
+		raise forms.ValidationError("Team must be 'True' or 'False'")
+	
 	def clean_netid(self):
 		netid = self.cleaned_data["netid"].lower()
 		

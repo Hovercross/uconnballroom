@@ -150,6 +150,9 @@ class Registration(models.Model):
 	sent_registration_email = models.BooleanField(default=False)
 	notes = models.TextField(blank=True)
 	
+	class Meta:
+		permissions = (("can_manage_payments", "Can manage payments"),)
+	
 	def registration_session_display(self):
 		return str(self.registration_session)
 	
