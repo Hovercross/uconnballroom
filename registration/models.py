@@ -6,7 +6,7 @@ import unicodedata
 
 # Create your models here.
 
-from datetime import date
+from datetime import date, datetime
 
 class Person(models.Model):
 	first_name = models.CharField(max_length=200, blank=True)

@@ -1,0 +1,58 @@
+{% extends feincms_page.template.path|default:"base.html" %}
+{% load static %}
+{% block headextra %}
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/search_form.css' %}" type="text/css" />
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	{{ super.headextra }}
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#id_scan").first().focus();
+			
+			
+			
+			$(function() {
+		    var projects = [
+			{% for label, value in searchData %}
+			  {
+				value: "RF{{ value }}",
+				label: "{{ label }}",
+			  },
+			{% endfor %}
+		    ];
+
+		    $( "#id_search" ).autocomplete({
+		      minLength: 0,
+		      source: projects,
+		      focus: function( event, ui ) {
+		        $( "#id_search" ).val( ui.item.label );
+		        return false;
+		      },
+		      select: function( event, ui ) {
+		        $( "#id_scan" ).val( ui.item.value );
+				$( "#search_form").submit();
+		        return false;
+		      }
+		    })
+		    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+		      return $( "<li>" )
+		        .append( "<a>" + item.label + "<br>" )
+		        .appendTo( ul );
+		    };
+		  });
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+	<form action="" method="GET" id="search_form">
+		<input type="hidden" name="currentForm" value="search">
+		<table>
+			<tr><th>Scanned Input</th><td><input id="id_scan" type="text" value="" name="scan" /></td></tr>
+			<tr><th>Person Search</th><td><input id="id_search" type="text" value="" /></td></tr>
+			<tr><th>&nbsp;</th><td><input id="id_submit" type="submit" value="Continue" /></td></tr>
+		</table>
+	</form>
+{% endblock %}
