@@ -5,6 +5,8 @@ from reportlab.graphics.barcode.code128 import Code128
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
+from models import Person, Registration, MembershipCard, PersonEmail
+
 from datetime import date
 
 from qr import QRCodeFlowable
@@ -111,5 +113,61 @@ def getRegistrationForm(registration):
 	doc.build(story)
 	
 	return out.getvalue()
+
+def emailChangePayment(registration, oldAmount, newAmount):
+	if (oldAmount or 0) == (newAmount or 0):
+		return
+
+	change = (newAmount or 0) - (oldAmount or 0)
+	if change < 0:
+		direction = "Refund"
+		change = change * -1
+	else:
+		direction = "Payment"
+		
+	teamClub = registration.team and "team and club" or "club"
 	
+	mailTo = [e.email for e in registration.person.emails.all() if e.send]
+	if not mailTo:
+		mailTo = ['webmaster@uconnballroom.com']
+
+	subject = "Your UConn Ballroom Receipt for the %s semester" % registration.registration_session
+	message = "Your %s of %s has been recorded. You are currently registered as a %s on the %s. Thank you for your continued support of UConn Ballroom." % (direction, change, registration.person_type, teamClub)
+	mailFrom = "treasurer@uconnballroom.com"
+
+
+	for addr in mailTo:
+		mailTo = [addr]
+
+		email = EmailMessage(subject, message, mailFrom, mailTo, headers={'X-Person-ID': registration.person.id})
+		email.send()
 	
+
+def changePaymentAmount(registration, newAmount):
+	oldAmount = registration.paid_amount
+	
+	if newAmount == None:
+		registration.paid_amount = None
+		registration.paid_date = None
+	else:
+		if newAmount < 0:
+			raise ValueError("Payment amount must be greater than $0.00")
+		if not registration.paid_date:
+			registration.paid_date = date.today()
+			
+		registration.paid_amount = newAmount
+	
+	registration.save()
+	emailChangePayment(registration, oldAmount, newAmount)
+	
+class Searcher(object):
+	def __init__(self, o, type="auto"):
+		if isintance(o, str) or isintance(o, unicode):
+			self.code = o
+		else:
+			self.code = None
+			
+		if isintance()
+		
+	def searchCode(self):
+		pass
