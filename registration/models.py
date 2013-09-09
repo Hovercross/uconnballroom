@@ -166,7 +166,7 @@ class Registration(models.Model):
 		if not self.person_type.student_rate:
 			amount += self.registration_session.nonstudent_surcharge
 			
-		if self.registration_session.early_deadline and self.registration_session.early_deadline > self.effectiveDateCharged:
+		if self.registration_session.early_deadline and self.registration_session.early_deadline >= self.effectiveDateCharged:
 			amount -= self.registration_session.early_discount
 			
 		return amount
