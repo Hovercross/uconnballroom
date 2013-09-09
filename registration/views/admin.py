@@ -34,7 +34,7 @@ def payment(request):
 			if not registration.registration_session.available:
 				raise ValueError ("Old registration session called up")
 		elif scanType == "MC":
-			registration = MembershipCard.objects.get(pk=scanData).registration
+			registration = MembershipCard.objects.get(membership_card=scanData).registration
 		
 		if registration.paid_amount == None:
 			payField = registration.amount_due
