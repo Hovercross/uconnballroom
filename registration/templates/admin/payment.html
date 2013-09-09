@@ -1,0 +1,35 @@
+{% extends feincms_page.template.path|default:"base.html" %}
+{% load static %}
+{% load admin_urls %}
+{% block headextra %}
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/search_form.css' %}" type="text/css" />
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	{{ super.headextra }}
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#id_membership_card").first().focus();
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+	<form action="" method="POST" id="search_form">{% csrf_token %}
+		<input type="hidden" name="currentForm" value="payment" />
+		<input type="hidden" name="registration_id" value="{{ registration.id }}">
+		<table>
+			<tr><th>Name</th><td>{{ registration.person.name }}</td></tr>
+			<tr><th>Amount Charged</th><td>${{ registration.amount_charged }}</td></tr>
+			<tr><th>Amount Paid</th><td>${{ registration.paid_amount }}</td></tr>
+			<tr><th>Person Type</th><td>{{ registration.person_type }}</td></tr>
+			<tr><th>Team</th><td>{{ teamDisp }}</td></tr>
+			<tr><th>Payment Amount</th><td><input id="id_payment" type="text" value="{{ payField }}" name="payment_amount" /></td></tr>
+			<tr><th>Membership Card</th><td><input id="id_membership_card" type="text" value="{{membershipCard}}" name="membership_card" /></td></tr>
+			<tr><th>&nbsp;</th><td><input id="id_submit" type="submit" value="Continue" /></td></tr>
+		</table>
+	</form>
+	
+	<a href="/admin/registration/person/{{ registration.person.id }}/" target="_blank">Edit information</a>
+{% endblock %}

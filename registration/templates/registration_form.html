@@ -2,10 +2,14 @@
 {% load static %}
 {% block headextra %}
 	<link rel="stylesheet" href="{% static 'css/registration_form.css' %}" type="text/css" />
+	<script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
 	{{ super.headextra }}
 	
 	<script type="text/javascript">
 		var required_fields_url = "/registration/required_fields/";
+		$(document).ready(function() {
+			$("#registration_form input:text, #registration_form textarea").first().focus();
+		});
 	</script>
 {% endblock %}
 

@@ -5,6 +5,8 @@ from reportlab.graphics.barcode.code128 import Code128
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
+from django.core.mail import send_mail, EmailMessage
+
 from models import Person, Registration, MembershipCard, PersonEmail
 
 from datetime import date
@@ -159,15 +161,3 @@ def changePaymentAmount(registration, newAmount):
 	
 	registration.save()
 	emailChangePayment(registration, oldAmount, newAmount)
-	
-class Searcher(object):
-	def __init__(self, o, type="auto"):
-		if isintance(o, str) or isintance(o, unicode):
-			self.code = o
-		else:
-			self.code = None
-			
-		if isintance()
-		
-	def searchCode(self):
-		pass
