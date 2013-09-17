@@ -36,6 +36,14 @@ class Person(models.Model):
 		return None
 		
 	@property
+	def sortName(self):
+		if self.first_name and self.last_name:
+			return (self.last_name.upper(), self.first_name.upper())
+		
+		else:
+			return (None, )
+		
+	@property
 	def has_uconn_email(self):
 		for e in self.emails.all():
 			if e.email.lower().endswith("@uconn.edu"):
@@ -56,6 +64,7 @@ class PersonEmail(models.Model):
 class List(models.Model):
 	name = models.CharField(max_length=50, unique=True)
 	slug = models.SlugField(max_length=50, unique=True)
+	unrestricted_send = models.BooleanField(default=False)
 	
 	included_lists = models.ManyToManyField('self', blank=True, symmetrical=False)
 	included_people = models.ManyToManyField(Person, blank=True)
@@ -234,10 +243,3 @@ class MembershipCard(models.Model):
 class RegistrationLocator(models.Model):
 	code = models.CharField(max_length=10)
 	registration = models.OneToOneField(Registration)
-	
-class MailSender(models.Model):
-	from_address = models.EmailField(max_length=254)
-	rewrite_from_name = models.TextField(max_length=200, blank=True)
-	rewrite_from_address = models.EmailField(max_length=254, blank=True)
-	unrestricted_send = models.BooleanField(default=False)
-	send_to_lists = models.ManyToManyField(List)
