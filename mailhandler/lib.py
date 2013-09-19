@@ -187,7 +187,17 @@ def processMessage(data, forceSend=False):
 
 		errorData.write(str(e))
 
-		print errorData.getvalue()
+		errorData.write("\n\n")
+		errorData.write("="*80)
+		errorData.write("\n")
+		errorData.write("Original Data".center(80, "="))
+		errorData.write("\n")
+		errorData.write("="*80)
+		errorData.write("\n")
+		errorData.write(m.dataToSend())
+		errorData.write("\n\n")
+
+		#print errorData.getvalue()
 
 		if m.spfStatus != False:
 			errorMessage = MIMEText("There was an error sending your e-mail.  The details of the error have been sent to the uconnballroom.com webmaster.")
@@ -201,6 +211,8 @@ def processMessage(data, forceSend=False):
 		tracebackMessage["From"] = MAILSYSTEM
 		tracebackMessage["To"] = "webmaster@uconnballroom.com"
 		tracebackMessage["Subject"] = "UConnBallroom.com e-mail list system error"
+
+		
 
 		send("webmaster@uconnballroom.com", ["webmaster@uconnballroom.com"], tracebackMessage.as_string())
 
@@ -246,11 +258,12 @@ def sendListMessage(message):
 	confirmMessage = getConfirmationMessage(message)
 
 	for e in message.rcptTo:
-		send("webmaster@uconnballroom.com", e, message.dataToSend())
+		send(message.message["From"], e, message.dataToSend())
 
-	send("webmaster@uconnballroom.com", message.rcptTo, message.dataToSend())
+	#send("webmaster@uconnballroom.com", message.rcptTo, message.dataToSend())
 	send("webmaster@uconnballroom.com", [message.returnPath], confirmMessage.as_string())
 
 def send(fromAddr, rcptTo, data):
+	print data
 	conn = SESConnection(aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
 	conn.send_raw_email(data, source=fromAddr, destinations=rcptTo)
