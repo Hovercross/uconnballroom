@@ -8,3 +8,6 @@ class MailSender(models.Model):
 	rewrite_from_address = models.EmailField(max_length=254, blank=True)
 	unrestricted_send = models.BooleanField(default=False)
 	send_to_lists = models.ManyToManyField(List, blank=True)
+	
+	def __str__(self):
+		return self.from_address
