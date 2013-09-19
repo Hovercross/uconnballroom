@@ -183,8 +183,8 @@ class Registration(models.Model):
 	@property
 	def effectiveDateCharged(self):
 		if self.paid_date:
-			return self.paid_date
-		return date.today()
+			return self.paid_date.date()
+		return date.today().date()
 	
 	@property
 	def amount_due(self):
