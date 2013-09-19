@@ -52,7 +52,7 @@ def payment(request):
 		if not request.POST["membership_card"]:
 			membershipCard = None
 		else:
-			if request.POST["membership_card"][0:2] != "MC":
+			if request.POST["membership_card"][0:2].upper() != "MC":
 				raise ValueError("Non-membership card in a membership card field")
 			membershipCard = request.POST["membership_card"][2:].upper()
 		
