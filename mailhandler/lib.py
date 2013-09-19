@@ -113,6 +113,10 @@ class Message(object):
 				del(m[header])
 		
 		if verifiedSender:
+			if verifiedSender.rewrite_from_address:
+				del m["return-path"]
+				m["return-path"] = verifiedSender.rewrite_from_address
+			
 			if verifiedSender.rewrite_from_name and verifiedSender.rewrite_from_address:
 				del m["from"]
 				m["From"] = '"%s " <%s>' % (verifiedSender.rewrite_from_name, verifiedSender.rewrite_from_address)
