@@ -159,10 +159,8 @@ def processMessage(data, forceSend=False):
 
 	try:
 		if m.shouldAutoSend:
-			print "Sending"
 			sendListMessage(m)
 		else:
-			print "Holding"
 			holdListMessage(m)
 
 	except Exception, e:
@@ -225,7 +223,10 @@ def getConfirmationMessage(message):
 	noRecievers = False
 
 	for p in message.deliveryPeople:
-		people.append(p.name)
+		if p.name:
+			people.append(p.name)
+		else:
+			people.append("Person %d" % p.id)
 
 	if len(people) == 1:
 		countStr = "individual: "
@@ -262,12 +263,11 @@ def sendListMessage(message):
 	confirmMessage = getConfirmationMessage(message)
 
 	for e in message.rcptTo:
-		send(message.message["From"], e, message.dataToSend())
+		send(None, e, message.dataToSend())
 
 	#send("webmaster@uconnballroom.com", message.rcptTo, message.dataToSend())
 	send("webmaster@uconnballroom.com", [message.returnPath], confirmMessage.as_string())
 
 def send(fromAddr, rcptTo, data):
-	print data
 	conn = SESConnection(aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-	conn.send_raw_email(data, source=fromAddr, destinations=rcptTo)
+	conn.send_raw_email(data, destinations=rcptTo)
