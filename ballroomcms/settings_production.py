@@ -23,6 +23,8 @@ STATIC_ROOT = '/var/www/uconnballroom.com/data/cms_static/'
 STATIC_URL = '//d1ettfrdwah9wo.cloudfront.net/static/'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
+STATIC_URL = '/static/'
+
 MEDIA_URL = '//d1ettfrdwah9wo.cloudfront.net/media/'
 
 SERVE_STATIC = False
