@@ -1,6 +1,7 @@
 from django.db import models
 from adminsortable.models import Sortable
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
 
 import unicodedata
 
@@ -220,12 +221,14 @@ class Registration(models.Model):
 		removeLists = set(allLists) - addLists
 		
 		for l in removeLists:
-			if self in l.included_people.all():
+			if self.person in l.included_people.all():
+				print "Removing %s" % l
 				l.included_people.remove(self.person)
 				l.save()
 				
 		for l in addLists:
-			if self not in l.included_people.all():
+			if self.person not in l.included_people.all():
+				print "Adding %s" % l
 				l.included_people.add(self.person)
 				l.save()
 		
@@ -243,3 +246,9 @@ class MembershipCard(models.Model):
 class RegistrationLocator(models.Model):
 	code = models.CharField(max_length=10)
 	registration = models.OneToOneField(Registration)
+
+def update_lists(sender, instance, **kwargs):
+	instance.updateLists()
+
+# register the signal
+post_save.connect(update_lists, sender=Registration)
