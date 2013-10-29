@@ -15,7 +15,7 @@ class PersonTypeAdmin(SortableAdmin):
 	pass
 
 class ListAdmin(admin.ModelAdmin):
-	pass
+	filter_horizontal = ('included_lists', 'included_people')
 
 class EmailAdminForm(forms.ModelForm):
 	class Meta:
