@@ -7,7 +7,7 @@ from reportlab.lib.units import inch
 
 from django.core.mail import send_mail, EmailMessage
 
-from models import Person, Registration, MembershipCard, PersonEmail
+from models import Person, Registration, MembershipCard, PersonEmail, List
 
 from datetime import date
 
@@ -17,6 +17,13 @@ try:
 	from cStringIO import StringIO
 except ImportError:
 	from StringIO import StringIO
+
+class ListParseException(Exception):
+	def __init__(self, s):
+		self.s = s
+		
+	def __str__(self):
+		return "List parse exception: %s" % self.s
 
 def sendRegistrationEmail(registration):
 	pass
@@ -161,3 +168,29 @@ def changePaymentAmount(registration, newAmount):
 	
 	registration.save()
 	emailChangePayment(registration, oldAmount, newAmount)
+	
+def parseQueryList(s, sep):
+	items = map(unicode.strip, s.split(sep))
+	
+	opers = {
+		'x': set.intersection,
+		'X': set.intersection,
+		'+': set.union,
+		'-': set.difference}
+	
+	stack = []
+	
+	for lineNum, item in enumerate(items):
+		if item in opers:
+			op1 = stack.pop()
+			op2 = stack.pop()
+			result = opers[item](op1, op2)
+			stack.append(result)
+		else:
+			listObj = List.objects.get(slug=item)
+			stack.append(listObj.allPeople())
+			
+	if len(stack) > 1:
+		raise ListParseException("There were leftover lists on the stack")
+		
+	return stack[0]

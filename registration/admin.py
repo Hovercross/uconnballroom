@@ -7,12 +7,16 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from models import PersonType, RegistrationSession, List, PersonEmail, Person, Registration
+from models import PersonType, RegistrationSession, List, PersonEmail, Person, Registration, PersonTypeAutoList
 from django.template.defaultfilters import slugify
 from django_ses.views import dashboard
 
+class AutoListPersonTypeInlineAdmin(admin.TabularInline):
+	model = PersonTypeAutoList
+	
+
 class PersonTypeAdmin(SortableAdmin):
-	pass
+	inlines = [AutoListPersonTypeInlineAdmin]
 
 class ListAdmin(admin.ModelAdmin):
 	filter_horizontal = ('included_lists', 'included_people')
@@ -98,6 +102,7 @@ class RegistrationSessionAdmin(admin.ModelAdmin):
 					l = List.objects.get(name=auto_list_name)
 				except ObjectDoesNotExist, e:
 					l = List(name=auto_list_name, slug=slugify(auto_list_name))
+					l.internally_managed = True
 					l.save()
 
 				setattr(obj, attr, l)

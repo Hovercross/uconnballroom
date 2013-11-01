@@ -1,0 +1,155 @@
+{% extends "dashboard_base.html" %}
+
+{% block headextra %}
+<style type="text/css">
+	textarea {
+		width: 100%;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Report Builder</h2>
+<form method="GET">
+	<div class="span-8">
+		<h3>Query string</h3>
+		<textarea name="query"></textarea>
+	</div>
+	<div class="span-8">
+		<h3>Fields</h3>
+		<textarea name="fields"></textarea>
+	</div>
+	<div class="span-8 last">
+		<h3>Registration session priority</h3>
+		<textarea name="registration_sessions"></textarea>
+	</div>
+	<p>Format: <select name="format"><option value="HTML">Web Page</option><option value="Excel">Excel</option></select>
+	<p><input type="submit" name="process" value="Get report"></p>
+</form>
+
+<div class="span-12">
+	<h2>Allowed operands</h2>
+	<p>The reporting system is based on the list system and uses reverse polish notation. The following operators are supported</p>
+	<table>
+		<tr><th>+</th><td>Add the members of a list to the current people</td></tr>
+		<tr><th>-</th><td>Remove the members of a list from the current people</td></tr>
+		<tr><th>X</th><td>Intersect a list with the current people</td></tr>
+	</table>
+	
+	<h2>Available Lists</h2>
+	<p>{% for l in basic_lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}
+</div>
+
+<div class="span-12 last">
+	<h2>Allowed fields</h2>
+	<ul>
+		<li>first_name: Member's first name</li>
+		<li>last_name: Member's last name</li>
+		<li>Name: Member's name</li>
+		<li>phone_number: Member's phone number</li>
+		<li>peoplesoft_number: Member's peoplesoft number</li>
+		<li>netid: Member's NetID</li>
+		<li>hometown: Member's Hometown</li>
+		<li>major: Member's Major</li>
+		<li>person_id: Member's person ID (internal use only)</li>
+		<li>preferred_emails: E-mail(s) that the member gets e-mail delivered to</li>
+		<li>uconn_email: UConn e-mail address of the member</li>
+		<li>emails: All e-mail addresses that we have on file for the member</li>
+		<li>membership_card: The member's membership card</li>
+		<li>registration_session: The registration session (semester) that the semester specific information is coming from</li>
+		<li>gender: The member's gender</li>
+		<li>team: Club/team</li>
+		<li>usg_person_type: The high level person type (example: UConn Undergrad Student)</li>
+		<li>semester_standing: The member's semester standing (example: Freshman)</li>
+		<li>person_type: The low level person type (example: UConn Undergraduate: Freshman)</li>
+		<li>paid_amount: The amount the member has paid</li>
+		<li>paid_date: The date the member has paid</li>
+		<li>registration_id: The member's registration ID (internal use only)</li>
+	</ul>
+	<h2>Available registration sessions</h2>
+	<ul>
+		{% for rs in registration_sessions %}
+			<li> {{ rs.card_code }}: {{rs.semester}} {{rs.year}}</li>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="span-24">
+<h2>Examples</h2>
+	<h3>Get the current team members</h3>
+	<blockquote>team</blockquote>
+	or
+	<blockquote>team13f-paid</blockquote>
+	<h3>Get the current undergrad team members</h3>
+	<blockquote>team13f<br/>f13-undergrad<br/>X</blockquote>
+	<h3>Get the current team members who are undergrads or grad students</h3>
+	<blockquote>team13f<br />f13-undergrad<br/>f13-grad<br/>+<br/>X</blockquote>
+	<h3>Get the team and club members from Fall 2012 or Spring 2013 who were undergrad students, grad students or alumni in either semester</h3>
+	<blockquote>team12f<br />
+	club12f<br />
+	team13s<br />
+	club13s<br />
+	+<br />
+	+<br />
+	+<br />
+	12f-undergrad<br />
+	12f-grad<br />
+	12f-alumni<br />
+	13s-undergrad<br/>
+	13s-grad<br/>
+	13s-alumni<br/>
+	+<br />
+	+<br />
+	+<br />
+	+<br />
+	+<br />
+	X
+	</blockquote>
+	<p>Whoa... how the hell did that work? Lets take it line by line and see what the results are at each stage</p>
+	<ol>
+		<li>team12f: Pushes the people from team12f onto the stack</li>
+		<li>club12f: Pushes the people from club12f onto the stack</li>
+		<li>team13s: Pushes the people from team13s onto the stack</li>
+		<li>club13s: Pushes the people from club13s onto the stack</li>
+		<li>+: Adds the people from the bottom top two items on the stack (club13s and team13s) together and puts it back onto the stack. Now it looks like this: <ul>
+			<li>People from team12f</li>
+			<li>People from club12f</li>
+			<li>People from either team13s or club13s</li>
+			<li>+</li>
+			<li>+</li>
+			<li>(Everything from 12f-undergrad down)</li>
+			</ul>
+		</li>
+		<li>+: Adds the people from the bottom top two items on the stack (club12f and the combo of club13s/team13s) together and puts it back onto the stack. Now it looks like this: <ul>
+			<li>People from team12f</li>
+			<li>People from club12f, team13s or club13s</li>
+			<li>+</li>
+			<li>(Everything from 12f-undergrad down)</li>
+			</ul>
+		</li>
+		<li>+: Adds the people from the bottom top two items on the stack (team12f and the combo of club12f/club13s/team13s) together and puts it back onto the stack. Now it looks like this: <ul>
+			<li>People from team12f, club13f, team13s or club13s</li>
+			<li>12f-undergrad</li>
+			<li>12f-grad</li>
+			<li>12f-alumni</li>
+			<li>13s-undergrad</li>
+			<li>13s-grad</li>
+			<li>13s-alumni</li>
+			<li>+</li>
+			<li>+</li>
+			<li>+</li>
+			<li>+</li>
+			<li>+</li>
+			<li>X</li>
+			</ul>
+		</li>
+		<li>Now, we are going to push everyone from all those undergrad/grad lists onto the stack, then combine all of them exactly as we did above. When that is all done, we'll have something that looks like this: <ul>
+			<li>People from team12f, club13f, team13s or club13s</li>
+			<li>People from 12f-undergrad, 12f-grad, 12f-alumni, 13s-undergrad, 13s-grad or 13s-alumni</li>
+			<li>X</li></ul>
+		</li>
+		<li>We're going to execute the final operation - the intersection. This is going to take the top two items on the stack (the list of team/club members from both semester and the list of all those undergrads/grads/alumni) and intersect them - that is, take only the people who were on both lists. The resulting list of people will be individuals who were on the club or team in the Fall of 2012 or the Spring of 2013 who were also undergrads, grad students or alumni at either of those times.</li>
+	
+	</ol>
+</div>
+{% endblock %}

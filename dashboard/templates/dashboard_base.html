@@ -1,0 +1,40 @@
+{% load staticfiles %}<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>UConn Ballroom :: {% block title %}{{ feincms_page.page_title }}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'css/screen.css' %}"type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="{% static 'css/print.css' %}" type="text/css" media="print" />
+	<link rel="stylesheet" href="{% static 'css/navigation.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/basic.css' %}" type="text/css" />
+	<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" />
+	<!--[if lt IE 8]>
+		<link rel="stylesheet" href="/static/css/ie.css" type="text/css" media="screen, projection" />
+	<![endif]-->
+	{% block headextra %}
+    {% endblock %}
+	
+</head>
+<body>
+	<div class="container" id="body">
+		<div id="header" class="span-24">
+			<div id="banner" class="span-24">
+				<a href="/"><img src="{% static 'img/banner.jpg' %}" alt="UConn Ballroom Banner" /></a>
+			</div>
+			
+			<div class="span-24">			
+				<ul class="nav" id="top_nav">
+					<li><a href="/dashboard/reports/">Reporting</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="content" class="span-24">
+			<p style="height: 1px; margin: 5px;">&nbsp;</p> <!-- Weird hack for an image alignment fix -->
+		    {% block content %}
+		    {% endblock %}
+		</div>
+	</div>
+	
+</body>
+</html>
