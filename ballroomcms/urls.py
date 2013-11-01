@@ -7,16 +7,11 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'ballroomcms.views.home', name='home'),
-    # url(r'^ballroomcms/', include('ballroomcms.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+    url(r'^accounts/login/', 'django.contrib.auth.views.login', {'template_name': 'admin/login.html'}),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'), 
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/django-ses/', include('django_ses.urls')),
     url(r'', include('galleries.urls')),
     url(r'', include('feincms.urls')),
