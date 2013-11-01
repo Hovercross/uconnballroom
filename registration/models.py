@@ -224,9 +224,6 @@ class Registration(models.Model):
 	sent_registration_email = models.BooleanField(default=False)
 	notes = models.TextField(blank=True)
 	
-	class Meta:
-		permissions = (("can_manage_payments", "Can manage payments"),)
-	
 	def registration_session_display(self):
 		return str(self.registration_session)
 	
@@ -345,7 +342,7 @@ class Registration(models.Model):
 	
 	class Meta:
 		unique_together = (('person', 'registration_session'), )
-		permissions = (('can_run_reports', 'Can run reports'), )
+		permissions = (('can_run_reports', 'Can run reports'), ("can_manage_payments", "Can manage payments"))
 	
 class MembershipCard(models.Model):
 	membership_card = models.CharField(max_length=10)
