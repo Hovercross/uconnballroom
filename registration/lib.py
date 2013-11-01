@@ -181,6 +181,9 @@ def parseQueryList(s, sep):
 	stack = []
 	
 	for lineNum, item in enumerate(items):
+		if not item:
+			continue
+			
 		if item in opers:
 			op1 = stack.pop()
 			op2 = stack.pop()
