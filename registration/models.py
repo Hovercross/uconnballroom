@@ -363,4 +363,4 @@ def update_all_auto_person_lists(sender, instance, **kwargs):
 	
 # register the signal
 post_save.connect(update_lists, sender=Registration)
-post_save.connect(update_all_auto_person_lists, sender=PersonTypeAutoList)
+#post_save.connect(update_all_auto_person_lists, sender=PersonTypeAutoList)
