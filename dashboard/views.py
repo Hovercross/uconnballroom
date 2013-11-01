@@ -6,6 +6,8 @@ from registration.lib import parseQueryList
 
 from django.contrib.auth.decorators import login_required, permission_required
 
+from registration.lib import registrationCardCodeKey
+
 headers = {
 	'first_name': 'First Name',
 	'last_name': 'Last Name',
@@ -67,13 +69,15 @@ def reporting(request):
 	if "process" in request.GET:
 		return report(request)
 		
-	return render(request, "dashboard_reporting.html", {'registration_sessions': RegistrationSession.objects.all().order_by('-card_code'), 'basic_lists': List.objects.all().order_by('slug')})
+	return render(request, "dashboard_reporting.html", 
+	{'registration_sessions': reversed(sorted(RegistrationSession.objects.all(), key=lambda rs: registrationCardCodeKey(rs.card_code))), 
+	'basic_lists': List.objects.all().order_by('slug')})
 	
 @permission_required('registration.can_run_reports')
 def report(request):
 	people = parseQueryList(request.GET["query"], "\n")
 	fields = request.GET["fields"].splitlines()
-	registrationSessions = [RegistrationSession.objects.get(card_code=x) for x in request.GET["registration_sessions"].splitlines()]
+	registrationSessions = [RegistrationSession.objects.get(card_code=x) for x in request.GET["registration_sessions"].splitlines() if x]
 	
 	registrationRequired = False
 	

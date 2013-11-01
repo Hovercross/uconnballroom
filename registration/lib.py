@@ -13,6 +13,8 @@ from datetime import date
 
 from qr import QRCodeFlowable
 
+SEMESTERCODES = {'S': 1, 'F': 2}
+
 try:
 	from cStringIO import StringIO
 except ImportError:
@@ -168,6 +170,15 @@ def changePaymentAmount(registration, newAmount):
 	
 	registration.save()
 	emailChangePayment(registration, oldAmount, newAmount)
+
+def registrationCardCodeKey(s):
+	year = s[0:2]
+	semester = s[2]
+	
+	remainder = s[3:]
+	
+	year = int(year)+2000
+	return (year, SEMESTERCODES.get(semester, 99999), remainder)
 	
 def parseQueryList(s, sep):
 	items = map(unicode.strip, s.split(sep))

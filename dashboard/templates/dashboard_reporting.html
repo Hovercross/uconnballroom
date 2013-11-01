@@ -17,11 +17,12 @@
 	</div>
 	<div class="span-8">
 		<h3>Fields</h3>
-		<textarea name="fields"></textarea>
+		<textarea name="fields">name</textarea>
 	</div>
 	<div class="span-8 last">
 		<h3>Registration session priority</h3>
-		<textarea name="registration_sessions"></textarea>
+		<textarea name="registration_sessions">{% for rs in registration_sessions %}{{ rs.card_code }}
+{% endfor %}</textarea>
 	</div>
 	<p>Format: <select name="format"><option value="HTML">Web Page</option><option value="Excel">Excel</option></select>
 	<p><input type="submit" name="process" value="Get report"></p>
