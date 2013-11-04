@@ -10,6 +10,8 @@ import unicodedata
 
 from datetime import date, datetime
 
+import lib
+
 class Person(models.Model):
 	first_name = models.CharField(max_length=200, blank=True)
 	last_name = models.CharField(max_length=200, blank=True)
@@ -62,7 +64,17 @@ class PersonEmail(models.Model):
 	
 	def __str__(self):
 		return "E-mail %s %s" % (self.id, self.email)
+
+class QueryList(models.Model):
+	name = models.CharField(max_length=50, unique=True)
+	slug = models.SlugField(max_length=50, unique=True)
+	unrestricted_send = models.BooleanField(default=False)
+	query_string = models.TextField()
 	
+	@property
+	def people(self):
+		return lib.parseQueryList(self.query_string)
+		
 class List(models.Model):
 	name = models.CharField(max_length=50, unique=True)
 	slug = models.SlugField(max_length=50, unique=True)

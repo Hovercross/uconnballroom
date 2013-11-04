@@ -7,7 +7,7 @@ from reportlab.lib.units import inch
 
 from django.core.mail import send_mail, EmailMessage
 
-from models import Person, Registration, MembershipCard, PersonEmail, List
+import models
 
 from datetime import date
 
@@ -201,7 +201,7 @@ def parseQueryList(s, sep):
 			result = opers[item](op1, op2)
 			stack.append(result)
 		else:
-			listObj = List.objects.get(slug=item)
+			listObj = models.List.objects.get(slug=item)
 			stack.append(listObj.allPeople())
 			
 	if len(stack) > 1:
