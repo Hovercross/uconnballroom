@@ -73,7 +73,10 @@ class QueryList(models.Model):
 	
 	@property
 	def people(self):
-		return lib.parseQueryList(self.query_string)
+		return lib.parseQueryList(self.query_string, "\n")
+		
+	def __str__(self):
+		return self.name
 		
 class List(models.Model):
 	name = models.CharField(max_length=50, unique=True)

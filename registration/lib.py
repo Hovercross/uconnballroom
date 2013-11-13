@@ -208,3 +208,48 @@ def parseQueryList(s, sep):
 		raise ListParseException("There were leftover lists on the stack")
 		
 	return stack[0]
+	
+def codeSearch(s):
+	from registration.models import Person, Registration, MembershipCard
+	
+	searchType = s[0:2].upper()
+	searchData = s[2:]
+	
+	print searchType
+	print searchData
+	
+	if searchType == 'PE':
+		try:
+			return Person.objects.get(pk=searchData)
+		except Person.DoesNotExist:
+			return None
+			
+	if searchType == "RF":
+		try:
+			return Registration.objects.get(pk=searchData)
+		except Registration.DoesNotExist:
+			return None
+			
+	if searchType == "MC":
+		try:
+			return MembershipCard.objects.get(membership_card=searchData).registration
+		except MembershipCard.DoesNotExist:
+			return None
+	
+	return None
+		
+def autoPerson(o):
+	from registration.models import Person, Registration, MembershipCard, PersonEmail
+	
+	if isinstance(o, Person):
+		return o
+	if isinstance(o, Registration):
+		return o.person
+	if isinstance(o, MembershipCard):
+		return o.registration.person
+	if isinstance(o, PersonEmail):
+		return o.person
+	
+#Future TODO: Cache this and invalidate when something changes	
+def personInQueryList(person, queryListSlug):
+	pass
