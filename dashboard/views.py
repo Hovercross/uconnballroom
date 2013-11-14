@@ -84,7 +84,41 @@ def autocompleteQuery(searchArgs, inSession=None):
 
 @login_required
 def index(request):
-	return render(request, "dashboard_index.html")
+	templateVars = {}
+	templateVars["default_club_entry_list"] = "Entry %s" % datetime.today().strftime("%Y-%m-%d")
+	templateVars["query_lists"] = QueryList.objects.all().order_by('slug')
+	
+	return render(request, "dashboard_index.html", templateVars)
+
+@permission_required('registration.club_entry')
+def record_entry(request):
+	queryListSlug = request.POST["verify_list"]
+	recordListName = request.POST["record_list"]
+	search_code = request.POST["entry_code"]
+	
+	queryList = QueryList.objects.get(slug=queryListSlug)
+	person = lib.autoPerson(lib.codeSearch(search_code))
+	
+	queryListPeople = queryList.people
+	
+	if not person:
+		response = HttpResponse(content_type="application/json")
+		json.dump({'allowed': False, 'person_found': False}, response)
+		return response
+		
+	
+	if person in queryListPeople:
+		response = HttpResponse(content_type="application/json")
+		json.dump({'allowed': True, 'person_found': True, 'first_name': person.first_name, 'last_name': person.last_name}, response)
+		entryList = autoList(recordListName, 'entry_list')
+		entryList.included_people.add(person)
+		entryList.save()
+		return response
+	else:
+		response = HttpResponse(content_type="application/json")
+		json.dump({'allowed': False, 'person_found': True, 'first_name': person.first_name, 'last_name': person.last_name}, response)
+		return response
+	
 @permission_required('registration.can_autocomplete')
 def autocomplete(request):
 	searchQ = request.GET.get("term", None)
