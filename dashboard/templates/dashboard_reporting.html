@@ -81,80 +81,266 @@
 
 <div class="span-24">
 <h2>Examples</h2>
-	<h3>Get the current team members</h3>
-	<blockquote>team</blockquote>
+	<h3>Get the current team members (paid and unpaid)</h3>
+	<blockquote>13f-team</blockquote>
+	<blockquote></blockquote>
+	<h3>Get the current undergrad paid team members</h3>
+	<blockquote>13f-team<br/>13f-undergraduates<br/>13f-paid<br />X<br />X</blockquote>
 	or
-	<blockquote>team13f-paid</blockquote>
-	<h3>Get the current undergrad team members</h3>
-	<blockquote>team13f<br/>f13-undergrad<br/>X</blockquote>
+	<blockquote>13f-team<br/>13f-undergraduates<br />X<br/>13f-paid<br />X</blockquote>
 	<h3>Get the current team members who are undergrads or grad students</h3>
-	<blockquote>team13f<br />f13-undergrad<br/>f13-grad<br/>+<br/>X</blockquote>
-	<h3>Get the team and club members from Fall 2012 or Spring 2013 who were undergrad students, grad students or alumni in either semester</h3>
-	<blockquote>team12f<br />
-	club12f<br />
-	team13s<br />
-	club13s<br />
-	+<br />
-	+<br />
-	+<br />
-	12f-undergrad<br />
-	12f-grad<br />
-	12f-alumni<br />
-	13s-undergrad<br/>
-	13s-grad<br/>
-	13s-alumni<br/>
-	+<br />
-	+<br />
-	+<br />
-	+<br />
-	+<br />
-	X
-	</blockquote>
-	<p>Whoa... how the hell did that work? Lets take it line by line and see what the results are at each stage</p>
-	<ol>
-		<li>team12f: Pushes the people from team12f onto the stack</li>
-		<li>club12f: Pushes the people from club12f onto the stack</li>
-		<li>team13s: Pushes the people from team13s onto the stack</li>
-		<li>club13s: Pushes the people from club13s onto the stack</li>
-		<li>+: Adds the people from the bottom top two items on the stack (club13s and team13s) together and puts it back onto the stack. Now it looks like this: <ul>
-			<li>People from team12f</li>
-			<li>People from club12f</li>
-			<li>People from either team13s or club13s</li>
-			<li>+</li>
-			<li>+</li>
-			<li>(Everything from 12f-undergrad down)</li>
-			</ul>
-		</li>
-		<li>+: Adds the people from the bottom top two items on the stack (club12f and the combo of club13s/team13s) together and puts it back onto the stack. Now it looks like this: <ul>
-			<li>People from team12f</li>
-			<li>People from club12f, team13s or club13s</li>
-			<li>+</li>
-			<li>(Everything from 12f-undergrad down)</li>
-			</ul>
-		</li>
-		<li>+: Adds the people from the bottom top two items on the stack (team12f and the combo of club12f/club13s/team13s) together and puts it back onto the stack. Now it looks like this: <ul>
-			<li>People from team12f, club13f, team13s or club13s</li>
-			<li>12f-undergrad</li>
-			<li>12f-grad</li>
-			<li>12f-alumni</li>
-			<li>13s-undergrad</li>
-			<li>13s-grad</li>
-			<li>13s-alumni</li>
-			<li>+</li>
-			<li>+</li>
-			<li>+</li>
-			<li>+</li>
-			<li>+</li>
-			<li>X</li>
-			</ul>
-		</li>
-		<li>Now, we are going to push everyone from all those undergrad/grad lists onto the stack, then combine all of them exactly as we did above. When that is all done, we'll have something that looks like this: <ul>
-			<li>People from team12f, club13f, team13s or club13s</li>
-			<li>People from 12f-undergrad, 12f-grad, 12f-alumni, 13s-undergrad, 13s-grad or 13s-alumni</li>
-			<li>X</li></ul>
-		</li>
-		<li>We're going to execute the final operation - the intersection. This is going to take the top two items on the stack (the list of team/club members from both semester and the list of all those undergrads/grads/alumni) and intersect them - that is, take only the people who were on both lists. The resulting list of people will be individuals who were on the club or team in the Fall of 2012 or the Spring of 2013 who were also undergrads, grad students or alumni at either of those times.</li>
-	
-	</ol>
+	<blockquote>13f-team<br />13f-undergraduates<br/>13f-graduate_students<br/>+<br/>X</blockquote>
+	or
+	<blockquote>13f-undergraduates<br/>13f-graduate_students<br/>+<br/>13f-team<br />X</blockquote>
+	<h3>Get the paid team and club members from Fall 2012 or Spring 2013 who were undergrad or grad students and paid in their respective semesters</h3>
+  <table>
+	<tr>
+		<th>Operation (into the query string box)</th>
+		<th>What is on the stack after the operation</th>
+	</tr>
+    <tr>
+      <td>12f-club</td>
+
+      <td>
+        <ul>
+          <li>People on 12f-club</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>12f-team</td>
+
+      <td>
+        <ul>
+          <li>People on 12f-club</li>
+
+          <li>People on 12f-team</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>+</td>
+
+      <td>
+        <ul>
+          <li>People on either 12f-club or 12f-team</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>12f-paid</td>
+
+      <td>
+        <ul>
+          <li>People on either 12f-club or 12f-team</li>
+
+          <li>People on 12f-paid</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>x</td>
+
+      <td>
+        <ul>
+          <li>People on either 12f-club or 12f-team who were also on 12f-paid</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>12f-undergraduates</td>
+
+      <td>
+        <ul>
+          <li>People on either 12f-club or 12f-team who were also on 12f-paid</li>
+
+          <li>People on 12f-undergraduates</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>12f-graduate_students</td>
+
+      <td>
+        <ul>
+          <li>People on either 12f-club or 12f-team who were also on 12f-paid</li>
+
+          <li>People on 12f-undergraduates</li>
+
+          <li>People on 12f-graduate_students</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>+</td>
+
+      <td>
+        <ul>
+          <li>People on either 12f-club or 12f-team who were also on 12f-paid</li>
+
+          <li>People on 12f-undergraduates or 12f-graduate_students</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>x</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>13s-club</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on 13s-club</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>13s-team</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on 13s-club</li>
+
+          <li>People on 13s-team</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>+</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either 13s-club or 13s-team</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>13s-paid</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either 13s-club or 13s-team</li>
+
+          <li>People on 13s-paid</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>x</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either 13s-club or 13s-team who were also on 13s-paid</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>13s-undergraduates</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either 13s-club or 13s-team who were also on 13s-paid</li>
+
+          <li>People on 13s-undergraduates</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>13s-graduate_students</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either 13s-club or 13s-team who were also on 13s-paid</li>
+
+          <li>People on 13s-undergraduates</li>
+
+          <li>People on 13s-graduate_students</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>+</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either 13s-club or 13s-team who were also on 13s-paid</li>
+
+          <li>People on 13s-undergraduates or 13s-graduate_students</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>x</td>
+
+      <td>
+        <ul>
+          <li>People on either ((12f-club or 12f-team) who were also on 12f-paid) and
+          either of (12f-undergraduates or 12f-graduate_students)</li>
+
+          <li>People on either ((13s-club or 13s-team) who were also on 13s-paid) and
+          either of (13s-undergraduates or 13s-graduate_students)</li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td>+</td>
+
+      <td>
+        <ul>
+          <li>People from Fall 2013 or Spring 2012 who were undergraduate or graduate
+          students and paid in their respective semester</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
 </div>
 {% endblock %}
