@@ -153,10 +153,22 @@ def autocomplete(request):
 def reporting(request):
 	if "process" in request.GET:
 		return report(request)
+	
+	availableLists = {}
+	
+	for l in List.objects.all():
+		listType = l.get_list_type_display()
+		if listType not in availableLists:
+			availableLists[listType] = []
+		availableLists[listType].append(l)
+			
+	for listType in availableLists.values():
+		listType.sort(key=lambda l: l.name)
 		
 	return render(request, "dashboard_reporting.html", 
 	{'registration_sessions': reversed(sorted(RegistrationSession.objects.all(), key=lambda rs: lib.registrationCardCodeKey(rs.card_code))), 
-	'basic_lists': List.objects.all().order_by('slug')})
+	'basic_lists': availableLists,
+	'query_lists': QueryList.objects.all()})
 	
 @permission_required('registration.can_run_reports')
 def report(request):

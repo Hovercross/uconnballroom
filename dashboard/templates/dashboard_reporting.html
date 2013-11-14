@@ -38,7 +38,11 @@
 	</table>
 	
 	<h2>Available Lists</h2>
-	<p>{% for l in basic_lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}
+	{% for lt, lists in basic_lists.items %}
+		<h3>{{ lt }}</h3>
+		<p>{% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}
+	{% endfor %}
+	
 </div>
 
 <div class="span-12 last">
