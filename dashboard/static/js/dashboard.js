@@ -47,7 +47,6 @@ function setupAutocomplete() {
 				$(this).trigger("go", value);
 			} else {
 				results = $(this).data("responses");
-				$(this).data("responses", false);
 				if(results) {
 					$(this).trigger("go", "PE" + results[0].id);
 					$(this).autocomplete("close");
@@ -55,4 +54,8 @@ function setupAutocomplete() {
 			}
 	    } 
 	});
+	
+	autocomplete.on("go", function() {
+		$(this).data("responses", false);
+	})
 }
