@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from registration.models import RegistrationSession, Registration, MembershipCard, List, Person, QueryList, Person
+from registration.models import autoList
 
 from registration.lib import parseQueryList
 from django.db.models import Q
