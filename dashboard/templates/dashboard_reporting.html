@@ -42,7 +42,10 @@
 		<h3>{{ list_type }}</h3>
 		<ul>
 		{% for semester, lists in semesters.items %}
-			<li><strong>{{ semester }}</strong>: {% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}</li>
+			<li><strong>{{ semester | upper }}</strong>: {% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}</li>
+			{% if semester|slice:"2:3"|upper == "F" %}
+				<hr />
+			{% endif %}
 		{% endfor %}
 		</ul>
 	{% endfor %}

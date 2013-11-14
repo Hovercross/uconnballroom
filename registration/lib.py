@@ -173,7 +173,7 @@ def changePaymentAmount(registration, newAmount):
 
 def registrationCardCodeKey(s):
 	year = s[0:2]
-	semester = s[2]
+	semester = s[2].upper()
 	
 	remainder = s[3:]
 	
