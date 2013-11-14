@@ -1,12 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from registration.models import RegistrationSession, Registration, MembershipCard, List
+from registration.models import RegistrationSession, Registration, MembershipCard, List, Person, QueryList, Person
+
 from registration.lib import parseQueryList
+from django.db.models import Q
+
+from datetime import datetime
+
+import json
 
 from django.contrib.auth.decorators import login_required, permission_required
 
-from registration.lib import registrationCardCodeKey
+from registration import lib
 
 headers = {
 	'first_name': 'First Name',
@@ -60,9 +66,53 @@ registrationRequiredExtra = ('membership_card', 'registration_session', 'team', 
 
 registrationRequiredFields = set(registrationAttrs.keys()) | set(registrationRequiredExtra) | set(personTypeAttrs.keys())
 
+def autocompleteQuery(searchArgs, inSession=None):
+	q = Q()
+	
+	if inSession:
+		q = Q(registration__registration__session__in=inSession)
+	
+	for token in searchArgs:
+		tokenSearch = Q(first_name__icontains=token) | Q(last_name__icontains=token) | Q(emails__email__icontains=token)
+		if q == None:
+			q = tokenSearch
+		else:
+			q = q & tokenSearch
+			
+	return Person.objects.filter(q).distinct()
+			
+
 @login_required
 def index(request):
 	return render(request, "dashboard_index.html")
+@permission_required('registration.can_autocomplete')
+def autocomplete(request):
+	searchQ = request.GET.get("term", None)
+	sessionsQ = request.GET.getlist("session", None)
+	
+	if not searchQ:
+		return []
+	
+	#Get the base person query	
+	query = autocompleteQuery(searchQ.split(" "))
+	
+	#Add on the registration session filter
+	if sessionsQ:
+		sessions = RegistrationSession.objects.filter(card_code__in=sessionsQ)
+		
+		query = query.filter(registration__registration_session__in=sessions)
+	
+	#Grab emails - not done above to limit the table scan of emails
+	query = query.prefetch_related('emails')
+	
+	out = []
+	
+	for person in query:
+		out.append({'id': person.id, 'first_name': person.first_name, 'last_name': person.last_name, 'emails': [e.email for e in person.emails.all()]})
+		
+	response = HttpResponse(content_type="application/json")
+	json.dump(out, response)
+	return response
 
 @permission_required('registration.can_run_reports')
 def reporting(request):

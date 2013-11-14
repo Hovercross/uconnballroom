@@ -1,0 +1,33 @@
+.autocomplete-name, .autocomplete-name-empty{
+	font-size: 14px;
+	font-style: bold;
+}
+
+.autocomplete-name-empty {
+	color: gray;
+}
+
+.autocomplete-emails {
+	font-size: 12px;
+	font-style: italic;
+}
+
+.autocomplete {
+	width: 100%;
+}
+
+.dashboardBlock {
+	background-color: #eee;
+}
+
+.dashboardBlock h1 {
+	text-align: center;
+}
+
+.dashboardBlock input[type="text"] {
+	width: 290px;
+}
+
+.dashboardBlock select {
+	width: 295px;
+}
