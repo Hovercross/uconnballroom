@@ -38,11 +38,22 @@
 	</table>
 	
 	<h2>Available Lists</h2>
-	{% for lt, lists in basic_lists.items %}
-		<h3>{{ lt }}</h3>
-		<p>{% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}
+	{% for list_type, semesters in managed_lists.items %}
+		<h3>{{ list_type }}</h3>
+		<ul>
+		{% for semester, lists in semesters.items %}
+			<li><strong>{{ semester }}</strong>: {% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}</li>
+		{% endfor %}
+		</ul>
 	{% endfor %}
-	
+	{% if unmanaged_lists %}
+		<h3>Administrative lists</h3>
+		<ul>
+			{% for l in unmanaged_lists %} 
+				<li>{{ l.slug }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 </div>
 
 <div class="span-12 last">

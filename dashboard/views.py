@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from django.utils.datastructures import SortedDict
+
 from registration.models import RegistrationSession, Registration, MembershipCard, List, Person, QueryList, Person
 from registration.models import autoList
 
@@ -154,20 +156,34 @@ def reporting(request):
 	if "process" in request.GET:
 		return report(request)
 	
-	availableLists = {}
+	managedLists = {}
 	
-	for l in List.objects.all():
+	for l in List.objects.exclude(list_type__in=['admin_list']):
 		listType = l.get_list_type_display()
-		if listType not in availableLists:
-			availableLists[listType] = []
-		availableLists[listType].append(l)
+		if listType not in managedLists:
+			managedLists[listType] = {}
 			
-	for listType in availableLists.values():
-		listType.sort(key=lambda l: l.name)
+		semester, listName = l.slug.split('-', 1)
+		if semester not in managedLists[listType]:
+			managedLists[listType][semester] = []
+		managedLists[listType][semester].append(l)
+	
+	sortedManagedLists = SortedDict()
+			
+	for listType in managedLists:
+		sortedManagedLists[listType] = SortedDict()
+		
+		semestersDict = managedLists[listType]
+		
+		for semesterCode in reversed(sorted(semestersDict, key=lib.registrationCardCodeKey)):
+			sortedManagedLists[listType][semesterCode] = sorted(semestersDict[semesterCode], key=lambda x: x.name)
+			
+	unmanagedLists = List.objects.filter(list_type__in=['admin_list']).order_by('name')
 		
 	return render(request, "dashboard_reporting.html", 
 	{'registration_sessions': reversed(sorted(RegistrationSession.objects.all(), key=lambda rs: lib.registrationCardCodeKey(rs.card_code))), 
-	'basic_lists': availableLists,
+	'managed_lists': sortedManagedLists,
+	'unmanaged_lists': unmanagedLists,
 	'query_lists': QueryList.objects.all()})
 	
 @permission_required('registration.can_run_reports')
