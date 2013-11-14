@@ -38,6 +38,8 @@ class PersonTypeAdmin(SortableAdmin):
 	inlines = [AutoListPersonTypeInlineAdmin]
 
 class ListAdmin(admin.ModelAdmin):
+	prepopulated_fields = {"slug": ("name",)}
+	
 	filter_horizontal = ('included_lists', 'included_people')
 
 class EmailAdminForm(forms.ModelForm):
@@ -99,34 +101,6 @@ class RegistrationSessionAdmin(admin.ModelAdmin):
 			return False
 
 		return request.user.has_perm('registration.delete_registrationsession')
-
-	def save_model(self, request, obj, form, change):
-		#Take care of list creation
-		auto_names = (
-			('club_paid_list', 'club', '-paid'),
-			('club_unpaid_list', 'club', '-unpaid'),
-			('team_paid_list', 'team', '-paid'),
-			('team_unpaid_list', 'team', '-unpaid'),
-		)
-		
-		for attr, autoPrefix, autoSuffix in auto_names:
-			try:
-				related_list = getattr(obj, attr)
-			except ObjectDoesNotExist, e:
-				related_list = None
-			
-			if not related_list:
-				auto_list_name = "%s%s%s" % (autoPrefix, obj.card_code.lower(), autoSuffix)
-				try:
-					l = List.objects.get(name=auto_list_name)
-				except ObjectDoesNotExist, e:
-					l = List(name=auto_list_name, slug=slugify(auto_list_name))
-					l.internally_managed = True
-					l.save()
-
-				setattr(obj, attr, l)
-				
-		obj.save()
 
 admin.site.register(RegistrationSession, RegistrationSessionAdmin)
 admin.site.register(PersonType, PersonTypeAdmin)

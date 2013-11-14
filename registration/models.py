@@ -82,7 +82,15 @@ class List(models.Model):
 	name = models.CharField(max_length=50, unique=True)
 	slug = models.SlugField(max_length=50, unique=True)
 	unrestricted_send = models.BooleanField(default=False)
-	internally_managed = models.BooleanField(default=False)
+	
+	TYPE_CHOICES = (
+		('entry_list', 'Entry List'), 
+		('person_type_list', 'Person Type List'), 
+		('registration_type_list', 'Club/Team List'), 
+		('paid_list', 'Paid Tracking List'),
+		('admin_list', 'Administrative List'))
+	
+	list_type = models.CharField(max_length=254, choices=TYPE_CHOICES)
 	
 	included_lists = models.ManyToManyField('self', blank=True, symmetrical=False)
 	included_people = models.ManyToManyField(Person, blank=True)
@@ -144,11 +152,6 @@ class RegistrationSession(models.Model):
 	
 	available = models.BooleanField(default=False)
 	
-	club_paid_list = models.ForeignKey(List, related_name="+")
-	team_paid_list = models.ForeignKey(List, related_name="+")
-	club_unpaid_list = models.ForeignKey(List, related_name="+")
-	team_unpaid_list = models.ForeignKey(List, related_name="+")
-	
 	def save(self, *args, **kwargs):
 		if self.available:
 			q = RegistrationSession.objects.filter(available=True)
@@ -161,44 +164,6 @@ class RegistrationSession(models.Model):
 				previouslyAvailable.save()
 				
 		super(RegistrationSession, self).save(*args, **kwargs)
-	
-	def all_lists_for_person_types(self):
-		for autoList in PersonTypeAutoList.objects.all():
-			o = autoList.list_for(self, create=False)
-			if o:
-				yield o
-	
-	def _autoList(self, name):
-		listName = "%s-%s" % (self.card_code, name)
-		listSlug = slugify(listName)
-	
-		try:
-			l = List.objects.get(slug=listSlug)
-			return l
-		except List.DoesNotExist:
-			l = List()
-			l.name = listName
-			l.slug = listSlug
-			l.internally_managed = True
-			l.save()
-			return l
-			
-	@property
-	def team_list(self):
-		return self._autoList('team')
-	
-	@property
-	def club_list(self):
-		return self._autoList('club')
-	
-	@property
-	def paid_list(self):
-		return self._autoList('paid')
-		
-	@property
-	def unpaid_list(self):
-		return self._autoList('unpaid')
-	
 			
 	def __str__(self):
 		return "%s %s" % (self.year, self.semester)
@@ -277,45 +242,14 @@ class Registration(models.Model):
 		
 		return True
 	
-	def getAppropriateList(self):
-		if self.team and self.paid:
-			return self.registration_session.team_paid_list
-			
-		if self.team and not self.paid:
-			return self.registration_session.team_unpaid_list
-			
-		if not self.team and self.paid:
-			return self.registration_session.club_paid_list
-		
-		if not self.team and not self.paid:
-			return self.registration_session.club_unpaid_list
-			
 	def updateLists(self):
-		allLists = [self.registration_session.team_paid_list, self.registration_session.team_unpaid_list, self.registration_session.club_paid_list, self.registration_session.club_unpaid_list]
-		
-		addLists = set([self.getAppropriateList()])
-		removeLists = set(allLists) - addLists
-		
-		for l in removeLists:
-			if self.person in l.included_people.all():
-				print "Removing %s" % l
-				l.included_people.remove(self.person)
-				l.save()
-				
-		for l in addLists:
-			if self.person not in l.included_people.all():
-				print "Adding %s" % l
-				l.included_people.add(self.person)
-				l.save()
-				
-	def updateNewLists(self):
 		addLists = set()
 		removeLists = set()
 		
-		paidList = self.registration_session.paid_list
-		unpaidList = self.registration_session.unpaid_list
-		teamList = self.registration_session.team_list
-		clubList = self.registration_session.club_list
+		paidList = autoList('%s paid' % self.registration_session.card_code, 'paid_list')
+		unpaidList = autoList('%s unpaid' % self.registration_session.card_code, 'paid_list')
+		teamList = autoList('%s team' % self.registration_session.card_code, 'person_type_list')
+		clubList = autoList('%s club' % self.registration_session.card_code, 'person_type_list')
 		
 		if self.paid:
 			addLists.add(paidList)
@@ -333,13 +267,14 @@ class Registration(models.Model):
 		
 		#Get the appropriate lists for the person type of the user
 		for apt in PersonTypeAutoList.objects.filter(person_type=self.person_type):
-			addLists.add(apt.list_for(self.registration_session))
+			listName = "%s %s" % (self.registration_session.card_code, apt.list_name)
+			addLists.add(autoList(listName, 'person_type_list'))
 		
 		#Get all the other lists for all the other person types for that registration session, subtracting the lists that the user will now be getting
-		for l in (set(list(self.registration_session.all_lists_for_person_types())) - addLists):
+		#The case of the person's new list will be handled by the fact that they're already in addLists
+		for l in (set(List.objects.filter(list_type='person_type_list').filter(name__startswith=self.registration_session.card_code)) - addLists):
 			removeLists.add(l)
-			
-		
+				
 		for l in removeLists:
 			if self.person in l.included_people.all():
 				print "Removing %s" % l
@@ -363,19 +298,19 @@ class MembershipCard(models.Model):
 	membership_card = models.CharField(max_length=10)
 	registration = models.OneToOneField(Registration)
 	
-class RegistrationLocator(models.Model):
-	code = models.CharField(max_length=10)
-	registration = models.OneToOneField(Registration)
-
 def update_lists(sender, instance, **kwargs):
 	instance.updateLists()
-	instance.updateNewLists()
 
-def update_all_auto_person_lists(sender, instance, **kwargs):
-	for r in Registration.objects.filter(person_type=sender.person_type):
-		r.updateNewLists()
-				
+def autoList(name, type_code):
+	slug = slugify(name)
 	
-# register the signal
+	try:
+		return List.objects.get(slug=slug)
+	except List.DoesNotExist:
+		l = List(name=name, slug=slug, list_type=type_code)
+		l.save()
+		
+		return l
+	
+#Automatically update a registration's lists on it's save
 post_save.connect(update_lists, sender=Registration)
-#post_save.connect(update_all_auto_person_lists, sender=PersonTypeAutoList)
