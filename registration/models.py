@@ -248,8 +248,8 @@ class Registration(models.Model):
 		
 		paidList = autoList('%s paid' % self.registration_session.card_code, 'paid_list')
 		unpaidList = autoList('%s unpaid' % self.registration_session.card_code, 'paid_list')
-		teamList = autoList('%s team' % self.registration_session.card_code, 'person_type_list')
-		clubList = autoList('%s club' % self.registration_session.card_code, 'person_type_list')
+		teamList = autoList('%s team' % self.registration_session.card_code, 'registration_type_list')
+		clubList = autoList('%s club' % self.registration_session.card_code, 'registration_type_list')
 		
 		if self.paid:
 			addLists.add(paidList)
