@@ -155,7 +155,7 @@ def reporting(request):
 		return report(request)
 		
 	return render(request, "dashboard_reporting.html", 
-	{'registration_sessions': reversed(sorted(RegistrationSession.objects.all(), key=lambda rs: registrationCardCodeKey(rs.card_code))), 
+	{'registration_sessions': reversed(sorted(RegistrationSession.objects.all(), key=lambda rs: lib.registrationCardCodeKey(rs.card_code))), 
 	'basic_lists': List.objects.all().order_by('slug')})
 	
 @permission_required('registration.can_run_reports')
