@@ -3,7 +3,7 @@ import logging
 
 from email.MIMEText import MIMEText
 
-from registration.models import List
+from registration.models import QueryList
 from mailhandler.models import MailSender
 
 import sys
@@ -52,7 +52,7 @@ class Message(object):
 			return None
 		
 		try:
-			return List.objects.get(slug=localPart)
+			return QueryList.objects.get(slug=localPart)
 		except List.DoesNotExist:
 			log.error("Could not find list with slug %s" % localPart)
 			return None
@@ -62,7 +62,7 @@ class Message(object):
 		deliveryList = self.deliveryList
 		
 		if deliveryList:
-			return sorted(deliveryList.allPeople(), key=lambda x: (x.sortName))
+			return sorted(deliveryList.people, key=lambda x: (x.sortName))
 			
 		return None
 	
