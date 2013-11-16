@@ -104,7 +104,7 @@ INSTALLED_APPS = (
 	# 'django.contrib.admindocs',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth', 'feincms.context_processors.add_page_if_missing')
+TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth', 'feincms.context_processors.add_page_if_missing', 'django.core.context_processors.request')
 
 THUMBNAIL_ALIASES = {
 	'': {
