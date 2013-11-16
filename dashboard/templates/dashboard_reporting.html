@@ -37,34 +37,11 @@
 		<tr><th>X</th><td>Intersect a list with the current people</td></tr>
 	</table>
 	
-	<h2>Available Lists</h2>
-	{% for list_type, semesters in managed_lists.items %}
-		<h3>{{ list_type }}</h3>
-		<ul>
-		{% for semester, lists in semesters.items %}
-			<li><strong>{{ semester | upper }}</strong>: {% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}</li>
-			{% if semester|slice:"2:3"|upper == "F" %}
-				<hr />
-			{% endif %}
-		{% endfor %}
-		</ul>
-	{% endfor %}
-	{% if unmanaged_lists %}
-		<h3>Administrative lists</h3>
-		<ul>
-			{% for l in unmanaged_lists %} 
-				<li>{{ l.slug }}</li>
-			{% endfor %}
-		</ul>
-	{% endif %}
-</div>
-
-<div class="span-12 last">
 	<h2>Allowed fields</h2>
 	<ul>
 		<li>first_name: Member's first name</li>
 		<li>last_name: Member's last name</li>
-		<li>Name: Member's name</li>
+		<li>name: Member's name</li>
 		<li>phone_number: Member's phone number</li>
 		<li>peoplesoft_number: Member's peoplesoft number</li>
 		<li>netid: Member's NetID</li>
@@ -85,12 +62,30 @@
 		<li>paid_date: The date the member has paid</li>
 		<li>registration_id: The member's registration ID (internal use only)</li>
 	</ul>
-	<h2>Available registration sessions</h2>
-	<ul>
-		{% for rs in registration_sessions %}
-			<li> {{ rs.card_code }}: {{rs.semester}} {{rs.year}}</li>
+	
+</div>
+
+<div class="span-12 last">
+	<h2>Available Lists</h2>
+	{% for list_type, semesters in managed_lists.items %}
+		<h3>{{ list_type }}</h3>
+		<ul>
+		{% for semester, lists in semesters.items %}
+			<li><strong>{{ semester | upper }}</strong>: {% for l in lists %} {{ l.slug }}{% if not forloop.last %}, {% endif %} {% endfor %}</li>
+			{% if semester|slice:"2:3"|upper == "F" %}
+				<hr />
+			{% endif %}
 		{% endfor %}
-	</ul>
+		</ul>
+	{% endfor %}
+	{% if unmanaged_lists %}
+		<h3>Administrative lists</h3>
+		<ul>
+			{% for l in unmanaged_lists %} 
+				<li>{{ l.slug }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 </div>
 
 <div class="span-24">
