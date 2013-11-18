@@ -158,7 +158,7 @@ def reporting(request):
 	
 	managedLists = {}
 	
-	for l in List.objects.exclude(list_type__in=['admin_list']):
+	for l in List.objects.exclude(list_type__in=['admin_list', 'entry_list']):
 		listType = l.get_list_type_display()
 		if listType not in managedLists:
 			managedLists[listType] = {}

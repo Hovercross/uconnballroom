@@ -53,7 +53,7 @@ class Message(object):
 		
 		try:
 			return QueryList.objects.get(slug=localPart)
-		except List.DoesNotExist:
+		except QueryList.DoesNotExist:
 			log.error("Could not find list with slug %s" % localPart)
 			return None
 	
