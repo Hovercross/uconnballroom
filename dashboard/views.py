@@ -307,4 +307,4 @@ def report(request):
 				
 		data.append(row)
 				
-	return render(request, "dashboard_report.html", {'data': data, 'header': header})
+	return render(request, "dashboard_report.html", {'data': data, 'header': header, 'count': len(data)})
