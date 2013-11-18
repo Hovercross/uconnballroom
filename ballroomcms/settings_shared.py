@@ -48,6 +48,8 @@ STATICFILES_FINDERS = (
 AWS_ACCESS_KEY_ID = 'AKIAJZOPPO2KOEXOY3TQ'
 AWS_SECRET_ACCESS_KEY = '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'
 
+MAILGUN_KEY = 'key-7w2cv-5b8w8zn9n-bl8g625i3-re27z0'
+
 SECRET_KEY = 'e=5u$-o+p7mm4hmz5fwc3_npgkzt!%ex3@0(qf#6bhb8*qxd#v'
 
 TEMPLATE_LOADERS = (
@@ -104,7 +106,7 @@ INSTALLED_APPS = (
 	# 'django.contrib.admindocs',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth', 'feincms.context_processors.add_page_if_missing')
+TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth', 'feincms.context_processors.add_page_if_missing', 'django.core.context_processors.request')
 
 THUMBNAIL_ALIASES = {
 	'': {

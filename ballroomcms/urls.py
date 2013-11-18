@@ -9,10 +9,10 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^accounts/login/', 'django.contrib.auth.views.login', {'template_name': 'admin/login.html'}),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'), 
+    url(r'^mail/', include('mailhandler.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/django-ses/', include('django_ses.urls')),
     url(r'', include('galleries.urls')),
     url(r'', include('feincms.urls')),
 ) 
