@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from ballroom import settings_development
+from ballroom import settings
 from django.core.management import setup_environ
-setup_environ(settings_development)
+setup_environ(settings)
 
 import sys
 
