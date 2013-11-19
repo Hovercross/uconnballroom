@@ -10,7 +10,7 @@
 
 {% block content %}
 <h2>Report Builder</h2>
-<form method="GET">
+<form method="GET" action="{% url 'dashboard.views.reporting.report' %}">
 	<div class="span-8">
 		<h3>Query string</h3>
 		<textarea name="query"></textarea>

@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, url
 
-import dashboard.views
+from dashboard.views import reporting, index, autocomplete, tracker
 
 urlpatterns = patterns('',
-    url(r'^$', dashboard.views.index),
-    url(r'^reports/', dashboard.views.reporting),
-    url(r'^autocomplete/', dashboard.views.autocomplete),
-    url(r'^entry_tracker/record/', dashboard.views.record_entry),
+    url(r'^$', index.index),
+    url(r'^reports/$', reporting.index),
+    url(r'^reports/report/$', reporting.report),
+    url(r'^autocomplete/$', autocomplete.search),
+    url(r'^tracker/record/$', tracker.record_entry),
 )

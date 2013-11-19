@@ -4,7 +4,7 @@ directSearch = /^((pe[0-9]{1,})|(rf[0-9]{1,})|(mc[0-9]{2}(f|s)[0-9]{1,})|(rl[0-9
 
 function setupAutocomplete() {
 	autocomplete = $(".autocomplete").autocomplete({
-		source: '/dashboard/autocomplete/',
+		source: AUTOCOMPLETE_URL,
 		minlength: 2,
 		delay: 500,
 		select: function(event,ui) {

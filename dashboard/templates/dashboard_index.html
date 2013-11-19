@@ -10,7 +10,7 @@
 {% block content %}
 <div class="span-8 dashboardBlock" id="clubEntry">
 	<h1>Entry Tracker</h1>
-	<form method="POST" action="/dashboard/entry_tracker/record/" id="entry_tracker_form">
+	<form method="POST" action="{% url 'dashboard.views.tracker.record_entry' %}" id="entry_tracker_form">
 		{% csrf_token %}
 		<p><label for="club_verify_list">Allow people from:</label><br />
 			<select name="verify_list" id="verify_list">
