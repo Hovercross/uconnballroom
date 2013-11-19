@@ -93,6 +93,8 @@ THUMBNAIL_ALIASES = {
 	},
 }
 
+FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce4.html'
+
 FEINCMS_RICHTEXT_INIT_CONTEXT  = {
 	'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tinymce/tinymce.min.js'
 }
