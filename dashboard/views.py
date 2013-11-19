@@ -17,6 +17,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from registration import lib
 
+from cStringIO import StringIO
+
+import xlsxwriter
+
 headers = {
 	'first_name': 'First Name',
 	'last_name': 'Last Name',
@@ -310,5 +314,29 @@ def report(request):
 			
 				
 		data.append(row)
+	
+	if request.GET['format'] == 'HTML':			
+		return render(request, "dashboard_report.html", {'data': data, 'header': header, 'count': len(data)})
+	elif request.GET['format'] == 'Excel':
+		out = StringIO()
+		
+		workbook = xlsxwriter.Workbook(out)
+		worksheet = workbook.add_worksheet()
+		
+		bold = workbook.add_format({'bold': 1})
+		
+		for i, h in enumerate(header):
+			worksheet.write(0, i, h, bold)
+		
+		for i, row in enumerate(data):
+			for j, item in enumerate(row):
+				worksheet.write(i+1, j, item)
 				
-	return render(request, "dashboard_report.html", {'data': data, 'header': header, 'count': len(data)})
+		workbook.close()
+		
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'filename="roster.xlsx"'
+		
+		response.write(out.getvalue())
+		
+		return response
