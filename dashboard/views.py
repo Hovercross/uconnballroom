@@ -6,7 +6,7 @@ from django.utils.datastructures import SortedDict
 from registration.models import RegistrationSession, Registration, MembershipCard, List, Person, QueryList, Person
 from registration.models import autoList
 
-from registration.lib import parseQueryList
+from registration.lib import parseQueryList, ListParseException
 from django.db.models import Q
 
 from datetime import datetime
@@ -188,7 +188,11 @@ def reporting(request):
 	
 @permission_required('registration.can_run_reports')
 def report(request):
-	people = parseQueryList(request.GET["query"], "\n")
+	try:
+		people = parseQueryList(request.GET["query"], "\n")
+	except ListParseException, e:
+		return HttpResponse("Error processing list query: %s" % e.s)
+		
 	fields = request.GET["fields"].splitlines()
 	registrationSessions = [RegistrationSession.objects.get(card_code=x) for x in request.GET["registration_sessions"].splitlines() if x]
 	

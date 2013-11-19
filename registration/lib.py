@@ -196,16 +196,25 @@ def parseQueryList(s, sep):
 			continue
 			
 		if item in opers:
-			op1 = stack.pop()
-			op2 = stack.pop()
+			try:
+				op1 = stack.pop()
+				op2 = stack.pop()
+			except IndexError:
+				raise ListParseException("Operand on an empty stack, too many operators")
 			result = opers[item](op1, op2)
 			stack.append(result)
 		else:
-			listObj = models.List.objects.get(slug=item)
+			try:
+				listObj = models.List.objects.get(slug=item)
+			except models.List.DoesNotExist:
+				raise ListParseException("List matching %s not found" % item)
 			stack.append(listObj.allPeople())
 			
 	if len(stack) > 1:
 		raise ListParseException("There were leftover lists on the stack")
+	
+	if len(stack) == 0:
+		raise ListParseException("There were no results left on the stack")
 		
 	return stack[0]
 	
