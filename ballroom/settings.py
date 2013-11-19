@@ -1,42 +1,28 @@
 import os
 
+from environment import *
+
 ADMINS = (
      ('Adam Peacock', 'adam@thepeacock.net'),
 )
 
-EMAIL_BACKEND = 'django_ses.SESBackend'
-
-SERVER_EMAIL = 'ballroom-web-app@tigger.peacockhosting.net'
-
 MANAGERS = ADMINS
 
+EMAIL_BACKEND = 'django_ses.SESBackend'
+SERVER_EMAIL = 'ballroom-web-app@tigger.peacockhosting.net'
 TIME_ZONE = 'America/New_York'
-
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
 USE_I18N = True
 
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
 USE_L10N = True
 
-# If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (
-	# Put strings here, like "/home/html/static" or "C:/www/django/static".
-	# Always use forward slashes, even on Windows.
-	# Don't forget to use absolute paths, not relative paths.
-	os.path.abspath(os.path.join(os.path.split(__file__)[0], '../', 'static_data')),
+	os.path.join(ROOT_PATH, 'static_data'),
 )
 
 STATICFILES_FINDERS = (
@@ -44,11 +30,6 @@ STATICFILES_FINDERS = (
 	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #	 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
-AWS_ACCESS_KEY_ID = 'AKIAJZOPPO2KOEXOY3TQ'
-AWS_SECRET_ACCESS_KEY = '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'
-
-MAILGUN_KEY = 'key-7w2cv-5b8w8zn9n-bl8g625i3-re27z0'
 
 SECRET_KEY = 'e=5u$-o+p7mm4hmz5fwc3_npgkzt!%ex3@0(qf#6bhb8*qxd#v'
 
@@ -69,15 +50,12 @@ MIDDLEWARE_CLASSES = (
 	# 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'ballroomcms.urls'
+ROOT_URLCONF = 'ballroom.urls'
 
-WSGI_APPLICATION = 'ballroomcms.wsgi.application'
+WSGI_APPLICATION = 'ballroom.wsgi.application'
 
 TEMPLATE_DIRS = (
-	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-	# Always use forward slashes, even on Windows.
-	# Don't forget to use absolute paths, not relative paths.
-	os.path.abspath(os.path.join(os.path.split(__file__)[0], '../', 'templates')),
+	os.path.join(ROOT_PATH, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -100,10 +78,8 @@ INSTALLED_APPS = (
 	'registration',
 	'mailhandler',
 	'dashboard',
-	# Uncomment the next line to enable the admin:
-	 'django.contrib.admin',
-	# Uncomment the next line to enable admin documentation:
-	# 'django.contrib.admindocs',
+	'django.contrib.admin',
+	'django.contrib.admindocs',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth', 'feincms.context_processors.add_page_if_missing', 'django.core.context_processors.request')
@@ -118,9 +94,7 @@ THUMBNAIL_ALIASES = {
 }
 
 FEINCMS_RICHTEXT_INIT_CONTEXT  = {
-	'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tiny_mce/tiny_mce.js',
-	'TINYMCE_CONTENT_CSS_URL': None,
-	'TINYMCE_LINK_LIST_URL': None
+	'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tinymce/tinymce.min.js'
 }
 
 SOUTH_MIGRATION_MODULES = {

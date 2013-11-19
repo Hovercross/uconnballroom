@@ -1,0 +1,11 @@
+django==1.6
+feincms==1.8.4
+psycopg2
+reportlab
+south
+django-admin-sortable
+xlsxwriter
+django_ses
+easy_thumbnails
+webob
+requests
