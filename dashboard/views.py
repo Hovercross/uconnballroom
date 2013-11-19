@@ -198,7 +198,7 @@ def report(request):
 	except ListParseException, e:
 		return HttpResponse("Error processing list query: %s" % e.s)
 		
-	fields = request.GET["fields"].splitlines()
+	fields = [l for l in request.GET["fields"].splitlines() if l]
 	registrationSessions = [RegistrationSession.objects.get(card_code=x) for x in request.GET["registration_sessions"].splitlines() if x]
 	
 	registrationRequired = False
