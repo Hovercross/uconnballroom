@@ -32,7 +32,8 @@ headers = {
 	'hometown': 'Hometown',
 	'major': 'Major',
 	'person_id': 'Person ID',
-	'preferred_emails': 'E-mail address(es)',
+	'emails': 'All e-mail address(es)',
+	'preferred_emails': 'E-mail address(es) the user preferrers',
 	'uconn_email': 'E-mail address',
 	'membership_card': 'Membership Card',
 	'registration_session': 'Semester',
@@ -214,8 +215,10 @@ def report(request):
 				return Registration.objects.get(person=p, registration_session=rs)
 			except Registration.DoesNotExist:
 				continue
-	
-	header = [headers[f] for f in fields]
+	try:
+		header = [headers[f] for f in fields]
+	except KeyError:
+		return HttpResponse("There was an invalid field. Please check your query")
 	data = []
 	
 	for p in sorted(people, key=lambda x: (x.last_name, x.first_name)):
