@@ -1,8 +1,11 @@
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 
-from registration.models import QueryList, autoList
 from registration import lib
+
+import lists.models
+import lists.lib
+import registration.lib
 
 import json
 
@@ -12,8 +15,8 @@ def record_entry(request):
 	recordListName = request.POST["record_list"]
 	search_code = request.POST["entry_code"]
 	
-	queryList = QueryList.objects.get(slug=queryListSlug)
-	person = lib.autoPerson(lib.codeSearch(search_code))
+	queryList = lists.models.QueryList.objects.get(slug=queryListSlug)
+	person = registration.lib.autoPerson(lib.codeSearch(search_code))
 	
 	queryListPeople = queryList.people
 	
@@ -26,8 +29,8 @@ def record_entry(request):
 	if person in queryListPeople:
 		response = HttpResponse(content_type="application/json")
 		json.dump({'allowed': True, 'person_found': True, 'first_name': person.first_name, 'last_name': person.last_name}, response)
-		entryList = autoList(recordListName, 'entry_list')
-		entryList.included_people.add(person)
+		entryList = lists.lib.autoList(recordListName, 'entry_list')
+		entryList.people.add(person)
 		entryList.save()
 		return response
 	else:

@@ -20,13 +20,6 @@ try:
 except ImportError:
 	from StringIO import StringIO
 
-class ListParseException(Exception):
-	def __init__(self, s):
-		self.s = s
-		
-	def __str__(self):
-		return "List parse exception: %s" % self.s
-
 def sendRegistrationEmail(registration):
 	pass
 
@@ -180,43 +173,7 @@ def registrationCardCodeKey(s):
 	year = int(year)+2000
 	return (year, SEMESTERCODES.get(semester, 99999), remainder)
 	
-def parseQueryList(s, sep):
-	items = map(unicode.strip, s.split(sep))
-	
-	opers = {
-		'x': set.intersection,
-		'X': set.intersection,
-		'+': set.union,
-		'-': set.difference}
-	
-	stack = []
-	
-	for lineNum, item in enumerate(items):
-		if not item:
-			continue
-			
-		if item in opers:
-			try:
-				op1 = stack.pop()
-				op2 = stack.pop()
-			except IndexError:
-				raise ListParseException("Operand on an empty stack, too many operators")
-			result = opers[item](op1, op2)
-			stack.append(result)
-		else:
-			try:
-				listObj = models.List.objects.get(slug=item)
-			except models.List.DoesNotExist:
-				raise ListParseException("List matching %s not found" % item)
-			stack.append(listObj.allPeople())
-			
-	if len(stack) > 1:
-		raise ListParseException("There were leftover lists on the stack")
-	
-	if len(stack) == 0:
-		raise ListParseException("There were no results left on the stack")
-		
-	return stack[0]
+
 	
 def codeSearch(s):
 	from registration.models import Person, Registration, MembershipCard

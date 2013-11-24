@@ -5,10 +5,6 @@ import email.utils
 
 from webob.multidict import MultiDict
 
-from registration.models import List, Person
-
-
-
 import requests
 
 class MailSender(models.Model):
@@ -16,7 +12,7 @@ class MailSender(models.Model):
 	rewrite_from_name = models.TextField(max_length=200, blank=True)
 	rewrite_from_address = models.EmailField(max_length=254, blank=True)
 	unrestricted_send = models.BooleanField(default=False)
-	send_to_lists = models.ManyToManyField(List, blank=True)
+	send_to_lists = models.ManyToManyField('lists.List', blank=True)
 	
 	def __str__(self):
 		return self.from_address
@@ -31,7 +27,7 @@ class MailingListMessage(models.Model):
 	body_html = models.TextField()
 	sent = models.BooleanField(default=False)
 	
-	people = models.ManyToManyField(Person)
+	people = models.ManyToManyField('registration.Person')
 	
 	def send(self):
 		for person in self.people.all():

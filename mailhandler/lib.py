@@ -3,7 +3,7 @@ import logging
 
 from email.MIMEText import MIMEText
 
-from registration.models import QueryList
+from lists.models import QueryList
 from mailhandler.models import MailSender
 
 import sys

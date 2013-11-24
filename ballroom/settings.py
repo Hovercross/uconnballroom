@@ -78,6 +78,7 @@ INSTALLED_APPS = (
 	'registration',
 	'mailhandler',
 	'dashboard',
+	'lists',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
 )
@@ -143,7 +144,14 @@ LOGGING = {
 		'registration': {
 			'handlers': ['console'],
 			'level': 'DEBUG'
-			
+		},
+		'lists': {
+			'handlers': ['console'],
+			'level': 'INFO'
+		},
+		'mailhandler': {
+			'handlers': ['console'],
+			'level': 'INFO'
 		}
 	}
 }

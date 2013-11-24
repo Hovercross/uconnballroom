@@ -11,7 +11,7 @@ import requests
 from django.core.mail import send_mail, mail_managers, mail_admins
 
 from mailhandler.models import MailingListMessage, MailingListMessageAttachment, MailSender
-from registration.models import QueryList, List
+from lists.models import QueryList, List
 
 @csrf_exempt
 def handleIncomingEmail(request):

@@ -15,7 +15,7 @@
 		<p><label for="club_verify_list">Allow people from:</label><br />
 			<select name="verify_list" id="verify_list">
 				{% for ql in query_lists %}
-					<option value="{{ ql.slug }}"{% if ql.slug == 'clubteam' %} selected="selected"{% endif %}>{{ ql.name }}</option>
+					<option value="{{ ql.slug }}"{% if ql.slug == 'club-entry' %} selected="selected"{% endif %}>{{ ql.name }}</option>
 				{% endfor %}
 			</select>
 		<p><label for="club_entry_list">Record to list:</label><br /><input id="club_entry_list" type="text" value="{{ default_club_entry_list }}" name="record_list" /></p>

@@ -3,9 +3,11 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.datastructures import SortedDict
 
-from registration.models import List, Person, RegistrationSession, QueryList
-from registration.lib import parseQueryList, ListParseException
+from registration.models import Person, RegistrationSession
 from registration import lib
+
+from lists.models import List, QueryList
+from lists.lib import parseQueryList, ListParseException
 
 import xlsxwriter
 from cStringIO import StringIO
