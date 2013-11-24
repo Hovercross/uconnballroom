@@ -9,7 +9,7 @@ import registration.lib
 
 import json
 
-@permission_required('registration.club_entry')
+@permission_required('registration.entry_tracker')
 def record_entry(request):
 	queryListSlug = request.POST["verify_list"]
 	recordListName = request.POST["record_list"]

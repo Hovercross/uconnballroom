@@ -167,7 +167,13 @@ class Registration(models.Model):
 	
 	class Meta:
 		unique_together = (('person', 'registration_session'), )
-		permissions = (('can_run_reports', 'Can run reports'), ("can_manage_payments", "Can manage payments"))
+		permissions = (
+			('can_run_reports', 'Can run reports'), 
+			("can_manage_payments", "Can manage payments"), 
+			("can_autocomplete", "Can use autocomplete"),
+			("entry_tracker", "Can use entry tracker"),
+			
+			)
 	
 class MembershipCard(models.Model):
 	membership_card = models.CharField(max_length=10)
