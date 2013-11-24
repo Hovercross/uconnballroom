@@ -23,6 +23,7 @@ class Message(object):
 	authorizedDomains = ("uconnballroom.com", )
 	
 	def __init__(self, data):
+		log.debug("Inititalizing message")
 		self.data = str(data)
 		self.message = email.message_from_string(str(self.data))
 	
@@ -131,10 +132,14 @@ class Message(object):
 		return m.as_string()
 		
 def processMessage(data, forceSend=False):
-	#Check that there is a delivery list
+	log.debug("Message inititliazation started")
 	m = Message(data)
+	log.debug("Message inititalization complete")
+	#Check that there is a delivery list
 	if not m.deliveryList:
+		log.warn("No delivery list")
 		if not m.returnPath:
+			log.warn("No return path")
 			raise Exception("No return path on e-mail")
 
 		errorMessage = MIMEText("I was unable to find the list you specified.  No e-mail has been sent.")
@@ -143,27 +148,37 @@ def processMessage(data, forceSend=False):
 		errorMessage["Subject"] = "Error sending e-mail"
 
 		if m.spfStatus != False:
+			log.info("Sending error message")
 			send("webmaster@uconnballroom.com", [m.returnPath], errorMessage.as_string()) 
+		else:
+			log.info("No SPF status, surpressing error message")
 		return
 
 	if len(m.deliveryPeople) == 0:
+		log.info("No people on list %s" % m.deliveryList)
 		errorMessage = MIMEText("I was able to find the list you specified, but it contains no peoblem.  Your e-mail has not been sent.")
 		errorMessage["To"] = m.returnPath
 		errorMessage["From"] = MAILSYSTEM
 		errorMessage["Subject"] = "Error sending e-mail"
 
 		if m.spfStatus != False:
+			log.info("Sending error message")
 			send("webmaster@uconnballroom.com", [m.returnPath], errorMessage.as_string())
-
+		else:
+			log.info("No SPF status, surpressing error message")
 		return
 
 	try:
 		if m.shouldAutoSend:
+			log.info("Sending list message")
 			sendListMessage(m)
 		else:
+			log.info("Holding list message")
 			holdListMessage(m)
 
 	except Exception, e:
+		log.error("Processing exception: %s" % e)
+		
 		exc_type, exc_value, exc_traceback = sys.exc_info()
 
 		lines = traceback.format_tb(exc_traceback)
