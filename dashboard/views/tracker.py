@@ -8,6 +8,9 @@ import lists.lib
 import registration.lib
 
 import json
+import logging
+
+log = logging.getLogger(__name__)
 
 @permission_required('registration.entry_tracker')
 def record_entry(request):
@@ -32,6 +35,7 @@ def record_entry(request):
 		entryList = lists.lib.autoList(recordListName, 'entry_list')
 		entryList.people.add(person)
 		entryList.save()
+		log.info("Recording entry for %s into %s" % (person, entryList))
 		return response
 	else:
 		response = HttpResponse(content_type="application/json")
