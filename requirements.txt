@@ -9,3 +9,4 @@ django_ses
 easy_thumbnails
 webob
 requests
+log_io_handler

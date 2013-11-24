@@ -134,6 +134,12 @@ LOGGING = {
 			'class': 'logging.StreamHandler',
 			'formatter': 'simple'
 		},
+                'log_io': {
+                    'level': 'INFO',
+                    'class': 'log_io_handler.LogIOHandler',
+                    'logstream': 'www_uconnballroom_app',
+                    'node': 'tigger.peacockhosting.net'
+                 }
 	},
 	'loggers': {
 		'django.request': {
@@ -142,7 +148,7 @@ LOGGING = {
 			'propagate': True,
 		},
 		'registration': {
-			'handlers': ['console'],
+			'handlers': ['log_io', 'console'],
 			'level': 'DEBUG'
 		},
 		'lists': {
