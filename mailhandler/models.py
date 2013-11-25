@@ -40,8 +40,8 @@ class MailingListMessage(models.Model):
 				data['text'] = self.body_text
 				data['o:tag'] = 'mailing_list_message'
 				
-				if self.messageID:
-					data['h:Message-Id'] = self.messageID
+				if self.message_id:
+					data['h:Message-Id'] = self.message_id
 					
 				if self.body_html:
 					data['html'] = self.body_html
