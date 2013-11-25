@@ -1,17 +1,16 @@
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
-
 from django.conf import settings
+from django.core.mail import send_mail, mail_managers
+
+from mailhandler.models import MailingListMessage, MailingListMessageAttachment, MailSender
+from lists.models import QueryList, List
 
 import email.utils
 import hashlib, hmac
 import json
-
 import requests
-from django.core.mail import send_mail, mail_managers, mail_admins
 
-from mailhandler.models import MailingListMessage, MailingListMessageAttachment, MailSender
-from lists.models import QueryList, List
 
 @csrf_exempt
 def handleIncomingEmail(request):
@@ -30,18 +29,17 @@ def handleIncomingEmail(request):
 	from_name, from_address = email.utils.parseaddr(request.POST["from"])
 	
 	if request.POST.get('X-Mailgun-Spf', '').upper() == 'PASS':
-		senderVerified = True
 		spfOK = True
 	else:
 		spfOK = False
-			
+	
 	if request.POST.get('X-Mailgun-Dkim-Check-Result', '').upper == 'PASS':
-		senderVerified=True
-		dkimOK = False
+		#TODO: Verify that the domain sending the e-mail matches the from address for the e-mail
+		dkimOK = True
 	else:
 		dkimOK = False
 		
-	#For autosending purposes
+	#For autosending purposes, the sender must match the from address and be either SPF or DKIM OK
 	if sender == from_address and (spfOK or dkimOK):
 		senderVerified = True
 	else:
@@ -124,7 +122,11 @@ def handleIncomingEmail(request):
 		a.save()
 	
 	if autoSend:
-		m.send()		
+		m.send()
+	else:
+		if senderVerified:
+			m.sendsHoldMessage()	
+		mail_managers("New e-mail added to queue", "Message %d from %s has been added to the outgoing mail queue and requires attention." % (m.id, m.from_address))
 		
 	return HttpResponse("OK")
 
