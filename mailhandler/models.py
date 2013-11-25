@@ -26,6 +26,7 @@ class MailingListMessage(models.Model):
 	body_text = models.TextField()
 	body_html = models.TextField()
 	sent = models.BooleanField(default=False)
+	message_id = models.CharField(max_length=254, blank=True)
 	
 	people = models.ManyToManyField('registration.Person')
 	
@@ -38,7 +39,10 @@ class MailingListMessage(models.Model):
 				data['subject'] = self.subject
 				data['text'] = self.body_text
 				data['o:tag'] = 'mailing_list_message'
-
+				
+				if self.messageID:
+					data['h:Message-Id'] = self.messageID
+					
 				if self.body_html:
 					data['html'] = self.body_html
 

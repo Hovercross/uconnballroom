@@ -50,7 +50,8 @@ def handleIncomingEmail(request):
 	subject = request.POST["subject"]
 	body_text = request.POST["body-plain"]
 	body_html = request.POST.get("body-html", None)
-
+	message_id = request.POST.get("Message-Id", None)
+	
 	content_map = request.POST.get("content-id-map", None)
 	
 	try:
@@ -89,6 +90,8 @@ def handleIncomingEmail(request):
 	
 	m.body_text = body_text
 	m.body_html = body_html
+	
+	m.message_id = message_id
 	
 	m.save()
 
