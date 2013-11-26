@@ -60,4 +60,13 @@ function setupAutocomplete() {
 	autocomplete.on("go", function() {
 		$(this).data("responses", false);
 	})
+	
+	$("a.confirm").on("click", function(e) {
+		title = $(this).attr("title") + " Please confirm to continue";
+		
+		ok = confirm(title);
+		
+		if (!ok)
+			e.preventDefault();
+	})
 }
