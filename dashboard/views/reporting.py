@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils.datastructures import SortedDict
 
@@ -272,9 +272,16 @@ def report(request):
 
 @permission_required('registration.can_run_reports')
 def person_info(request):
-	search = request.GET["person_info_search"]
+	search = request.GET.get("person_info_search", None)
+	
+	if not search:
+		return HttpResponseBadRequest("person_info_search is required")
+	
 	o = lib.codeSearch(search)
 	person = lib.autoPerson(o)
+	
+	if not person:
+		return HttpResponseNotFound("Person not found for %s" % search)
 	
 	templateVars = {}
 	
