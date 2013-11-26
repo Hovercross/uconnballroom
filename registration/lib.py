@@ -181,9 +181,6 @@ def codeSearch(s):
 	searchType = s[0:2].upper()
 	searchData = s[2:]
 	
-	print searchType
-	print searchData
-	
 	if searchType == 'PE':
 		try:
 			return Person.objects.get(pk=searchData)
