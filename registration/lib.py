@@ -96,7 +96,7 @@ def getRegistrationForm(registration):
 	
 	story.append(Paragraph(nameLine, normal))
 	
-#	if len(registration.person.email_addresses) == 1:
+#	if len(registration.person.email_addressesresses) == 1:
 #		story.append(Paragraph("E-Mail Address: %s" % registration.person.email_addresses[0], styles.normal))
 #	elif len(reg.person.email_addresses) > 1:
 #		story.append(Paragraph("E-Mail Addresses: %s" % ", ".join(map(str, reg.person.email_addresses)), styles.normal))
@@ -173,7 +173,6 @@ def registrationCardCodeKey(s):
 	year = int(year)+2000
 	return (year, SEMESTERCODES.get(semester, 99999), remainder)
 	
-
 	
 def codeSearch(s):
 	from registration.models import Person, Registration, MembershipCard
@@ -219,6 +218,3 @@ def autoPerson(o):
 	if isinstance(o, PersonEmail):
 		return o.person
 	
-#Future TODO: Cache this and invalidate when something changes	
-def personInQueryList(person, queryListSlug):
-	pass
