@@ -15,29 +15,31 @@ function setupAutocomplete() {
 		}
 	});
 	
-	autocomplete.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-		emails = item.emails;
-		name = (item.first_name + " " + item.last_name).trim();
-		
-		li = $( "<li>" ).appendTo(ul);
-		li.data( "ui-autocomplete-item", item );
-		a = $("<a>").appendTo(li);
+	autocomplete.each(function(i, e) {
+		$(e).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+			emails = item.emails;
+			name = (item.first_name + " " + item.last_name).trim();
 
-		if (name) {
-			$("<span>").html(item.first_name + " " + item.last_name).addClass("autocomplete-name").appendTo(a);
-		} else {
-			$("<span>").html("Name unknown").addClass("autocomplete-name-empty").appendTo(a);
-		}
-		
-		
-		if(emails) {
-			$("<br>").appendTo(a);
-			$("<span>").html(emails.join(", ")).addClass("autocomplete-emails").appendTo(a);
-		}
-		
-		
-		return li;
-	};
+			li = $( "<li>" ).appendTo(ul);
+			li.data( "ui-autocomplete-item", item );
+			a = $("<a>").appendTo(li);
+
+			if (name) {
+				$("<span>").html(item.first_name + " " + item.last_name).addClass("autocomplete-name").appendTo(a);
+			} else {
+				$("<span>").html("Name unknown").addClass("autocomplete-name-empty").appendTo(a);
+			}
+
+
+			if(emails) {
+				$("<br>").appendTo(a);
+				$("<span>").html(emails.join(", ")).addClass("autocomplete-emails").appendTo(a);
+			}
+
+
+			return li;
+		};
+	})
 	
 	autocomplete.keyup(function(e){
 	    if(e.keyCode == 13)
