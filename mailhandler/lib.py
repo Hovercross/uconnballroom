@@ -214,8 +214,6 @@ def processMessage(data, forceSend=False):
 		errorData.write(m.dataToSend())
 		errorData.write("\n\n")
 
-		#print errorData.getvalue()
-
 		if m.spfStatus != False:
 			errorMessage = MIMEText("There was an error sending your e-mail.  The details of the error have been sent to the uconnballroom.com webmaster.")
 			errorMessage["To"] = m.returnPath

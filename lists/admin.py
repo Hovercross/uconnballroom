@@ -15,8 +15,6 @@ class QueryListAdmin(admin.ModelAdmin):
 			
 		people.sort(key=lambda x: (x.last_name, x.first_name))
 		
-		print people
-		
 		return ", ".join(map(str, people))
 	
 	showPeople.short_description = "People"	

@@ -18,7 +18,6 @@ def manage_gallery(request, id):
 	images = models.GalleryImage.objects.filter(gallery=gallery).order_by('order')
 	
 	if request.method == 'POST':
-		print request.FILES
 		galleryImage = models.GalleryImage(image = request.FILES['file'], gallery=gallery)
 		galleryImage.save()
 		
