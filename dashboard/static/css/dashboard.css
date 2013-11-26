@@ -1,3 +1,9 @@
+input, select, textarea {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
 .autocomplete-name, .autocomplete-name-empty{
 	font-size: 14px;
 	font-style: bold;
@@ -24,10 +30,12 @@
 	text-align: center;
 }
 
-.dashboardBlock input[type="text"] {
-	width: 290px;
+.dashboardBlock input[type="text"], .dashboardBlock select, .dashboardBlock ul {
+	width: 98%;
+	display: block;
+	margin: 0 auto;
 }
 
-.dashboardBlock select {
-	width: 295px;
+.dashboardBlock label {
+	margin-left: 1%;
 }
