@@ -31,3 +31,15 @@ input, select, textarea {
 .dashboardBlock label {
 	margin-left: 1%;
 }
+
+table.vertical th {
+	text-align: right;
+}
+
+table {
+	width: 100%;
+}
+
+table.vertical th {
+	white-space:nowrap; width: 1px; 
+}

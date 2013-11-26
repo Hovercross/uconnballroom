@@ -4,11 +4,12 @@
 {% block headextra %}
 	{{ block.super }}
 	
+	<script type="text/javascript" src="{% static 'js/dashboard_index.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="span-8">
-	<h1>Semester Stats</h1>
+	<h2>Semester Stats</h2>
 	<ul>
 		<li>Paid team members: {{ team_paid }}</li>
 		<li>Paid club members: {{ club_paid }}</li>
@@ -16,6 +17,13 @@
 		<li>Registered/unpaid club members: {{ club_unpaid }}</li>
 		<li>Total dollars: ${{ total_paid }}</li>
 	</ul>
+</div>
+
+<div class="span-8">
+	<h2>Person information lookup</h2>
+	<form method="GET" action="{% url 'dashboard.views.reporting.person_info' %}" id="person_info_form">
+		<p><label for="person_info_search">Scan/search:</label><br /><input id="person_info_search" type="text" class="autocomplete" name="person_info_search" /></p>
+	</form>
 </div>
 
 {% endblock %}

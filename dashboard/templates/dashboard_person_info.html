@@ -1,0 +1,132 @@
+{% extends "dashboard_base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="span-12">
+	<h2>Basic Information</h2>
+	<table class="vertical">
+		<tr>
+			<th>ID</th>
+			<td>{{ person.id }}</td>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<td>{{ person.name }}</td>
+		</tr>
+		<tr>
+			<th>First Name</th>
+			<td>{{ person.first_name }}</td>
+		</tr>
+		<tr>
+			<th>Last Name</th>
+			<td>{{ person.last_name }}</td>
+		</tr>
+		<tr>
+			<th>Gender</th>
+			<td>{{ person.get_gender_display }}</td>
+		</tr>
+		<tr>
+			<th>Peoplesoft Number</th>
+			<td>{{ person.peoplesoft_number }}</td>
+		</tr>
+		<tr>
+			<th>NetID</th>
+			<td>{{ person.netid }}</td>
+		</tr>
+		<tr>
+			<th>Phone number</th>
+			<td>{{ person.phone_number }}</td>
+		</tr>
+		<tr>
+			<th>Hometown</th>
+			<td>{{ person.hometown }}</td>
+		</tr>
+	</table>
+	
+	<h2>E-mail addresses</h2>
+	<table class="horizontal">
+		<tr>
+			<th>E-mail address</th>
+			<th>Receive mail</th>
+		</tr>
+		
+		{% for e in person.emails.all %}
+			<tr>
+				<td>{{ e.email }}</td>
+				<td>
+					{% if e.send %}
+						Yes
+					{% else %}
+						No
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+
+	<h2>E-mail (Query) Lists</h2>
+	<ul>
+		{% for l in query_lists %}
+			<li>{{ l.name }} ({{ l.slug }}@uconnballroom.com)</li>
+		{% endfor %}
+	</ul>
+
+
+	<h2>Management Lists</h2>
+	<ul>
+		{% for l in admin_lists %}
+			<li>{{ l.name }}</li>
+		{% endfor %}
+	</ul>
+
+	
+	<h2>Entry Lists</h2>
+	<ul>
+		{% for l in entry_lists %}
+			<li>{{ l.name }}</li>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="span-12 last">
+	<h2>Registration Information</h2>
+	{% for r in registrations %}
+		<table class="vertical">
+			<tr>
+				<th>Registration Session</th>
+				<td>{{ r.registration_session }}</td>
+			</tr>
+			<tr>
+				<th>ID</th>
+				<td>{{ r.id }}</td>
+			</tr>
+			<tr>
+				<th>Team</th>
+				<td>
+					{% if r.team %}
+						Yes
+					{% else %}
+						No
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>Paid</th>
+				<td>
+					{% if r.paid_amount == None %}
+						Unpaid
+					{% else %}
+						${{r.paid_amount }}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>Person type</th>
+				<td>{{ r.person_type }}</td>
+			</tr>
+		</table>
+	{% endfor %}
+</div>
+{% endblock %}

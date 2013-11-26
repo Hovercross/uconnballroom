@@ -269,3 +269,36 @@ def report(request):
 		return htmlReport(request, headers, data)
 	elif request.GET['format'] == 'Excel':
 		return excelReport(request, headers, data)
+
+@permission_required('registration.can_run_reports')
+def person_info(request):
+	search = request.GET["person_info_search"]
+	o = lib.codeSearch(search)
+	person = lib.autoPerson(o)
+	
+	templateVars = {}
+	
+	templateVars["person"] = person
+	
+	registrations = list(person.registration_set.all())
+	registrations.sort(key=lambda x: lib.registrationCardCodeKey(x.registration_session.card_code))
+	registrations.reverse()
+	templateVars["registrations"] = registrations
+	
+	allLists = List.objects.filter(people=person).order_by('name')
+	entryLists = allLists.filter(list_type='entry_list')
+	adminLists = allLists.filter(list_type='admin_list')
+	
+	queryLists = []
+	
+	for q in QueryList.objects.all():
+		if person in q.people:
+			queryLists.append(q)
+	queryLists.sort(key=lambda q: q.name)
+			
+	templateVars["entry_lists"] = entryLists
+	templateVars["admin_lists"] = adminLists
+	templateVars["query_lists"] = queryLists
+	
+	
+	return render(request, 'dashboard_person_info.html', templateVars)
