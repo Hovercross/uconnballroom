@@ -28,7 +28,11 @@ $(document).ready(function() {
 	        },
 	        error: function(jqXHR, textStatus, errorThrown) 
 	        {
-	            alert("There was an error while processing the club entry. Adam has been notified.")
+				if(jqXHR.status == 400) {
+					alert(jqXHR.responseText);
+				} else {
+	            	alert("There was an error while processing the club entry. Adam has been notified.");
+				}
 	        }
 	    });
 	    e.preventDefault(); //STOP default action
