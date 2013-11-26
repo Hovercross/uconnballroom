@@ -35,8 +35,9 @@
 			
 			<div class="span-24">			
 				<ul class="nav" id="top_nav">
-					<li><a href="/dashboard/tracker/">Entry Tracker</a></li>
-					<li><a href="/dashboard/reports/">Reporting</a></li>
+					<li><a href="{% url 'dashboard.views.index.index' %}">Dashboard</a></li>
+					<li><a href="{% url 'dashboard.views.tracker.index' %}">Entry Tracker</a></li>
+					<li><a href="{% url 'dashboard.views.reporting.index' %}">Reporting</a></li>
 				</ul>
 			</div>
 		</div>
