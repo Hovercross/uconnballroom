@@ -68,6 +68,10 @@
 		    {% block content %}
 		    {% endblock %}
 		</div>
+		<div id="footer" class="span-24">
+			<a class="adminLink" href="{% url 'dashboard.views.index.index' %}">Dashboard</a>
+			<a class="adminLink" href="/admin/page/page/">Content Admin</a>
+		</div>
 	</div>
 	
 </body>

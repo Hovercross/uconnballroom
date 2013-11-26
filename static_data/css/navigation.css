@@ -38,3 +38,13 @@ ul#second_nav a{
 ul#second_nav li a:hover, ul#second_nav li.selected a{
 	color: #000066;
 }
+
+div#footer {
+	text-align: center;
+}
+
+div#footer a.adminLink{
+	display: inline-block;
+	width: 100px;
+	color: #aaa;
+}
