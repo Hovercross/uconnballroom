@@ -22,14 +22,6 @@ input, select, textarea {
 	width: 100%;
 }
 
-.dashboardBlock {
-	background-color: #eee;
-}
-
-.dashboardBlock h1 {
-	text-align: center;
-}
-
 .dashboardBlock input[type="text"], .dashboardBlock select, .dashboardBlock ul {
 	width: 98%;
 	display: block;

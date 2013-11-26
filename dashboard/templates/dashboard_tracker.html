@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="span-12 dashboardBlock" id="clubEntry">
-	<h1>Entry Tracker</h1>
+	<h2>Entry Tracker</h2>
 	<form method="POST" action="{% url 'dashboard.views.tracker.record_entry' %}" id="entry_tracker_form">
 		{% csrf_token %}
 		<p><label for="club_verify_list">Allow people from:</label><br />
@@ -25,7 +25,7 @@
 </div>
 
 <div class="span-12 dashboardBlock last">
-	<h1>Entry Log</h1>
+	<h2>Entry Log</h2>
 	<div><ul id="club_entry_log"/></div>
 </div>
 {% endblock %}
