@@ -4,26 +4,18 @@
 {% block headextra %}
 	{{ block.super }}
 	
-	<script type="text/javascript" src="{% static 'js/dashboard_index.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="span-8 dashboardBlock" id="clubEntry">
-	<h1>Entry Tracker</h1>
-	<form method="POST" action="{% url 'dashboard.views.tracker.record_entry' %}" id="entry_tracker_form">
-		{% csrf_token %}
-		<p><label for="club_verify_list">Allow people from:</label><br />
-			<select name="verify_list" id="verify_list">
-				{% for ql in query_lists %}
-					<option value="{{ ql.slug }}"{% if ql.slug == 'club-entry' %} selected="selected"{% endif %}>{{ ql.name }}</option>
-				{% endfor %}
-			</select>
-		<p><label for="club_entry_list">Record to list:</label><br /><input id="club_entry_list" type="text" value="{{ default_club_entry_list }}" name="record_list" /></p>
-	
-		<p><label for="club_entry_input">Scan/search:</label><br /><input id="club_entry" type="text" class="autocomplete" name="entry_code" /></p>
-	</form>
-	<label for="club_entry_log">Entry log</label>
-	<div><ul id="club_entry_log"/></div>
+<div class="span-8">
+	<h1>Semester Stats</h1>
+	<ul>
+		<li>Paid team members: {{ team_paid }}</li>
+		<li>Paid club members: {{ club_paid }}</li>
+		<li>Registered/unpaid team members: {{ team_unpaid }}</li>
+		<li>Registered/unpaid club members: {{ club_unpaid }}</li>
+		<li>Total dollars: ${{ total_paid }}</li>
+	</ul>
 </div>
 
 {% endblock %}
