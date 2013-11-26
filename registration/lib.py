@@ -186,11 +186,15 @@ def codeSearch(s):
 			return Person.objects.get(pk=searchData)
 		except Person.DoesNotExist:
 			return None
+		except ValueError:
+			return None
 			
 	if searchType == "RF":
 		try:
 			return Registration.objects.get(pk=searchData)
 		except Registration.DoesNotExist:
+			return None
+		except ValueError:
 			return None
 			
 	if searchType == "MC":
@@ -198,7 +202,9 @@ def codeSearch(s):
 			return MembershipCard.objects.get(membership_card=searchData).registration
 		except MembershipCard.DoesNotExist:
 			return None
-	
+		except ValueError:
+			return None
+			
 	return None
 		
 def autoPerson(o):
