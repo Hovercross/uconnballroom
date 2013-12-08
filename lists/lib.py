@@ -110,14 +110,6 @@ def autoList(name, type_code):
 
 		return l
 
-def rebuildManagedLists():
-	with transaction.atomic():
-		for l in lists.models.List.objects.filter(list_type__in=['person_type_list', 'registration_type_list', 'paid_list']):
-			l.delete()
-		
-		for r in registration.models.Registration.objects.all():
-			updateListsFor(r)
-
 def updateListsEvent(sender, instance, **kwargs):
 	updateListsFor(instance)
 

@@ -4,6 +4,7 @@ from django.db.models import Sum
 
 from lists.models import QueryList
 import registration.models
+import ballroom.celery
 
 from datetime import datetime
 
@@ -28,4 +29,13 @@ def index(request):
 		'total_paid': totalDollars
 	}
 	
+	
+	templateVars["running_tasks"] = []
+	
+	active = ballroom.celery.app.control.inspect().active()
+	if active:
+		for worker, tasks in active.items():
+			for task in tasks:
+				templateVars["running_tasks"].append(task)
+				
 	return render(request, "dashboard_index.html", templateVars)

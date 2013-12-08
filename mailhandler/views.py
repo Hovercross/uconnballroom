@@ -125,10 +125,11 @@ def handleIncomingEmail(request):
 		a.save()
 	
 	if autoSend:
+		
 		m.send()
 	else:
 		if senderVerified:
-			m.sendsHoldMessage()	
+			m.sendHoldMessage()	
 		mail_managers("New e-mail added to queue", "Message %d from %s has been added to the outgoing mail queue and requires attention." % (m.id, m.from_address))
 		
 	return HttpResponse("OK")
