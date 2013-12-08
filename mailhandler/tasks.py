@@ -29,8 +29,6 @@ def sendMessage(id):
 				
 			if m.body_html:
 				data['html'] = m.body_html
-			
-			data["o:testmode"] = "yes"
 
 			attachments = m.mailinglistmessageattachment_set.all()
 			postFiles = MultiDict()

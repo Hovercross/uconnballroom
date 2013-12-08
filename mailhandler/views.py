@@ -34,8 +34,18 @@ def handleIncomingEmail(request):
 		spfOK = False
 	
 	if request.POST.get('X-Mailgun-Dkim-Check-Result', '').upper == 'PASS':
-		#TODO: Verify that the domain sending the e-mail matches the from address for the e-mail
-		dkimOK = True
+		from_local, from_domain = from_address.split("@")
+		from_domain = from_domain.lower()
+		
+		dkimData = dkimSplit(request.POST["Dkim-Signature"])
+		
+		dkim_domain = dkimData["d"].lower()
+		signed_headers = map(str.lower, dkimDatap["h"].split(":"))
+		
+		if dkim_domain == from_domain and "from" in signed_headers:
+			dkimOK = True
+		else:
+			dkimOK = False
 	else:
 		dkimOK = False
 		
@@ -134,6 +144,19 @@ def handleIncomingEmail(request):
 		
 	return HttpResponse("OK")
 
+
+def dkimSplit(DKIMHeader):
+	items = map(str.strip, DKIMHeader.split(";"))
+	
+	data = {}
+	
+	for i in items:
+		key, value = i.split("=", 1)
+		
+		data[key] = value
+		
+	return data
+	
 
 def verify(token, timestamp, signature):
     return signature == hmac.new(
