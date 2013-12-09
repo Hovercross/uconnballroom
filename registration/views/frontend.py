@@ -138,7 +138,6 @@ def index(request):
 			if person_changed:
 				person.save()
 			if registration_changed:
-				registration.updateLists()
 				registration.save()
 						
 		#Create the next iteration of the continuation form
