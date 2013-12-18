@@ -35,7 +35,7 @@ def serveRegistrationForm(request, person):
 				mailTo = ['webmaster@uconnballroom.com']
 			
 			subject = "Your UConn Ballroom Registration for %s" % rs
-			message = "Your UConn Ballroom registration has been complted. Please bring the attached registration form to a meeting of the UConn Ballroom Dance club to process your payment."
+			message = "Your UConn Ballroom registration has been completed. Please bring the attached registration form to a meeting of the UConn Ballroom Dance Club to process your payment."
 			mailFrom = "treasurer@uconnballroom.com"
 	
 				
