@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadReque
 from django.shortcuts import render
 from django.utils.datastructures import SortedDict
 
-from registration.models import Person, RegistrationSession
+from registration.models import Person, RegistrationSession, Registration
 from registration import lib
 
 from lists.models import List, QueryList
@@ -82,7 +82,7 @@ def reportData(people, fields, sessionPriority):
 			rows = []
 
 			def getRegistration(p):
-				for rs in registrationSessions:
+				for rs in sessionPriority:
 					try:
 						return Registration.objects.get(person=p, registration_session=rs)
 					except Registration.DoesNotExist:
