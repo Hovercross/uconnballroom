@@ -1,6 +1,5 @@
 from django.db import models
 
-import tasks
 
 class MailSender(models.Model):
 	from_address = models.EmailField(max_length=254)
@@ -25,12 +24,14 @@ class MailingListMessage(models.Model):
 	
 	people = models.ManyToManyField('registration.Person')
 	
-	def send(self):
+	def send(self):	
+		import tasks
 		tasks.sendMessage.delay(self.id)
 		self.sent = True
 		self.save()
 	
 	def sendHoldMessage(self):
+		import tasks
 		tasks.sendHoldMessage.delay(self.id)
 
 class MailingListMessageAttachment(models.Model):
