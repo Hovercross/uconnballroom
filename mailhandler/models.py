@@ -18,7 +18,7 @@ class MailingListMessage(models.Model):
 	subject = models.TextField()
 	incoming_message_id = models.CharField(max_length=254)
 	body_text = models.TextField()
-	body_html = models.TextField()
+	body_html = models.TextField(blank=True)
 	sent = models.BooleanField(default=False)
 	message_id = models.CharField(max_length=254, blank=True)
 	
