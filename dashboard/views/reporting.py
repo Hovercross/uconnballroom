@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadReque
 from django.shortcuts import render
 from django.utils.datastructures import SortedDict
 
-from registration.models import Person, RegistrationSession, Registration
+from registration.models import Person, RegistrationSession, Registration, MembershipCard
 from registration import lib
 
 from lists.models import List, QueryList
