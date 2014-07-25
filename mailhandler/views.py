@@ -33,7 +33,7 @@ def handleIncomingEmail(request):
 	else:
 		spfOK = False
 	
-	if request.POST.get('X-Mailgun-Dkim-Check-Result', '').upper == 'PASS':
+	if request.POST.get('X-Mailgun-Dkim-Check-Result', '').upper() == 'PASS':
 		from_local, from_domain = from_address.split("@")
 		from_domain = from_domain.lower()
 		
