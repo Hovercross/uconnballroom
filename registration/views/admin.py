@@ -33,7 +33,7 @@ def payment(request):
 			registration = Registration.objects.get(pk=scanData)
 			if not registration.registration_session.available:
 				raise ValueError ("Old registration session called up")
-		elif scanType == "MC":
+		elif scanType == "MC" or scanType == "PC":
 			registration = MembershipCard.objects.get(membership_card=scanData).registration
 		
 		if registration.paid_amount == None:
@@ -42,7 +42,7 @@ def payment(request):
 			payField = registration.paid_amount
 		
 		try:
-			mc = "MC%s" % MembershipCard.objects.get(registration=registration).membership_card
+			mc = "PC%s" % MembershipCard.objects.get(registration=registration).membership_card
 		except MembershipCard.DoesNotExist:
 			mc = ""
 		
@@ -52,7 +52,7 @@ def payment(request):
 		if not request.POST["membership_card"]:
 			membershipCard = None
 		else:
-			if request.POST["membership_card"][0:2].upper() != "MC":
+			if request.POST["membership_card"][0:2].upper() not in ("MC", "PC"):
 				raise ValueError("Non-membership card in a membership card field")
 			membershipCard = request.POST["membership_card"][2:].upper()
 		
