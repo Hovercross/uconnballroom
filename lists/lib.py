@@ -78,8 +78,8 @@ def parseQueryList(s, sep):
 			
 		if item in opers:
 			try:
-				op1 = stack.pop()
 				op2 = stack.pop()
+				op1 = stack.pop()
 			except IndexError:
 				raise ListParseException("Operand on an empty stack, too many operators")
 			result = opers[item](op1, op2)
