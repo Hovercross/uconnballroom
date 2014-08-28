@@ -67,8 +67,11 @@ def parseQueryList(s, sep):
 	opers = {
 		'x': set.intersection,
 		'X': set.intersection,
+        '&': set.intersection,
 		'+': set.union,
-		'-': set.difference}
+        '|': set.union,
+		'-': set.difference,
+        '^': set.symmetric_difference,}
 	
 	stack = []
 	
