@@ -196,7 +196,7 @@ def codeSearch(s):
 		except ValueError:
 			return None
 			
-	if searchType == "MC":
+	if searchType == "MC" or searchType == "PC":
 		try:
 			return MembershipCard.objects.get(membership_card=searchData).registration
 		except MembershipCard.DoesNotExist:
