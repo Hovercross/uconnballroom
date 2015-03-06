@@ -9,7 +9,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
-SERVER_EMAIL = 'ballroom-web-app@tigger.peacockhosting.net'
+SERVER_EMAIL = 'uconnballroom_com@owl.peacockhosting.net'
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 
