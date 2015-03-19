@@ -96,6 +96,13 @@ class SubtitledHeader(models.Model):
 		return render_to_string("partial/subtitledHeader.html", {'content': self})
 
 
+#Moved out of class definitation for Django 1.7 migrations
+def getUploadTo(instance, originalPath):
+	prefix, extension = os.path.splitext(originalPath)
+	uniqueName = "%s%s" % (uuid.uuid4().hex, extension)
+	return os.path.join(settings.FEINCMS_UPLOAD_PREFIX, 'imagecontent', uniqueName)
+
+
 #Straight copy-pasta from the FeinCMS ImageContent so that I can override the upload_to parameter
 #Inheritance wasn't working for me, since Django wouldn't let me override the existing image field
 class ImageContent(models.Model):
@@ -125,11 +132,6 @@ class ImageContent(models.Model):
         ``thumbnail``. Everything else (such as ``noop``) is ignored.
     """
     
-    def getUploadTo(instance, originalPath):
-		prefix, extension = os.path.splitext(originalPath)
-		uniqueName = "%s%s" % (uuid.uuid4().hex, extension)
-		return os.path.join(settings.FEINCMS_UPLOAD_PREFIX, 'imagecontent', uniqueName)
-
     image = models.ImageField(
         _('image'), max_length=255,
         upload_to=getUploadTo)
