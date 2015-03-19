@@ -102,6 +102,8 @@ MIGRATION_MODULES = {
 	'page': 'migrate.page',
 }
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 LOGGING = {
 	'version': 1,
 	'disable_existing_loggers': False,
