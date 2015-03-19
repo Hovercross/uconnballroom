@@ -1,12 +1,44 @@
 import os
+import dj_database_url
 
-from environment import *
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+#Read environment variables
+DATABASE_URL = os.environ['DATABASE_URL']
+DEBUG = bool(os.environ.get('DEBUG', False))
+TEMPLATE_DEBUG = bool(os.environ.get('TEMPLATE_DEBUG', DEBUG))
+
+PARENT_DIR = os.environ.get('PROJECT_DIR', os.path.dirname(BASE_DIR))
+
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(PARENT_DIR, 'media'))
+STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(PARENT_DIR, 'static'))
+
+MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
+STATIC_URL = os.environ.get('STATIC_URL', '/static/')
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+MAILGUN_KEY = os.environ.get('MAILGUN_KEY')
+
+BROKER_URL = os.environ.get('BROKER_URL', None)
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+
+#Serve static is true by default is DEBUG is true
+SERVE_STATIC = bool(os.environ.get('SERVE_STATIC', DEBUG))
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split()
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 ADMINS = (
      ('Adam Peacock', 'adam@thepeacock.net'),
 )
 
 MANAGERS = ADMINS
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 EMAIL_BACKEND = 'django_ses_backend.SESBackend'
 SERVER_EMAIL = 'uconnballroom_com@owl.peacockhosting.net'
@@ -21,8 +53,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+
 STATICFILES_DIRS = (
-	os.path.join(ROOT_PATH, 'static_data'),
+	os.path.join(BASE_DIR, 'static_data'),
 )
 
 STATICFILES_FINDERS = (
@@ -55,7 +89,7 @@ ROOT_URLCONF = 'ballroom.urls'
 WSGI_APPLICATION = 'ballroom.wsgi.application'
 
 TEMPLATE_DIRS = (
-	os.path.join(ROOT_PATH, 'templates'),
+	os.path.join(BASE_DIR, 'templates'),
 )
 
 INSTALLED_APPS = (
