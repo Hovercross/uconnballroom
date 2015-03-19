@@ -9,7 +9,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from models import PersonType, RegistrationSession, PersonEmail, Person, Registration, PersonTypeAutoList
 from django.template.defaultfilters import slugify
-from django_ses.views import dashboard
 
 class AutoListPersonTypeInlineAdmin(admin.TabularInline):
 	model = PersonTypeAutoList

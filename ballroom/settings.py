@@ -8,7 +8,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-EMAIL_BACKEND = 'django_ses.SESBackend'
+EMAIL_BACKEND = 'django_ses_backend.SESBackend'
 SERVER_EMAIL = 'uconnballroom_com@owl.peacockhosting.net'
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
@@ -65,13 +65,11 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'django_ses',
 	'feincms',
 	'mptt',
 	'feincms.module.page',
 	'content',
 	'adminsortable',
-	'south',
 	'easy_thumbnails',
 	'biographies',
 	'galleries',
@@ -100,11 +98,8 @@ FEINCMS_RICHTEXT_INIT_CONTEXT  = {
 	'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tinymce/tinymce.min.js'
 }
 
-SOUTH_MIGRATION_MODULES = {
+MIGRATION_MODULES = {
 	'page': 'migrate.page',
-	'content': 'migrate.content',
-	'biographies': 'migrate.biographies',
-	'galleries': 'migrate.galleries',
 }
 
 LOGGING = {
