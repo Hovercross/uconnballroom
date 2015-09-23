@@ -10,7 +10,7 @@ class QueryListAdmin(admin.ModelAdmin):
 	def showPeople(self, o):
 		try:
 			people = list(o.people)
-		except Exception, e:
+		except Exception as e:
 			return "Error parsing query list"
 			
 		people.sort(key=lambda x: (x.last_name, x.first_name))

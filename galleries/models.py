@@ -44,7 +44,7 @@ class GalleryImage(Sortable):
 		if self.image:
 			try:
 				return '<img src="%s" alt=""/>' % (get_thumbnailer(self.image)['adminThumb'].url)
-			except Exception, e:
+			except Exception as e:
 				return 'ERROR'
 		else:
 			return "&nbsp;"

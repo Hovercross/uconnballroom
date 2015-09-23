@@ -10,7 +10,7 @@ from lists.models import List, QueryList
 from lists.lib import parseQueryList, ListParseException
 
 import xlsxwriter
-from cStringIO import StringIO
+from io import StringIO
 
 #All available report headers, used for report display
 HEADERS = {
@@ -249,7 +249,7 @@ def index(request):
 def report(request):
 	try:
 		people = parseQueryList(request.GET["query"], "\n")
-	except ListParseException, e:
+	except ListParseException as e:
 		return HttpResponse("Error parsing list: %s" % e.s)
 	
 	fields = [field for field in request.GET["fields"].splitlines() if field]

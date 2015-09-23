@@ -71,7 +71,7 @@ class PersonType(Sortable):
 	enabled = models.BooleanField(default=True)
 		
 	def __str__(self):
-		return u'%s' % self.description
+		return '%s' % self.description
 
 class RegistrationSession(models.Model):
 	year = models.IntegerField()

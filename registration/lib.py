@@ -15,10 +15,7 @@ from qr import QRCodeFlowable
 
 SEMESTERCODES = {'S': 1, 'F': 2}
 
-try:
-	from cStringIO import StringIO
-except ImportError:
-	from StringIO import StringIO
+from io import StringIO
 
 def sendRegistrationEmail(registration):
 	pass
@@ -92,7 +89,7 @@ def getRegistrationForm(registration):
 	story.append(Spacer(1, .25 * inch))
 	
 	story.append(Paragraph("Registration Information", heading))
-	nameLine = u"Name: %s %s" % (registration.person.first_name, registration.person.last_name)
+	nameLine = "Name: %s %s" % (registration.person.first_name, registration.person.last_name)
 	
 	story.append(Paragraph(nameLine, normal))
 	

@@ -8,7 +8,7 @@ from mailhandler.models import MailSender
 
 import sys
 import traceback
-from cStringIO import StringIO
+from io import StringIO
 
 from boto.ses.connection import SESConnection
 
@@ -48,7 +48,7 @@ class Message(object):
 		
 		try:	
 			localPart, remotePart = originalTo.split("@")
-		except ValueError, e:
+		except ValueError as e:
 			log.error("ValueError while splitting %s into user and domain" % originalTo)
 			return None
 		
@@ -176,7 +176,7 @@ def processMessage(data, forceSend=False):
 			log.info("Holding list message")
 			holdListMessage(m)
 
-	except Exception, e:
+	except Exception as e:
 		log.error("Processing exception: %s" % e)
 		
 		exc_type, exc_value, exc_traceback = sys.exc_info()
