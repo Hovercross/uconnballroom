@@ -62,7 +62,7 @@ def updateListsFor(r):
 			l.save()
 
 def parseQueryList(s, sep):
-	items = map(unicode.strip, s.split(sep))
+    items = [item.strip() for item in s.split(sep)])
 	
 	opers = {
 		'x': set.intersection,

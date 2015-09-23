@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from models import PersonType, RegistrationSession, PersonEmail, Person, Registration, PersonTypeAutoList
+from registration.models import PersonType, RegistrationSession, PersonEmail, Person, Registration, PersonTypeAutoList
 from django.template.defaultfilters import slugify
 
 class AutoListPersonTypeInlineAdmin(admin.TabularInline):

@@ -7,11 +7,9 @@ from reportlab.lib.units import inch
 
 from django.core.mail import send_mail, EmailMessage
 
-import models
-
 from datetime import date
 
-from qr import QRCodeFlowable
+from registration.qr import QRCodeFlowable
 
 SEMESTERCODES = {'S': 1, 'F': 2}
 

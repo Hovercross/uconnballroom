@@ -29,7 +29,7 @@ class Message(object):
 	
 	@property
 	def spfStatus(self):
-		if not self.message.has_key("Received-SPF"):
+		if "Received-SPF" not in self.message:
 			return None
 		status = self.message["Received-SPF"].split(" ", 1)[0].lower().strip()
 		if status == "pass":

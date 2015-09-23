@@ -40,7 +40,7 @@ def handleIncomingEmail(request):
 		dkimData = dkimSplit(request.POST["Dkim-Signature"])
 		
 		dkim_domain = dkimData["d"].lower()
-		signed_headers = map(str.lower, dkimDatap["h"].split(":"))
+        signed_headers = [s.lower() for s in dkimData["h"].split(":")]
 		
 		if dkim_domain == from_domain and "from" in signed_headers:
 			dkimOK = True
