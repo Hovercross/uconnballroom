@@ -23,7 +23,7 @@ class Person(models.Model):
 	
 	def __str__(self):
 		if self.name:
-			return unicodedata.normalize('NFKD', self.name).encode('ascii','ignore')
+			return self.name
 		elif self.id:
 			return "Person %d" % self.id
 		else:
