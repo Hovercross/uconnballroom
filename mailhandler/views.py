@@ -160,6 +160,6 @@ def dkimSplit(DKIMHeader):
 
 def verify(token, timestamp, signature):
     return signature == hmac.new(
-                             key=settings.MAILGUN_KEY,
-                             msg='{}{}'.format(timestamp, token),
+                             key=settings.MAILGUN_KEY.encode(),
+                             msg='{}{}'.format(timestamp, token).encode(),
                              digestmod=hashlib.sha256).hexdigest()

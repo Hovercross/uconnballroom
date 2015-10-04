@@ -1,7 +1,7 @@
 import email
 import logging
 
-from email.MIMEText import MIMEText
+from email.mime.text import MIMEText
 
 from lists.models import QueryList
 from mailhandler.models import MailSender
