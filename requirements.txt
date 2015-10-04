@@ -15,9 +15,6 @@ djangorestframework==3.2.4
 easy-thumbnails==2.2
 feedparser==5.2.1
 FeinCMS==1.11.1
-gnureadline==6.3.3
-ipython==4.0.0
-ipython-genutils==0.1.0
 kombu==3.0.26
 Markdown==2.6.2
 path.py==8.1.1
