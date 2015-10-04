@@ -31,7 +31,7 @@ class Gallery(Sortable):
 	
 	bulk_admin_url.allow_tags = True
 	
-	def __unicode__(self):
+	def __str__(self):
 		return self.name
 
 class GalleryImage(Sortable):
@@ -50,7 +50,7 @@ class GalleryImage(Sortable):
 			return "&nbsp;"
 	admin_thumb.allow_tags = True
 	
-	def __unicode__(self):
+	def __str__(self):
 		if self.title:
 			return "%s (%s)" % (self.title, self.image)
 		return "%s" % self.id

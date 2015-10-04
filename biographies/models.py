@@ -24,7 +24,7 @@ class Biography(Sortable):
 	biography = models.TextField(blank=True, null=True)
 	photo = models.ImageField(upload_to='bio_photos', blank=True, null=True)
 	
-	def __unicode__(self):
+	def __str__(self):
 		if self.title:
 			return "%s (%s %s)" % (self.title, self.first_name, self.last_name)
 		else:
