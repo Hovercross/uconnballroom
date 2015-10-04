@@ -10,6 +10,7 @@ from webob.multidict import MultiDict
 from cStringIO import StringIO
 import email.utils
 import requests
+import os
 
 @shared_task
 def sendMessage(id):
