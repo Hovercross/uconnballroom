@@ -25,7 +25,7 @@ MEDIA_URL = config['urls']['MEDIA_URL']
 STATIC_URL = config['urls']['STATIC_URL']
 
 AWS_ACCESS_KEY_ID = config['cloud'].get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config['cloud'].get('AWS_ACCESS_KEY_KEY')
+AWS_SECRET_ACCESS_KEY = config['cloud'].get('AWS_SECRET_ACCESS_KEY')
 
 MAILGUN_KEY = config['cloud'].get('MAILGUN_KEY')
 
