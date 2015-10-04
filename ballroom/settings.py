@@ -1,51 +1,55 @@
 import os
+import email.utils
+
 import dj_database_url
+import configparser
+
+config = configparser.ConfigParser()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+defaultConfigFilePath = os.path.abspath(os.path.join(BASE_DIR, "..", "settings.ini"))
 
-#Read environment variables
-DATABASE_URL = os.environ['DATABASE_URL']
-DEBUG = bool(os.environ.get('DEBUG', False))
-TEMPLATE_DEBUG = bool(os.environ.get('TEMPLATE_DEBUG', DEBUG))
+CONFIG_FILE = os.environ.get("DJANGO_CONFIG_FILE", defaultConfigFilePath)
 
-PARENT_DIR = os.environ.get('PROJECT_DIR', os.path.dirname(BASE_DIR))
+config.read(CONFIG_FILE)
 
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(PARENT_DIR, 'media'))
-STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(PARENT_DIR, 'static'))
+DATABASE_URL = config['database']['URL']
 
-MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
-STATIC_URL = os.environ.get('STATIC_URL', '/static/')
+DEBUG = config.getboolean('debug', 'DEBUG')
+TEMPLATE_DEBUG = config.getboolean('debug', 'TEMPLATE_DEBUG')
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+MEDIA_ROOT = config['files']['MEDIA_ROOT']
+STATIC_ROOT = config['files']['STATIC_ROOT']
 
-MAILGUN_KEY = os.environ.get('MAILGUN_KEY')
+MEDIA_URL = config['urls']['MEDIA_URL']
+STATIC_URL = config['urls']['STATIC_URL']
 
-BROKER_URL = os.environ.get('BROKER_URL', None)
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+AWS_ACCESS_KEY_ID = config['cloud'].get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config['cloud'].get('AWS_ACCESS_KEY_KEY')
+
+MAILGUN_KEY = config['cloud'].get('MAILGUN_KEY')
+
+BROKER_URL = config['celery'].get('BROKER_URL')
+CELERY_RESULT_BACKEND = config['celery'].get('CELERY_RESULT_BACKEND')
 
 #Serve static is true by default is DEBUG is true
-SERVE_STATIC = bool(os.environ.get('SERVE_STATIC', DEBUG))
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split()
+SERVE_STATIC = config.getboolean('debug', 'SERVE_STATIC')
+ALLOWED_HOSTS = [host.strip() for host in config['production'].get('ALLOWED_HOSTS', "").split(",")]
+
+STATICFILES_STORAGE = config['files']['STORAGE']
+
+EMAIL_BACKEND = config['email']['BACKEND']
+SERVER_EMAIL = config['email']['SERVER_ADDRESS']
+
+TIME_ZONE = config['internationalization']['TIME_ZONE']
+LANGUAGE_CODE = config['internationalization']['LANGUAGE_CODE']
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-ADMINS = (
-     ('Adam Peacock', 'adam@thepeacock.net'),
-)
-
-MANAGERS = ADMINS
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
-
-EMAIL_BACKEND = 'django_ses_backend.SESBackend'
-SERVER_EMAIL = 'uconnballroom_com@owl.peacockhosting.net'
-TIME_ZONE = 'America/New_York'
-LANGUAGE_CODE = 'en-us'
-
-SITE_ID = 1
+ADMINS = [email.utils.parseaddr(a.strip()) for a in config['email']['ERRORS'].split(",")]
+MANAGERS = [email.utils.parseaddr(a.strip()) for a in config['email']['MANAGERS'].split(",")]
 
 USE_I18N = True
 
@@ -111,6 +115,7 @@ INSTALLED_APPS = (
 	'mailhandler',
 	'dashboard',
 	'lists',
+    'rest_framework',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
 )

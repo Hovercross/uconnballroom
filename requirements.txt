@@ -8,8 +8,10 @@ decorator==4.0.2
 dj-database-url==0.3.0
 Django==1.8.4
 django-admin-sortable==2.0.1
+django-filter==0.11.0
 django-mptt==0.7.4
 django-ses==0.7.0
+djangorestframework==3.2.4
 easy-thumbnails==2.2
 feedparser==5.2.1
 FeinCMS==1.11.1
@@ -17,6 +19,7 @@ gnureadline==6.3.3
 ipython==4.0.0
 ipython-genutils==0.1.0
 kombu==3.0.26
+Markdown==2.6.2
 path.py==8.1.1
 pexpect==3.3
 pickleshare==0.5
