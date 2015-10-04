@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from dashboard.views import reporting, index, autocomplete, tracker, utils
+from dashboard.views import reporting, index, autocomplete, tracker, utils, remote
 
 urlpatterns = patterns('',
     url(r'^$', index.index),
@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^autocomplete/$', autocomplete.search),
     url(r'^tracker/$', tracker.index),
     url(r'^tracker/record/$', tracker.record_entry),
+    url(r'^tracker/remote/record/$', remote.record_entry),
 )
