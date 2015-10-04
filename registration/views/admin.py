@@ -63,7 +63,7 @@ def payment(request):
 			
 		registration = Registration.objects.get(pk=request.POST["registration_id"])
 		
-		with transaction.commit_on_success():
+		with transaction.atomic():
 			for mc in MembershipCard.objects.filter(membership_card=membershipCard):
 				mc.delete()
 			

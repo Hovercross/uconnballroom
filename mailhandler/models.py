@@ -25,13 +25,13 @@ class MailingListMessage(models.Model):
 	people = models.ManyToManyField('registration.Person')
 	
 	def send(self):	
-		import tasks
+		from mailhandler import tasks
 		tasks.sendMessage.delay(self.id)
 		self.sent = True
 		self.save()
 	
 	def sendHoldMessage(self):
-		import tasks
+		from mailhandler import tasks
 		tasks.sendHoldMessage.delay(self.id)
 
 class MailingListMessageAttachment(models.Model):

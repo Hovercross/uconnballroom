@@ -1,7 +1,7 @@
 from django.contrib import admin
 from adminsortable.admin import SortableTabularInline, SortableAdmin
 
-from models import Biography, BiographySection
+from biographies.models import Biography, BiographySection
 
 class BiographyAdmin(SortableAdmin):
     pass

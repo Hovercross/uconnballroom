@@ -1,19 +1,55 @@
 import os
+import email.utils
 
-from environment import *
+import dj_database_url
+import configparser
 
-ADMINS = (
-     ('Adam Peacock', 'adam@thepeacock.net'),
-)
+config = configparser.ConfigParser()
 
-MANAGERS = ADMINS
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+defaultConfigFilePath = os.path.abspath(os.path.join(BASE_DIR, "..", "settings.ini"))
 
-EMAIL_BACKEND = 'django_ses.SESBackend'
-SERVER_EMAIL = 'uconnballroom_com@owl.peacockhosting.net'
-TIME_ZONE = 'America/New_York'
-LANGUAGE_CODE = 'en-us'
+CONFIG_FILE = os.environ.get("DJANGO_CONFIG_FILE", defaultConfigFilePath)
 
-SITE_ID = 1
+config.read(CONFIG_FILE)
+
+DATABASE_URL = config['database']['URL']
+
+DEBUG = config.getboolean('debug', 'DEBUG')
+TEMPLATE_DEBUG = config.getboolean('debug', 'TEMPLATE_DEBUG')
+
+MEDIA_ROOT = config['files']['MEDIA_ROOT']
+STATIC_ROOT = config['files']['STATIC_ROOT']
+
+MEDIA_URL = config['urls']['MEDIA_URL']
+STATIC_URL = config['urls']['STATIC_URL']
+
+AWS_ACCESS_KEY_ID = config['cloud'].get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config['cloud'].get('AWS_SECRET_ACCESS_KEY')
+
+MAILGUN_KEY = config['cloud'].get('MAILGUN_KEY')
+
+BROKER_URL = config['celery'].get('BROKER_URL')
+CELERY_RESULT_BACKEND = config['celery'].get('CELERY_RESULT_BACKEND')
+
+#Serve static is true by default is DEBUG is true
+SERVE_STATIC = config.getboolean('debug', 'SERVE_STATIC')
+ALLOWED_HOSTS = [host.strip() for host in config['production'].get('ALLOWED_HOSTS', "").split(",")]
+
+STATICFILES_STORAGE = config['files']['STORAGE']
+
+EMAIL_BACKEND = config['email']['BACKEND']
+SERVER_EMAIL = config['email']['SERVER_ADDRESS']
+
+TIME_ZONE = config['internationalization']['TIME_ZONE']
+LANGUAGE_CODE = config['internationalization']['LANGUAGE_CODE']
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+ADMINS = [email.utils.parseaddr(a.strip()) for a in config['email']['ERRORS'].split(",")]
+MANAGERS = [email.utils.parseaddr(a.strip()) for a in config['email']['MANAGERS'].split(",")]
 
 USE_I18N = True
 
@@ -21,8 +57,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+
 STATICFILES_DIRS = (
-	os.path.join(ROOT_PATH, 'static_data'),
+	os.path.join(BASE_DIR, 'static_data'),
 )
 
 STATICFILES_FINDERS = (
@@ -55,23 +93,21 @@ ROOT_URLCONF = 'ballroom.urls'
 WSGI_APPLICATION = 'ballroom.wsgi.application'
 
 TEMPLATE_DIRS = (
-	os.path.join(ROOT_PATH, 'templates'),
+	os.path.join(BASE_DIR, 'templates'),
 )
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
-	'django.contrib.sites',
+#	'django.contrib.sites',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'django_ses',
 	'feincms',
 	'mptt',
 	'feincms.module.page',
 	'content',
 	'adminsortable',
-	'south',
 	'easy_thumbnails',
 	'biographies',
 	'galleries',
@@ -79,6 +115,7 @@ INSTALLED_APPS = (
 	'mailhandler',
 	'dashboard',
 	'lists',
+    'rest_framework',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
 )
@@ -100,12 +137,11 @@ FEINCMS_RICHTEXT_INIT_CONTEXT  = {
 	'TINYMCE_JS_URL': STATIC_URL + 'admin/js/tinymce/tinymce.min.js'
 }
 
-SOUTH_MIGRATION_MODULES = {
+MIGRATION_MODULES = {
 	'page': 'migrate.page',
-	'content': 'migrate.content',
-	'biographies': 'migrate.biographies',
-	'galleries': 'migrate.galleries',
 }
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 LOGGING = {
 	'version': 1,

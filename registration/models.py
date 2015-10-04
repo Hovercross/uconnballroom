@@ -23,7 +23,7 @@ class Person(models.Model):
 	
 	def __str__(self):
 		if self.name:
-			return unicodedata.normalize('NFKD', self.name).encode('ascii','ignore')
+			return self.name
 		elif self.id:
 			return "Person %d" % self.id
 		else:
@@ -66,12 +66,12 @@ class PersonType(Sortable):
 	description = models.CharField(max_length=50)
 	usg_person_type = models.CharField(max_length=50)
 	csc_semester_standing = models.CharField(max_length=50, blank=True)
-	student_rate = models.BooleanField()
-	uconn_student = models.BooleanField()
+	student_rate = models.BooleanField(default=False)
+	uconn_student = models.BooleanField(default=False)
 	enabled = models.BooleanField(default=True)
 		
 	def __str__(self):
-		return u'%s' % self.description
+		return '%s' % self.description
 
 class RegistrationSession(models.Model):
 	year = models.IntegerField()
@@ -118,7 +118,7 @@ class Registration(models.Model):
 	registration_session = models.ForeignKey(RegistrationSession)
 	person_type = models.ForeignKey(PersonType)
 	registered_at = models.DateTimeField(auto_now_add=True)
-	team = models.BooleanField()
+	team = models.BooleanField(default=False)
 	paid_amount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 	paid_date = models.DateTimeField(null=True, blank=True)
 	sent_registration_email = models.BooleanField(default=False)

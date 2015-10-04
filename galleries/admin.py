@@ -3,7 +3,7 @@ from django.contrib import admin
 from adminsortable.admin import SortableTabularInline, SortableAdmin
 from django.utils.translation import ugettext_lazy as _
 
-from models import Gallery, GalleryImage
+from galleries.models import Gallery, GalleryImage
 
 from django.forms import TextInput, Textarea
 from django.db import models

@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 
 from mailhandler import models
 
@@ -7,7 +7,7 @@ from celery import shared_task
 from django.conf import settings
 
 from webob.multidict import MultiDict
-from cStringIO import StringIO
+from io import StringIO
 import email.utils
 import requests
 import os

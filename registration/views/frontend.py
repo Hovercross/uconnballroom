@@ -29,7 +29,7 @@ def serveRegistrationForm(request, person):
 	
 	if not registration.sent_registration_email:
 		logger.info("Sending registration email to %s" % registration.person)
-		with transaction.commit_on_success():
+		with transaction.atomic():
 			mailTo = [e.email for e in registration.person.emails.all() if e.send]
 			if not mailTo:
 				mailTo = ['webmaster@uconnballroom.com']
@@ -80,7 +80,7 @@ def index(request):
 		try:
 			email = models.PersonEmail.objects.get(email=form.cleaned_data['email'])
 		except models.PersonEmail.DoesNotExist:
-			with transaction.commit_on_success():
+			with transaction.atomic():
 				person = models.Person()
 				person.save()
 			
@@ -120,7 +120,7 @@ def index(request):
 		person_changed = False
 		registration_changed = False
 		
-		with transaction.commit_on_success():
+		with transaction.atomic():
 			if 'uconn_email' in form.cleaned_data:
 				e = models.PersonEmail(person=person, email=form.cleaned_data["uconn_email"], send=False)
 				e.save()
