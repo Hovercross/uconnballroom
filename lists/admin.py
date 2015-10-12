@@ -27,3 +27,4 @@ class ListAdmin(admin.ModelAdmin):
 
 admin.site.register(lists.models.List, ListAdmin)
 admin.site.register(lists.models.QueryList, QueryListAdmin)
+admin.site.register(lists.models.RemoteScanEndpoint)
