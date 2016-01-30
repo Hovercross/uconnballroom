@@ -56,7 +56,7 @@ class PersonAdmin(admin.ModelAdmin):
             return request.user.has_perm('registration.delete_person')
 
         for r in obj.registration_set.all():
-            if r.paid_amount > 0:
+            if r.paid_amount:
                 return False
 
         return request.user.has_perm('registration.delete_person')
