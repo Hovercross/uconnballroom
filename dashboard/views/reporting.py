@@ -10,7 +10,7 @@ from lists.models import List, QueryList
 from lists.lib import parseQueryList, ListParseException
 
 import xlsxwriter
-from io import StringIO
+from io import BytesIO
 
 #All available report headers, used for report display
 HEADERS = {
@@ -190,7 +190,7 @@ def htmlReport(request, headers, data):
 	return render(request, "dashboard_report.html", {'data': data, 'headers': headers, 'count': len(data)})
 	
 def excelReport(request, headers, data):
-	out = StringIO()
+	out = BytesIO()
 	
 	workbook = xlsxwriter.Workbook(out)
 	worksheet = workbook.add_worksheet()
