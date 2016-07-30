@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render
-from django.utils.datastructures import SortedDict
+from collections import OrderedDict
 
 from registration.models import Person, RegistrationSession, Registration, MembershipCard
 from registration import lib
@@ -227,10 +227,10 @@ def index(request):
 			managedLists[listType][semester] = []
 		managedLists[listType][semester].append(l)
 	
-	sortedManagedLists = SortedDict()
+	sortedManagedLists = OrderedDict()
 			
 	for listType in managedLists:
-		sortedManagedLists[listType] = SortedDict()
+		sortedManagedLists[listType] = OrderedDict()
 		
 		semestersDict = managedLists[listType]
 		

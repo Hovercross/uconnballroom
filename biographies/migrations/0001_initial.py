@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 
 from django.db import models, migrations
 import adminsortable.fields
@@ -14,35 +14,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Biography',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('order', models.PositiveIntegerField(default=1, editable=False, db_index=True)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('order', models.PositiveIntegerField(db_index=True, default=0, editable=False)),
                 ('first_name', models.CharField(max_length=50)),
                 ('last_name', models.CharField(max_length=50)),
-                ('title', models.CharField(max_length=50, null=True, blank=True)),
-                ('email', models.EmailField(max_length=75, null=True, blank=True)),
-                ('biography', models.TextField(null=True, blank=True)),
-                ('photo', models.ImageField(null=True, upload_to=b'bio_photos', blank=True)),
+                ('title', models.CharField(max_length=50, blank=True, null=True)),
+                ('email', models.EmailField(max_length=254, blank=True, null=True)),
+                ('biography', models.TextField(blank=True, null=True)),
+                ('photo', models.ImageField(upload_to='bio_photos', blank=True, null=True)),
             ],
             options={
-                'ordering': ['order'],
                 'abstract': False,
+                'ordering': ['order'],
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='BiographySection',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
                 ('title', models.CharField(max_length=50)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='biography',
             name='section',
             field=adminsortable.fields.SortableForeignKey(to='biographies.BiographySection'),
-            preserve_default=True,
         ),
     ]

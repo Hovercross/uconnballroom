@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 
 from django.db import models, migrations
 import galleries.models
@@ -15,30 +15,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Gallery',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('order', models.PositiveIntegerField(default=1, editable=False, db_index=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
+                ('order', models.PositiveIntegerField(editable=False, db_index=True, default=0)),
                 ('name', models.CharField(max_length=50)),
             ],
             options={
-                'ordering': ['order'],
                 'abstract': False,
+                'ordering': ['order'],
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='GalleryImage',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('order', models.PositiveIntegerField(default=1, editable=False, db_index=True)),
+                ('id', models.AutoField(auto_created=True, serialize=False, primary_key=True, verbose_name='ID')),
+                ('order', models.PositiveIntegerField(editable=False, db_index=True, default=0)),
                 ('image', models.ImageField(upload_to=galleries.models.getGalleryImagePath)),
                 ('title', models.CharField(max_length=50, null=True, blank=True)),
                 ('caption', models.TextField(null=True, blank=True)),
                 ('gallery', adminsortable.fields.SortableForeignKey(to='galleries.Gallery')),
             ],
             options={
-                'ordering': ['order'],
                 'abstract': False,
+                'ordering': ['order'],
             },
-            bases=(models.Model,),
         ),
     ]
