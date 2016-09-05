@@ -16,7 +16,7 @@ config.read(CONFIG_FILE)
 DATABASE_URL = config['database']['URL']
 
 DEBUG = config.getboolean('debug', 'DEBUG')
-TEMPLATE_DEBUG = config.getboolean('debug', 'TEMPLATE_DEBUG')
+
 
 MEDIA_ROOT = config['files']['MEDIA_ROOT']
 STATIC_ROOT = config['files']['STATIC_ROOT']
@@ -71,11 +71,7 @@ STATICFILES_FINDERS = (
 
 SECRET_KEY = 'e=5u$-o+p7mm4hmz5fwc3_npgkzt!%ex3@0(qf#6bhb8*qxd#v'
 
-TEMPLATE_LOADERS = (
-	'django.template.loaders.filesystem.Loader',
-	'django.template.loaders.app_directories.Loader',
-#	  'django.template.loaders.eggs.Loader',
-)
+
 
 MIDDLEWARE_CLASSES = (
 	'django.middleware.common.CommonMiddleware',
@@ -92,9 +88,6 @@ ROOT_URLCONF = 'ballroom.urls'
 
 WSGI_APPLICATION = 'ballroom.wsgi.application'
 
-TEMPLATE_DIRS = (
-	os.path.join(BASE_DIR, 'templates'),
-)
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
@@ -120,7 +113,6 @@ INSTALLED_APPS = (
 	'django.contrib.admindocs',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.static', 'django.contrib.auth.context_processors.auth', 'feincms.context_processors.add_page_if_missing', 'django.core.context_processors.request')
 
 THUMBNAIL_ALIASES = {
 	'': {
@@ -142,6 +134,31 @@ MIGRATION_MODULES = {
 }
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'feincms.context_processors.add_page_if_missing',
+            ],
+        },
+    },
+]
 
 LOGGING = {
 	'version': 1,

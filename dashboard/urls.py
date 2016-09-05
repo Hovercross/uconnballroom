@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from dashboard.views import reporting, index, autocomplete, tracker, utils, remote
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', index.index),
     url(r'^reports/$', reporting.index),
     url(r'^reports/report/$', reporting.report),
@@ -12,4 +12,4 @@ urlpatterns = patterns('',
     url(r'^tracker/$', tracker.index),
     url(r'^tracker/record/$', tracker.record_entry),
     url(r'^tracker/remote/record/$', remote.record_entry),
-)
+]
