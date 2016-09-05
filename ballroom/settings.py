@@ -74,6 +74,7 @@ SECRET_KEY = 'e=5u$-o+p7mm4hmz5fwc3_npgkzt!%ex3@0(qf#6bhb8*qxd#v'
 
 
 MIDDLEWARE_CLASSES = (
+	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,6 +89,8 @@ ROOT_URLCONF = 'ballroom.urls'
 
 WSGI_APPLICATION = 'ballroom.wsgi.application'
 
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
@@ -108,6 +111,7 @@ INSTALLED_APPS = (
 	'mailhandler',
 	'dashboard',
 	'lists',
+	'corsheaders',
     'rest_framework',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
