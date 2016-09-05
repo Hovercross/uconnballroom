@@ -78,6 +78,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,6 +96,8 @@ WSGI_APPLICATION = 'ballroom.wsgi.application'
 TEMPLATE_DIRS = (
 	os.path.join(BASE_DIR, 'templates'),
 )
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
@@ -115,6 +118,7 @@ INSTALLED_APPS = (
 	'mailhandler',
 	'dashboard',
 	'lists',
+	'corsheaders',
     'rest_framework',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
