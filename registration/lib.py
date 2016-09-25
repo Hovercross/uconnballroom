@@ -28,7 +28,7 @@ def getRegistrationForm(registration):
     instructions = """Pease bring this form with you to the UConn Ballroom 
     Dance Club, along with cash or a check made payable to 
     \"UConn Ballroom Dance\" - we do not accept credit cards or huskybucks.  
-    The club meets on Monday nights in the Pharmacy Building Lobby at 7 PM"""
+    The club meets on Monday nights in the Shippee Pequot room at 6 PM"""
     
     if registration.registration_session.first_club_day:
         instructions += " starting on %s." % registration.registration_session.first_club_day.strftime("%B %-d, %Y")
