@@ -1,14 +1,15 @@
-amqp==1.4.6
+amqp==1.4.9
 anyjson==0.3.3
 appnope==0.1.0
-billiard==3.3.0.20
-boto==2.38.0
-celery==3.1.18
+billiard==3.3.0.23
+boto==2.42.0
+celery==3.1.23
 decorator==4.0.2
 dj-database-url==0.3.0
 Django==1.9.9
 django-admin-sortable==2.0.19
 django-filter==0.11.0
+<<<<<<< HEAD
 django-mptt==0.8.6
 django-ses==0.7.0
 django-ses-backend==0.1.1
@@ -20,15 +21,32 @@ gnureadline==6.3.3
 ipython==4.0.0
 ipython-genutils==0.1.0
 kombu==3.0.26
+=======
+django-mptt==0.7.4
+django-ses==0.8.1
+djangorestframework==3.2.4
+easy-thumbnails==2.2
+feedparser==5.2.1
+FeinCMS==1.11.1
+ipython-genutils==0.1.0
+kombu==3.0.35
+>>>>>>> 0ab7a49f26e97655436db1ae4d81a7af7a3f319c
 Markdown==2.6.2
 path.py==8.1.1
 pexpect==3.3
 pickleshare==0.5
 Pillow==3.3.1
+<<<<<<< HEAD
 psycopg2==2.6.1
 pytz==2016.6.1
 qrcode==5.3
 redis==2.10.3
+=======
+pkg-resources==0.0.0
+psycopg2==2.6.1
+pytz==2016.6.1
+qrcode==5.3
+>>>>>>> 0ab7a49f26e97655436db1ae4d81a7af7a3f319c
 reportlab==3.2.0
 requests==2.7.0
 simplegeneric==0.8.1
