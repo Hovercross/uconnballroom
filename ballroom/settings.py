@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'rest_framework',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
+	'costumes'
 )
 
 
