@@ -221,8 +221,13 @@ def index(request):
 		listType = l.get_list_type_display()
 		if listType not in managedLists:
 			managedLists[listType] = {}
-			
-		semester, listName = l.slug.split('-', 1)
+		
+		try:
+			semester, listName = l.slug.split('-', 1)
+		except ValueError as e:
+			print("Could not process %s as a semester list" % l.slug)
+			print(e)
+
 		if semester not in managedLists[listType]:
 			managedLists[listType][semester] = []
 		managedLists[listType][semester].append(l)
