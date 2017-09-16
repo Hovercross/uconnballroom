@@ -25,16 +25,10 @@ def getRegistrationForm(registration):
     heading = ParagraphStyle("heading", sample_styles["Heading1"])
     sub_heading = ParagraphStyle("heading", sample_styles["Heading2"])
     
-    instructions = """Pease bring this form with you to the UConn Ballroom 
-    Dance Club, along with cash or a check made payable to 
-    \"UConn Ballroom Dance\" - we do not accept credit cards or huskybucks.  
-    The club meets on Monday nights in the Shippee Pequot room at 6 PM"""
-    
-    if registration.registration_session.first_club_day:
-        instructions += " starting on %s." % registration.registration_session.first_club_day.strftime("%B %-d, %Y")
+    instructions = """Please bring this form with you to the UConn Ballroom Dance Club, along with cash or a check made payable to "UConn Ballroom Dance Team" - we do not accept credit cards or huskybucks. The club meets on Thursday nights at 7 PM at Storrs Congregational Church, starting on September 14, 2017."""
     
     if registration.registration_session.last_free_day:
-        instructions += """<br />The first couple weeks of the club are free, 
+        instructions += """<br /><br />The first few weeks of club are free as a trial period, until 
         until %s.  Payment will be accepted at any time during the semester, but after this 
         date you will not be allowed into the ballroom until your dues 
         have been paid.""" % registration.registration_session.last_free_day.strftime("%B %-d, %Y")
