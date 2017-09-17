@@ -227,6 +227,7 @@ def index(request):
 		except ValueError as e:
 			print("Could not process %s as a semester list" % l.slug)
 			print(e)
+			continue
 
 		if semester not in managedLists[listType]:
 			managedLists[listType][semester] = []
