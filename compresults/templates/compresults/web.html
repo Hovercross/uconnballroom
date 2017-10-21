@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Comp Results</title>
-
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 <script>
@@ -17,7 +12,7 @@
                 out.append(h1);
 
                 if (event.note) {
-                    p = $("<p class=\"note\"></p>")
+                    p = $("<p class=\"note\" style=\"color: red\"></p>")
                     p.text(event.note);
                     out.append(p);
                 }
@@ -41,7 +36,7 @@
         }).fail(function(request, textStatus, errorThrown) {
             console.log("request error", textStatus, errorThrown)
         }).always(function() {
-            setTimeout(request_data, 5000);
+            setTimeout(request_data, 1000);
         });
     }
 
@@ -50,29 +45,6 @@
     });
 </script>
 
-<style>
-    p {
-        margin: 0;
-        padding: 0;
-    }
+<div id="data">
 
-    h1 {
-        margin: 0;
-        padding: 0;
-        font-weight: bolder;
-    }
-
-    p.note {
-        color: red;
-    }
-</style>
-
-</head>
-
-<body>
-    <div id="data">
-
-    </div>
-</body>
-
-</html>
+</div>
