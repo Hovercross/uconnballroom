@@ -1,8 +1,10 @@
 from django.conf.urls import patterns, url
+from django.views.generic import TemplateView
 
 import compresults.views
 
 urlpatterns = [
-    url(r'^projector/$', compresults.views.projector),
-    url(r'^json/projector/$', compresults.views.projector_json, name='json-projector'),
+    url(r'^projector/$', TemplateView.as_view(template_name="compresults/projector.html")),
+    url(r'^$', TemplateView.as_view(template_name="compresults/web.html")),
+    url(r'^json/$', compresults.views.json, name='json'),
 ]

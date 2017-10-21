@@ -222,6 +222,8 @@ def index(request):
 		if listType not in managedLists:
 			managedLists[listType] = {}
 		
+		print (l)
+
 		try:
 			semester, listName = l.slug.split('-', 1)
 		except ValueError as e:

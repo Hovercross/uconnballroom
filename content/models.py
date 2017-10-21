@@ -162,4 +162,5 @@ Page.create_content_type(ImageContent, POSITION_CHOICES=(
 Page.create_content_type(SubtitledHeader)
 Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('registration.urls', 'Registration application'),
+    ('compresults.urls', 'Competition Results application'),
     ))

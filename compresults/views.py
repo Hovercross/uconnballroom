@@ -6,12 +6,8 @@ from django.http import JsonResponse
 
 from compresults.models import Event
 
-# Create your views here.
-def projector(request):
-    return render(request, "compresults/projector.html")
-
-def projector_json(request):
-    events = Event.objects.filter(show=True)
+def json(request):
+    events = Event.objects.filter(status='upcoming')
 
     out = {'events': [], 'last_updated': datetime.now()}
 
