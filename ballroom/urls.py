@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^accounts/logout/$', django.contrib.auth.views.logout), 
     url(r'^mail/', include('mailhandler.urls')),
     url(r'^lists/', include('lists.urls')),
+    url(r'^compresults/', include('compresults.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
