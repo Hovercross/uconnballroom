@@ -6,6 +6,9 @@ from django.http import JsonResponse
 
 from compresults.models import Event
 
+from django.views.decorators.cache import cache_page
+
+@cache_page(1)
 def json(request):
     events = Event.objects.filter(status='upcoming')
 
