@@ -24,10 +24,11 @@ class NotDoneListFilter(admin.SimpleListFilter):
 class EventAdmin(SortableAdmin):
     list_display = ['__str__', 'status']
     list_editable = ['status']
-
     list_filter = [NotDoneListFilter]
+    list_per_page = 20
 
     actions = ['make_hidden', 'make_done', 'make_upcoming']
+
 
     def make_hidden(self, request, queryset):
         queryset.update(status='hidden')
