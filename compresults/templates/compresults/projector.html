@@ -3,6 +3,8 @@
 <head>
 <title>Comp Results</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 <script>
@@ -40,12 +42,13 @@
             console.log("Got data", data);
         }).fail(function(request, textStatus, errorThrown) {
             console.log("request error", textStatus, errorThrown)
-        });
+        }).always(function() {
+            setTimeout(request_data, 1000);
+        });;
     }
 
     $(document).ready(function() {
         request_data();
-        setInterval(request_data, 1000);
     });
 </script>
 

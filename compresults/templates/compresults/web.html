@@ -40,12 +40,13 @@
             console.log("Got data", data);
         }).fail(function(request, textStatus, errorThrown) {
             console.log("request error", textStatus, errorThrown)
+        }).always(function() {
+            setTimeout(request_data, 5000);
         });
     }
 
     $(document).ready(function() {
         request_data();
-        setInterval(request_data, 1000);
     });
 </script>
 

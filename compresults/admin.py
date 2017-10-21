@@ -27,5 +27,22 @@ class EventAdmin(SortableAdmin):
 
     list_filter = [NotDoneListFilter]
 
+    actions = ['make_hidden', 'make_done', 'make_upcoming']
+
+    def make_hidden(self, request, queryset):
+        queryset.update(status='hidden')
+    
+    make_hidden.short_description = 'Mark selected events as hidden'
+    
+    def make_done(self, request, queryset):
+        queryset.update(status='done')
+
+    make_done.short_description = 'Mark selected events as done'
+
+    def make_upcoming(self, request, queryset):
+        queryset.update(status='upcoming')
+
+    make_upcoming.short_description = 'Mark selected events as upcoming'
+
 # Register your models here.
 admin.site.register(Event, EventAdmin)
