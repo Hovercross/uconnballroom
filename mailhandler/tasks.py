@@ -5,6 +5,7 @@ from mailhandler import models
 from celery import shared_task
 
 from django.conf import settings
+from django.core.mail import mail_admins
 
 from webob.multidict import MultiDict
 from io import StringIO
@@ -45,11 +46,12 @@ def sendMessage(id):
 					postFiles.add('attachment', (a.attachment.name, a.attachment.read()))
 			try:		
 				r = requests.post('https://api.mailgun.net/v2/uconnballroom.com/messages', data=data, files=postFiles, auth=requests.auth.HTTPBasicAuth('api', settings.MAILGUN_KEY))
-			except requests.ConnectionError:
-				mail_admins("Mailgun error", "Could not connect to Mailgun when sending sending message %d to %s" % (m.id, m.to_address))
+				if r.status_code != 200:
+					mail_admins("Mailgun error", "Error sending message %d to %s: %s" % (m.id, m.to_address, r.text))
+
+			except requests.ConnectionError as e:
+                            mail_admins("Mailgun error", "Could not connect to Mailgun when sending sending message %d to %s: %s" % (m.id, data['to'], e))
 		
-			if r.status_code != 200:
-				mail_admins("Mailgun error", "Error sending message %d to %s: %s" % (m.id, m.to_address, r.text))
 	
 	sendConfirmationMessage.delay(id)
 	
