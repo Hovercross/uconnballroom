@@ -87,6 +87,8 @@ class RegistrationSession(models.Model):
 	first_club_day = models.DateField(null=True, blank=True)
 	last_free_day = models.DateField(null=True, blank=True)
 	
+	preamble = models.TextField(blank=True, null=True)
+
 	available = models.BooleanField(default=False)
 	
 	def save(self, *args, **kwargs):
