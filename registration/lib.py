@@ -6,6 +6,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 
 from django.core.mail import send_mail, EmailMessage
+from django.template.defaultfilters import linebreaksbr
 
 from datetime import date
 
@@ -25,13 +26,16 @@ def getRegistrationForm(registration):
     heading = ParagraphStyle("heading", sample_styles["Heading1"])
     sub_heading = ParagraphStyle("heading", sample_styles["Heading2"])
     
-    instructions = """Please bring this form with you to the UConn Ballroom Dance Club, along with cash or a check made payable to "UConn Ballroom Dance Team" - we do not accept credit cards or huskybucks. The club meets on Thursday nights at 7 PM at Storrs Congregational Church, starting on September 14, 2017."""
-    
-    if registration.registration_session.last_free_day:
-        instructions += """<br /><br />The first few weeks of club are free as a trial period, until 
-        until %s.  Payment will be accepted at any time during the semester, but after this 
-        date you will not be allowed into the ballroom until your dues 
-        have been paid.""" % registration.registration_session.last_free_day.strftime("%B %-d, %Y")
+    if registration.registration_session.preamble:
+        instructions = linebreaksbr( registration.registration_session.preamble)
+    else:
+        instructions = """Please bring this form with you to the UConn Ballroom Dance Club, along with cash or a check made payable to "UConn Ballroom Dance Team" - we do not accept credit cards or huskybucks. The club meets on Thursday nights at 7 PM at Storrs Congregational Church, starting on September 14, 2017."""
+        
+        if registration.registration_session.last_free_day:
+            instructions += """<br /><br />The first few weeks of club are free as a trial period, until 
+            until %s.  Payment will be accepted at any time during the semester, but after this 
+            date you will not be allowed into the ballroom until your dues 
+            have been paid.""" % registration.registration_session.last_free_day.strftime("%B %-d, %Y")
     
     
     if registration.registration_session.early_deadline and registration.registration_session.early_deadline > date.today():

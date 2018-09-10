@@ -62,7 +62,7 @@ class PersonAdmin(admin.ModelAdmin):
         return request.user.has_perm('registration.delete_person')
 
 class RegistrationSessionAdmin(admin.ModelAdmin):
-    fields = ['year', 'semester', 'card_code', 'base_price', 'team_surcharge', 'nonstudent_surcharge', 'returning_discount', 'early_discount', 'early_deadline', 'first_club_day', 'last_free_day', 'available']
+    fields = ['year', 'semester', 'card_code', 'base_price', 'team_surcharge', 'nonstudent_surcharge', 'returning_discount', 'early_discount', 'early_deadline', 'first_club_day', 'last_free_day', 'available', 'preamble']
     
     list_display = ['year', 'semester', 'available']
 
